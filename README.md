@@ -1,2 +1,3 @@
-# szakdoga_2023
-szakdoga
+BQMR6I - Szakdoga 2023
+
+Project title: Crypto Gaze
