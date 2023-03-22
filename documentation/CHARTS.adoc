@@ -1,0 +1,3 @@
+= Goal
+
+To simply display the current chart when starting the application.

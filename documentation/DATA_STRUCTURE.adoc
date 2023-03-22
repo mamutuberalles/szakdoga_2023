@@ -1,0 +1,20 @@
+We have a daily BTC-USD csv charts at the moment with the columns
+
+* Data
+* Open
+* High
+* Low
+* Adjusted Close
+* Close
+* Volume
+
+== Goal
+
+The goal is to have a comprehensive and scalable data structure of different cryptocurrencies and be able to put them in our database
+
+== Questions
+
+* More accurate data? (seconds)
+* Automatically refreshing data with web services?
+* More currencies?
+* Different values to store for analyzing purposes?
