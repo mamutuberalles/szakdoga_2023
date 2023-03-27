@@ -1,13 +1,5 @@
-service BTCService {
+using data_model as model from '../db/data-model';
 
-    entity btc_usd {
-        date : Date;
-        open : Double;
-        high : Double;
-        low : Double;
-        close : Double;
-        adj_close : Double;
-        volume : Double;
-    }
-
+service CatalogService {
+    entity BTC @readonly as projection on model.BTC;
 }

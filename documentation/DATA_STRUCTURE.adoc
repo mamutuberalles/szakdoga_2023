@@ -18,3 +18,7 @@ The goal is to have a comprehensive and scalable data structure of different cry
 * Automatically refreshing data with web services?
 * More currencies?
 * Different values to store for analyzing purposes?
+
+== Notes
+
+* In order to be able to read data from csv, the csv file needs to be in `db/csv` folder with the same name as the 'FQDN' of the table AKA <namespace>.<tablename>
