@@ -11,3 +11,25 @@ entity BTC : managed {
     adj_close : Double;
     volume : Double;
 }
+
+entity ETH : managed {
+//    id : UUID;
+    date : Date;
+    open : Double;
+    high : Double;
+    low : Double;
+    close : Double;
+    adj_close : Double;
+    volume : Double;
+}
+
+entity XMR : managed {
+//    id : UUID;
+    date : Date;
+    open : Double;
+    high : Double;
+    low : Double;
+    close : Double;
+    adj_close : Double;
+    volume : Double;
+}
