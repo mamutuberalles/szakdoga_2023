@@ -1,3 +1,3 @@
-= Goal
+== Notes
 
-To simply display the current chart when starting the application.
+Simple line chart implemented with datasets and axises that can be interchanged, but as a separate component, the data does not transfer.
