@@ -18,3 +18,7 @@
 * Add the reports view
 * Add the role customization view
 * Add the analytics view
+
+== Charts
+
+* We need to have customizable charts & advanced charts for more immersion, with displayed data
