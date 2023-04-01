@@ -1,0 +1,49 @@
+{
+  "name": "react-ui",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.15",
+    "@ui5/webcomponents": "~1.11.0",
+    "@ui5/webcomponents-fiori": "~1.11.0",
+    "@ui5/webcomponents-icons": "~1.11.0",
+    "@ui5/webcomponents-react": "^1.12.0",
+    "@ui5/webcomponents-react-base": "^1.11.3",
+    "@ui5/webcomponents-react-charts": "^1.12.0",
+    "axios": "^0.24.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "cypress run --component --browser chrome",
+    "eject": "react-scripts eject",
+    "test:open": "cypress open --component --browser chrome"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@ui5/webcomponents-cypress-commands": "^1.12.0",
+    "cypress": "^12.9.0"
+  }
+}
