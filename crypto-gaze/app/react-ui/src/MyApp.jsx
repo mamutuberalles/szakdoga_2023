@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from 'axios';
+
+import { MyChart } from "./Basic Components/MyChart";
 
 import { Card, CardHeader, Text } from "@ui5/webcomponents-react";
 import { spacing } from "@ui5/webcomponents-react-base";
@@ -11,41 +13,52 @@ import Select from '@mui/material/Select';
 
 export function MyApp() {
 
-    const handleHeaderClick = () => {
-        if (toggleCharts === "lineChart") {
-            setToggleCharts("barChart");
-        } else {
-            setToggleCharts("lineChart");
-            getData();
-        }
-    };
-
     const [dataset, setDataset] = useState([])
-    const [toggleCharts, setToggleCharts] = useState("barChart");
-    const [datatype, setDatatype] = useState("open");
+    const [crypto, setCrypto] = useState("")
+    const [datatype, setDatatype] = useState("");
+    const [loglevel, setLoglevel] = useState("DEBUG");
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
-    const handleChange = (event) => {
+    const handleCryptoChange = async (event) => {
+        setCrypto(event.target.value);
+        console.log("[DEBUG]: Crypto changed.");
+        getData(event.target.value);
+    }
+
+    const handleTypeChange = async (event) => {
         setDatatype(event.target.value);
+        console.log("[DEBUG]: Datatype changed.");
+        getData(crypto);
     };
 
-    const getData = async () => {
-        const res = await axios.get('http://localhost:4004/catalog/BTC', dataset);
-        //const temp = res.json();
+    const getData = async (value) => {
+        const res = await axios.get('http://localhost:4004/catalog/' + value);
         setDataset(res.data.value);
-        console.log(res);
+        console.log("[DEBUG]: Dataset changed.");
     };
 
     return (
         <div>
-            <Card header={<CardHeader titleText="BTC-USD" interactive onClick={handleHeaderClick} />} style={{ width: "100" }} >
+            <Card style={{ width: "100" }} >
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Type</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="crypto-select-label"
+                        id="crypto-select-label"
+                        value={crypto}
+                        onChange={handleCryptoChange}
+                    >
+                        <MenuItem value={"BTC"}>BTC - USD</MenuItem>
+                        <MenuItem value={"ETH"}>ETH - USD</MenuItem>
+                        <MenuItem value={"XMR"}>XMR - USD</MenuItem>
+                    </Select>
+                </FormControl>
+
+                <FormControl fullWidth>
+                    <Select
+                        labelId="type-select-label"
+                        id="type-select-label"
                         value={datatype}
-                        label="Type"
-                        onChange={handleChange}
+                        onChange={handleTypeChange}
                     >
                         <MenuItem value={"open"}>Open</MenuItem>
                         <MenuItem value={"close"}>Close</MenuItem>
@@ -55,21 +68,13 @@ export function MyApp() {
                         <MenuItem value={"volume"}>Volume</MenuItem>
                     </Select>
                 </FormControl>
-
-                {toggleCharts === "lineChart" ? (
-                    <Text style={spacing.sapUiContentPadding}>
-                        {datatype} values
-                    </Text>
-                ) :
-                    (<></>)
-                }
-                {toggleCharts === "lineChart" ? (
-                    <LineChart measures={[{ accessor: `${datatype}`, label: "Value" }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset} />
-                ) :
-                    (<></>)
+                <LineChart measures={[{ accessor: `${datatype}`, label: "Value" }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset} />
+                {/* Dataset does not go trough -- need to check why */}
+                {/* <MyChart type = {datatype} dataset = {dataset} /> */}
+                {loglevel === "DEBUG" ? (<Text>[DEBUG] Crypto: {crypto} Type: {datatype} </Text>)
+                    : (<> </>)
                 }
 
-                {/*                 <BarChart measures={[ {accessor: "open", label: "Value" } ]} dimensions={[ {accessor: "timestamp"} ]} dataset = {dataset} /> */}
             </Card>
         </div>
     );
