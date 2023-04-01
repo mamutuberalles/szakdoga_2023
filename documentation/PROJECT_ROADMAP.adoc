@@ -1,0 +1,20 @@
+== Datasets & Data structure
+
+* Need to gather more data to present on the UI (different cryptos)
+* Need to restructure the entities in order to be able to analyze the charts more professionally
+* (Optional) Need to set up web services or something to  get fresh data automatically
+
+== Login system
+
+* Need to set up and define roles for features
+* Need to implement authentication in frontend and backend as well
+* Need to be able to store & modify roles from the application
+
+== GUI elements
+
+* Change the current react gui to be fully modular
+* Plan the gui of the 3 roles in figma
+* Add the charts view
+* Add the reports view
+* Add the role customization view
+* Add the analytics view
