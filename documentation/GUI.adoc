@@ -1,0 +1,4 @@
+== Notes
+
+* Need to make a list of features to implement in the gui, as the basic framework is done
+
