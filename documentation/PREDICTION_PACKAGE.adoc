@@ -1,0 +1,3 @@
+= Prediction package
+
+This document details the experimental feature of predicting the next values in the dataset using SAP technology

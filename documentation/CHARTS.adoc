@@ -1,3 +1,0 @@
-== Notes
-
-Simple line chart implemented with datasets and axises that can be interchanged, but as a separate component, the data does not transfer.

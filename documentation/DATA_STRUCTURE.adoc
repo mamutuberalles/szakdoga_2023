@@ -1,24 +1,19 @@
-We have a daily BTC-USD csv charts at the moment with the columns
+= This documentation provides information about the datastructure currently used
 
-* Data
-* Open
-* High
-* Low
-* Adjusted Close
-* Close
-* Volume
+== Current
 
-== Goal
+At the moment we have several cryptocurrencies' historical data for one year, with fields including open, close, high, low.
+We have separate entites for them regardless that the fields used are exactly the same.
 
-The goal is to have a comprehensive and scalable data structure of different cryptocurrencies and be able to put them in our database
+=== Questions & notes
 
-== Questions
+* Is there a way to put them into one service using parameters?
 
-* More accurate data? (seconds)
-* Automatically refreshing data with web services?
-* More currencies?
-* Different values to store for analyzing purposes?
 
-== Notes
+== One service strategy
 
-* In order to be able to read data from csv, the csv file needs to be in `db/csv` folder with the same name as the 'FQDN' of the table AKA <namespace>.<tablename>
+The one service strategy says that as the key (date) is consistent throughout the csv files, we can change the column names and put every data in one big file, and we can access them more easily.
+
+== Computed fields for analysis
+
+While we have raw data, it may not be the best if we want to apply more complex analyis for the user to enjoy

@@ -1,0 +1,19 @@
+= ROLES
+
+This document specifies which user-type has the authorization to use which part of the application.
+In practice the users defined in cds and react may be different, but we view them as the same in theory.
+
+== Reader
+* Can view the charts page.
+** Extra calculated information.
+* Can view the reports page.
+
+== Editor
+* Reader
+* In charts page the read only components become selectors, or another page where the shown charts can be specified
+* Can edit users (? may not be possible)
+* Can add currencies (? may not be possible)
+
+== Analyst
+* Editor
+* Experimental extra features
