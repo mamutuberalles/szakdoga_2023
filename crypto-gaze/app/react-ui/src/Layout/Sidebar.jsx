@@ -20,6 +20,7 @@ export function Sidebar() {
             <SideNavigation>
                 <SideNavigationItem text="Home" onClick={handleClick} id="home"/>
                 <SideNavigationItem text="Legacy Content" onClick={handleClick} id="legacy_content" />
+                <SideNavigationItem text="Experimental chart" onClick={handleClick} id="experimental_chart" />
             </SideNavigation>
         </>
     );

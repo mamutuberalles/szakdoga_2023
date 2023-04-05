@@ -17,3 +17,12 @@ The one service strategy says that as the key (date) is consistent throughout th
 == Computed fields for analysis
 
 While we have raw data, it may not be the best if we want to apply more complex analyis for the user to enjoy
+
+
+== Experimental dataset
+
+* In this dataset, we modify the csv (, and the service), where the date acts as a key, and with an underscore, every datatype is used in a single service
+* This enables us to have multiple lines in a <LineChart /> comnponent
+* This approach can be used as making joins on the date section of the records
+* With every record in one dataset we can display multiple lines in one chart, which may or may not give a good representation of value, as the scale of these currencies can ultimately vary
+* Defining how and what the used could display is another programmatic challange we'll yet to face.
