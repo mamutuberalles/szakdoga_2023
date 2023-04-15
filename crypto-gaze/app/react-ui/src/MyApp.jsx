@@ -16,6 +16,7 @@ import { Home } from "./Routes/Home";
 import Layout from "./Layout/Layout";
 import Charts from "./Routes/Charts";
 import { Edit } from "./Routes/Edit";
+import ChartBuilder from "./Routes/ChartBuilder";
 
 export function MyApp() {
 
@@ -29,6 +30,7 @@ export function MyApp() {
                         <Route path="/home" element = {<Home /> } />
                         <Route path="/charts" element = {<Charts />} />
                         <Route path="/edit" element = {<Edit />} />
+                        <Route path="/chartbuilder" element = {<ChartBuilder/>} />
                     </Routes>
                 </Layout>
             </BrowserRouter>

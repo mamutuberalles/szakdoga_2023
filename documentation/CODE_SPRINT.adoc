@@ -2,3 +2,26 @@
 
 NOTE: This document lists in order what functions and features need to be implemeted and finalized 
 
+
+== Notes
+
+* In this section, I'll describe the tasks, todos, and other features needed for each tab.
+
+=== Simple Charts
+* Need to make date visible
+* Need to have a header text
+
+=== HOME
+* Need to make a more convincing welcome text
+* Need to add other aesthetic things
+
+=== HEADER
+* Need to change the header sample text, to something else
+* Need to add profile button / icon with dropdown menu
+
+=== EDIT MY CHARTS
+* Need to ask Andris about axios requests 
+* Need to ask Andris about query strings
+* Need to ask Andris about complex data structures in oData
+
+=== CHART BUILDER
