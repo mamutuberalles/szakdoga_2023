@@ -1,0 +1,4 @@
+= Code Sprint
+
+NOTE: This document lists in order what functions and features need to be implemeted and finalized 
+

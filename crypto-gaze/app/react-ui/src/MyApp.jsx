@@ -14,6 +14,8 @@ import Select from '@mui/material/Select';
 import { MyAppLegacy } from "./Routes/MyAppLegacy";
 import { Home } from "./Routes/Home";
 import Layout from "./Layout/Layout";
+import Charts from "./Routes/Charts";
+import { Edit } from "./Routes/Edit";
 
 export function MyApp() {
 
@@ -25,6 +27,8 @@ export function MyApp() {
                         <Route path="/legacy_content" element ={<MyAppLegacy />} />
                         <Route path="/" element = {<Navigate replace to="/home" />} />
                         <Route path="/home" element = {<Home /> } />
+                        <Route path="/charts" element = {<Charts />} />
+                        <Route path="/edit" element = {<Edit />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
