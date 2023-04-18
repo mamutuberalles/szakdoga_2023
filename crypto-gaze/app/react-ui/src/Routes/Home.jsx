@@ -26,7 +26,7 @@ export function Home() {
     }
 
     useEffect(() =>{
-        if(dataFetched < 2)
+        if(dataFetched < 3)
         {
             fetchData();
             setDataFetched(dataFetched +1);

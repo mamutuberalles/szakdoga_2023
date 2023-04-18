@@ -1,0 +1,38 @@
+###
+#
+# Get Charts
+#
+GET http://localhost:4004/chart/Chart
+Authorization: Basic admin
+Content-Type: application/json
+{
+
+}
+
+###
+#
+# Add Chart
+#
+POST http://localhost:4004/chart/Chart
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+    "id" : 99,
+    "ticker" : "XMR",
+    "type" : "close"
+}
+
+###
+#
+# Update Chart
+#
+
+PATCH http://localhost:4004/chart/Chart/1
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+    "ticker" : "BTC",
+    "type" : "adj_close"
+}

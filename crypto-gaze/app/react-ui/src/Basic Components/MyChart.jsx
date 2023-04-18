@@ -16,19 +16,15 @@ export function MyChart(args) {
     }
 
     useEffect(() =>{
-        if(dataFetched < 5)
+        if(dataFetched < 3)
         {
             fetchData();
-            setDataFetched(dataFetched +1);
         }
     })
 
     return (
         <>
-{/*             <Button onClick={fetchData}>
-                Fetch Data
-            </Button> */}
-            <LineChart measures={[{ accessor: `${args.args.type}`, label: `${args.args.ticker} - ${args.args.type}` }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset} />
+            <LineChart measures={[{ accessor: `${args.args.type}`, label: `${args.args.label}` }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset}  />
         </>
 
     );

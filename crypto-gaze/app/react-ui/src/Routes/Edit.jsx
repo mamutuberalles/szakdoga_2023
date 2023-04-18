@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { MyChartSetter } from "../Basic Components/MyChartSetter";
+import { MyChartSetter } from "../Basic Components/MyChartSettings";
 import { Button } from "@ui5/webcomponents-react";
 
 
@@ -25,9 +25,6 @@ export function Edit() {
 
     return (
         <>
-            {chartValues.map(item =>
-                <MyChartSetter args={item} />
-            )}
         </>
     );
 }

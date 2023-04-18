@@ -1,6 +1,6 @@
-id;ticker;type;
-1;"BTC";"high"
-2;"ETH";"close"
-3;"XMR";"volume"
-4;"ETH";"adj_close"
-5;"BTC";"volume"
+id;ticker;type;label;
+1;"BTC";"high";"High";
+2;"ETH";"close";"Close";
+3;"XMR";"volume";"Volume",
+4;"ETH";"adj_close";"Adjusted Close";
+5;"BTC";"volume";"Volume";

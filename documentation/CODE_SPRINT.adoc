@@ -10,6 +10,7 @@ NOTE: This document lists in order what functions and features need to be implem
 === Simple Charts
 * Need to make date visible
 * Need to have a header text
+* Add extra stuff to the data service, so nicer display can be made
 
 === HOME
 * Need to make a more convincing welcome text
@@ -25,3 +26,5 @@ NOTE: This document lists in order what functions and features need to be implem
 * Need to ask Andris about complex data structures in oData
 
 === CHART BUILDER
+
+=== MULTICHARTS
