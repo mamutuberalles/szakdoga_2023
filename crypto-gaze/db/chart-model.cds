@@ -5,6 +5,8 @@ entity Chart {
     ticker: String;
     type : String;
     label : String;
+    timestamp_start : Date;
+    timestamp_end : Date;
 }
 
 entity OpenChart {

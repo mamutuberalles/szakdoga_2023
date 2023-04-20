@@ -36,3 +36,19 @@ Content-Type: application/json;IEEE754Compatible=true
     "ticker" : "BTC",
     "type" : "adj_close"
 }
+
+###
+#
+# Fucked up query
+#
+
+GET http://localhost:4004/catalog/BTC?$filter=(year(date) gte 2023 and month(date) gte 4 and day(date) gte 1) and ( year(date) lte 2023 and month(date) lte 4 and (day) lte 19 )
+
+
+
+
+####
+#
+#
+
+GET http://localhost:4004/catalog/BTC?$filter=date ge 2023-04-01

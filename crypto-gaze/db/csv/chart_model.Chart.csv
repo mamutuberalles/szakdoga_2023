@@ -1,6 +1,2 @@
-id;ticker;type;label;
-1;"BTC";"high";"High";
-2;"ETH";"close";"Close";
-3;"XMR";"volume";"Volume",
-4;"ETH";"adj_close";"Adjusted Close";
-5;"BTC";"volume";"Volume";
+id;ticker;type;label;timestamp_start;timestamp_end
+1;"BTC";"close";"BTC-USD";"2022-04-01";"2023-04-19"

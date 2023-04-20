@@ -34,7 +34,7 @@ export function MyChart2(args) {
         plugins: {
         },
         scales: {
-        },
+        }
     });
 
 
@@ -75,7 +75,7 @@ export function MyChart2(args) {
                         display: true,
                         position: 'left'
                     }
-                },
+                }
 
             });
             setData({
@@ -88,7 +88,7 @@ export function MyChart2(args) {
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         yAxisID: 'y',
                     }
-                ],
+                ]
             });
         }
         else {
@@ -150,9 +150,9 @@ export function MyChart2(args) {
     const [dataFetched, setDataFetched] = useState(0);
 
     useEffect(() => {
-        if (dataFetched < 3) {
+        if (dataFetched < 2) {
             fetchData();
-            console.log(args.args);
+            //console.log(args.args);
         }
     });
 

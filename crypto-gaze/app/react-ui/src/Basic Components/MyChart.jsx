@@ -10,21 +10,25 @@ export function MyChart(args) {
     console.log(args.args);
 
     const fetchData = async () => {
-        const res = await axios.get('http://localhost:4004/catalog/' + args.args.ticker)
+
+
+        const res = await axios.get('http://localhost:4004/catalog/' + args.args.ticker + "?$filter=date ge " + args.args.timestamp_start + " and date le " + args.args.timestamp_end)
+        console.log(args.args.timestamp_start);
+        console.log(args.args.timestamp_end);
         setDataset(res.data.value);
-        setDataFetched(dataFetched +1);
+
+        setDataFetched(dataFetched + 1);
     }
 
-    useEffect(() =>{
-        if(dataFetched < 3)
-        {
+    useEffect(() => {
+        if (dataFetched < 1) {
             fetchData();
         }
     })
 
     return (
         <>
-            <LineChart measures={[{ accessor: `${args.args.type}`, label: `${args.args.label}` }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset}  />
+            <LineChart measures={[{ accessor: `${args.args.type}`, label: `${args.args.label}` }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset} />
         </>
 
     );

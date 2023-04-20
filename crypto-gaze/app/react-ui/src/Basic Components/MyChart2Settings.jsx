@@ -14,6 +14,8 @@ export function MyChart2Settings(args) {
     const [ticker2, setTicker2] = useState("");
     const [type2, setType2] = useState("");
     const [label2, setLabel2] = useState("");
+    const [chartToggle, setChartToggle] = useState(false)
+    const [title, setTitle] = useState("")
 
     const handleTickerChange = (event) => {
         console.log("[DEBUG]: handleTickerChange.event.target.value : " + event.target.value);
@@ -24,7 +26,8 @@ export function MyChart2Settings(args) {
             axis2: `${axis2}`,
             ticker2: `${ticker2}`,
             type2: `${type2}`,
-            label2: `${label2}`
+            label2: `${label2}`,
+            text : `${title}`
         });
         setTicker(event.target.value);
     }
@@ -38,7 +41,8 @@ export function MyChart2Settings(args) {
             axis2: `${axis2}`,
             ticker2: `${ticker2}`,
             type2: `${type2}`,
-            label2: `${label2}`
+            label2: `${label2}`,
+            text : `${title}`
         });
         setType(event.target.value);
     }
@@ -52,7 +56,8 @@ export function MyChart2Settings(args) {
             axis2: `${axis2}`,
             ticker2: `${ticker2}`,
             type2: `${type2}`,
-            label2: `${label2}`
+            label2: `${label2}`,
+            text : `${title}`
         });
         setLabel(event.target.value);
     }
@@ -66,7 +71,8 @@ export function MyChart2Settings(args) {
             axis2: `${axis2}`,
             ticker2: event.target.value,
             type2: `${type2}`,
-            label2: `${label2}`
+            label2: `${label2}`,
+            text : `${title}`
         });
         setTicker2(event.target.value);
     }
@@ -80,7 +86,8 @@ export function MyChart2Settings(args) {
             axis2: `${axis2}`,
             ticker2: `${ticker2}`,
             type2: event.target.value,
-            label2: `${label2}`
+            label2: `${label2}`,
+            text : `${title}`
         });
         setType2(event.target.value);
     }
@@ -90,16 +97,54 @@ export function MyChart2Settings(args) {
         setDisplayValues({
             ticker: `${ticker}`,
             type: `${type}`,
-            label: `${label2}`,
+            label: `${label}`,
             axis2: `${axis2}`,
             ticker2: `${ticker2}`,
             type2: `${type2}`,
             label2: event.target.value,
+            text : `${title}`
         });
         setLabel2(event.target.value);
     }
 
+    const handleAxisChange = (event) => {
+        console.log("[DEBUG]: handleAxisChange.event.target.value : " + event.target.value);
+        setDisplayValues({
+            ticker: `${ticker}`,
+            type: `${type}`,
+            label: `${label}`,
+            axis2: event.target.checked,
+            ticker2: `${ticker2}`,
+            type2: `${type2}`,
+            label2: `${label2}`,
+            text : `${title}`
+        });
+        setAxis2(event.target.checked);
+    }
 
+    const toggle = () => {
+        if (chartToggle) {
+            setChartToggle(false);
+        }
+        else {
+            setChartToggle(true);
+        }
+    }
+
+    const handleTitleChange = (event) =>{
+        console.log("[DEBUG]: handleTitleChange.event.target.value : " + event.target.value);
+        setDisplayValues({
+            ticker: `${ticker}`,
+            type: `${type}`,
+            label: `${label}`,
+            axis2: `${axis2}`,
+            ticker2: `${ticker2}`,
+            type2: `${type2}`,
+            label2: `${label2}`,
+            text :  event.target.value
+        });
+        setTitle(event.target.checked);
+    }
 
     return (
         <>
@@ -113,7 +158,7 @@ export function MyChart2Settings(args) {
             </Card>
             <Card>
                 <FormGroup>
-                    <FormControlLabel  control={<Switch />} label="Second Axis" />
+                    <FormControlLabel control={<Switch />} label="Second Axis" onChange={handleAxisChange} />
                 </FormGroup>
                 <TextField label="Second Ticker" defaultValue={args.args.ticker2} variant="filled" onChange={handleTickerChange2}>
                 </TextField>
@@ -122,12 +167,24 @@ export function MyChart2Settings(args) {
                 <TextField label="Second Label" defaultValue={args.args.label2} variant="filled" onChange={handleLabelChange2}>
                 </TextField>
             </Card>
-            <Card>
-                <Button>
-                    Add Chart
-                </Button>
-                <MyChart2 args={displayValues} />
-            </Card>
+
+            <Button onClick={toggle}>
+                Preview Chart
+            </Button>
+
+            <Button>
+                Add Chart
+            </Button>
+            <TextField label = "Chart Title" variant="filled" onChange={handleTitleChange}>
+
+            </TextField>
+
+            {chartToggle === true 
+                ? <MyChart2 args={displayValues} />
+                : <> </>
+            }
+            
+
         </>
     );
 }

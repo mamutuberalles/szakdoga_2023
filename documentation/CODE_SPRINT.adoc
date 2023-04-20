@@ -22,9 +22,18 @@ NOTE: This document lists in order what functions and features need to be implem
 
 === EDIT MY CHARTS
 * Need to ask Andris about axios requests 
-* Need to ask Andris about query strings
 * Need to ask Andris about complex data structures in oData
-
+* Need to ask Andris about login systems
 === CHART BUILDER
 
 === MULTICHARTS
+
+
+=== SCRIPT
+
+==== PHASE I
+* Download chosen tickers from yahoo finance, and put them in the correct folder
+
+==== PHASE II
+* Make predictions of the chosen tickers, 60 days in the future using the _05,_075,_09 stuff
+
