@@ -1,7 +1,0 @@
-= Prediction package
-
-This document details the experimental feature of predicting the next values in the dataset using SAP technology
-
-* First we try using it with the darts library
-* A basic scripts for forecasting the `type` value of the `ticker` which can be used interchangeably
-* This creates another dataset, and we should use a different service to broadcast thsi data
