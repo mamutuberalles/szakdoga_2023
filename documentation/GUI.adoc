@@ -1,7 +1,0 @@
-= GUI
-
-NOTE: A visual representation of the gui plans are found in `wireframes.fig`, here only notes about the code will be available.
-
-== Issues to be made github issues 
-
-== Notes
