@@ -19,7 +19,13 @@ export function Sidebar() {
         <>
             <SideNavigation>
                 <SideNavigationItem text="Home" onClick={handleClick} id="home"/>
-                <SideNavigationItem text="Legacy Content" onClick={handleClick} id="legacy_content" />
+                {/* <SideNavigationItem text="Legacy Content" onClick={handleClick} id="legacy_content" /> */}
+                <SideNavigationItem text="My Charts" onClick={handleClick} id="charts" />
+                {/* <SideNavigationItem text="Edit My Charts" onClick={handleClick} id="edit" /> */}
+                <SideNavigationItem text="Chart Builder BETA" onClick={handleClick} id="chartbuilder" />
+                {/* <SideNavigationItem text="Multicharts" onClick={handleClick} id="multicharts" /> */}
+                <SideNavigationItem text="Add Simple Chart" onClick={handleClick} id="addsimplechart" />
+                <SideNavigationItem text="Add Complex Chart" onClick={handleClick} id="addcomplexchart" />
                 <SideNavigationItem text="Experimental chart" onClick={handleClick} id="experimental_chart" />
             </SideNavigation>
         </>

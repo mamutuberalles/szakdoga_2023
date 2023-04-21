@@ -15,6 +15,12 @@ import { MyAppLegacy } from "./Routes/MyAppLegacy";
 import { Home } from "./Routes/Home";
 import Layout from "./Layout/Layout";
 import ExperimentalCharts from "./Routes/ExperimentalCharts";
+import Charts from "./Routes/Charts";
+import { Edit } from "./Routes/Edit";
+import ChartBuilder from "./Routes/ChartBuilder";
+import MultiCharts from "./Routes/MultiCharts";
+import AddSimpleChart from "./Routes/AddSimpleChart";
+import AddComplexChart from "./Routes/AddComplexChart";
 
 export function MyApp() {
 
@@ -23,10 +29,8 @@ export function MyApp() {
             <BrowserRouter>
                 <Layout>
                     <Routes>
-                        <Route path="/legacy_content" element ={<MyAppLegacy />} />
                         <Route path="/" element = {<Navigate replace to="/home" />} />
                         <Route path="/home" element = {<Home /> } />
-                        <Route path ="experimental_chart" element = {<ExperimentalCharts />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>

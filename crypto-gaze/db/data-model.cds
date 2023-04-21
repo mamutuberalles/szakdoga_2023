@@ -20,7 +20,7 @@ entity ETH : managed {
     low : Double;
     close : Double;
     adj_close : Double;
-    volume : Double;
+    volume : Double; 
 }
 
 entity XMR : managed {

@@ -1,0 +1,2 @@
+id;text;ticker;type;label;timestamp;timestamp_start;timestamp_end;axis2;ticker2;type2;label2
+1;"BTC-USD vs BTC-ETH";"BTC";close;"BTC";0;;;1;"ETH";close;"ETH"

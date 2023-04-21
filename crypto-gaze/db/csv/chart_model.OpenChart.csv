@@ -1,0 +1,4 @@
+id;ticker;type;label
+1;BTC;close;"BTC - USD"
+2;ETH;close;"ETH - USD"
+3;XMR;close;"XMR - USD"
