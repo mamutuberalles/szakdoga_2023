@@ -26,6 +26,7 @@ export function Sidebar() {
                 {/* <SideNavigationItem text="Multicharts" onClick={handleClick} id="multicharts" /> */}
                 <SideNavigationItem text="Add Simple Chart" onClick={handleClick} id="addsimplechart" />
                 <SideNavigationItem text="Add Complex Chart" onClick={handleClick} id="addcomplexchart" />
+                <SideNavigationItem text="Experimental chart" onClick={handleClick} id="experimental_chart" />
             </SideNavigation>
         </>
     );

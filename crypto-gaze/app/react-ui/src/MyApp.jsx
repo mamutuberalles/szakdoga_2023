@@ -14,6 +14,7 @@ import Select from '@mui/material/Select';
 import { MyAppLegacy } from "./Routes/MyAppLegacy";
 import { Home } from "./Routes/Home";
 import Layout from "./Layout/Layout";
+import ExperimentalCharts from "./Routes/ExperimentalCharts";
 import Charts from "./Routes/Charts";
 import { Edit } from "./Routes/Edit";
 import ChartBuilder from "./Routes/ChartBuilder";
@@ -30,10 +31,6 @@ export function MyApp() {
                     <Routes>
                         <Route path="/" element = {<Navigate replace to="/home" />} />
                         <Route path="/home" element = {<Home /> } />
-                        <Route path="/charts" element = {<Charts />} />
-                        <Route path="/chartbuilder" element = {<ChartBuilder/>} />
-                        <Route path ="/addsimplechart" element = {<AddSimpleChart />} />
-                        <Route path="/addcomplexchart" element = {<AddComplexChart />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
