@@ -5,4 +5,5 @@ service CatalogService {
     entity ETH @readonly as projection on model.ETH;
     entity XMR @readonly as projection on model.XMR;
     entity EXPERIMENTAL @readonly as projection on model.EXPERIMENTAL;
+    entity Crypto @readonly as projection on model.Crypto;
 }

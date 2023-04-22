@@ -8,6 +8,7 @@ import csv
 import wget
 import darts
 import darts.datasets as dds
+import datetime
 
 mode = (sys.argv[1])
 ticker = (sys.argv[2])
@@ -17,6 +18,9 @@ url2 = "-USD?period1=1524096000&period2="
 url3 = "&interval=1d&events=history&includeAdjustedClose=true"
 
 if ( mode == "download"):
+
+
+
     now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
     url = url1 + ticker + url2 + str(now) + url3
     r = wget.download(url, ticker+"-USD.csv")
@@ -49,5 +53,109 @@ elif ( mode == "predict"):
     forecast_075 = model_075.predict(60)
     forecast_09 = model_09.predict(60)
 
+elif( mode == "crypto" ):
+    # read existing data
+    df = pd.read_csv("../crypto-gaze/db/csv/data_model.Crypto.csv", sep=";")
+    # remove requested data
+    df_cleaned = df[df['ticker'] != 'BTC']
+    # add requested data
+    now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
+    url = url1 + ticker + url2 + str(now) + url3
+    r = wget.download(url, ticker+"-USD.csv")
+    #open(ticker+'-USD.csv', 'wb').write(r.content)
+    df_downloaded = pd.read_csv(ticker+"-USD.csv")
+    df2 = df_downloaded.rename( columns= { 'Date' : 'date', 'Open' : 'open', 'High' : 'high', 'Low' : 'low', 'Close' : 'close', 'Adj Close' : 'adj_close', 'Volume' : 'volume'})
+    count = df2.shape[0]
+    ticker_field = [ticker] * count
+    type_field = ['real'] * count
+    df2.insert(7,'ticker',ticker_field, True)
+    df2.insert(8,'type',type_field, True)
+    # add forecasted data
+    series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
+    _,series_05 = series.split_before(0.5)
+    _,series_075 = series.split_before(0.75)
+    _,series_09 = series.split_before(0.9)
+    from darts.models import CatBoostModel
+    model_05 = CatBoostModel([-10,-1],output_chunk_length=5)
+    model_075 = CatBoostModel([-10,-1],output_chunk_length=5)
+    model_09 = CatBoostModel([-10,-1],output_chunk_length=5)
+    model_05.fit(series_05)
+    model_075.fit(series_075)
+    model_09.fit(series_09)
+    forecast_05 = model_05.predict(60)
+    forecast_075 = model_075.predict(60)
+    forecast_09 = model_09.predict(60)
+    df_05 = forecast_05.pd_dataframe()
+    df_075 = forecast_075.pd_dataframe()
+    df_09 = forecast_09.pd_dataframe()
+    start_dt = datetime.date.today() + datetime.timedelta(days=1)
+    end_dt = datetime.date.today() + datetime.timedelta(days=60)  #FIXIT
+
+    # difference between current and previous date
+    delta = datetime.timedelta(days=1)
+
+    # store the dates between two dates in a list
+    dates = []
+
+    while start_dt <= end_dt:
+        # add current date to list by converting  it to iso format
+        dates.append(start_dt.isoformat())
+        # increment start date by timedelta
+        start_dt += delta
+
+    #print('Dates between', start_dt, 'and', end_dt)
+    #print(dates)
+
+
+    ticker_field = [ticker] * 60
+    type_field = ['forecast_05'] * 60
+    df_05.insert(1,'date',dates, True)
+    column_list = ['date','open','high','low','close','adj_close','volume']
+    #print()
+    #print(df_05.columns)
+    df_05 = df_05.reindex(columns = column_list)
+#    print(df_05.head())
+    df_05.insert(7,'ticker',ticker_field, True)
+    df_05.insert(8,'type',type_field, True)
+#    print(df_05.head())
+
+    ticker_field = [ticker] * 60
+    type_field = ['forecast_075'] * 60
+    df_075.insert(1,'date',dates, True)
+    column_list = ['date','open','high','low','close','adj_close','volume']
+    df_075 = df_075.reindex(columns = column_list)
+    df_075.insert(7,'ticker',ticker_field, True)
+    df_075.insert(8,'type',type_field, True)
+#    print(df_05.head(2))
+
+    ticker_field = [ticker] * 60
+    type_field = ['forecast_09'] * 60
+    df_09.insert(1,'date',dates, True)
+    column_list = ['date','open','high','low','close','adj_close','volume']
+    df_09 = df_09.reindex(columns = column_list)
+    df_09.insert(7,'ticker',ticker_field, True)
+    df_09.insert(8,'type',type_field, True)
+#    print(df_05.head(2))
+
+    df_05.fillna(0, inplace=True)
+#    print(df_05.head())
+#    print(df_05['date'].head())
+    df_075.fillna(0, inplace=True)
+    df_09.fillna(0, inplace=True)
+
+    df_cleaned = pd.concat([df_cleaned, df2])
+    df_cleaned = pd.concat([df_cleaned, df_05])
+#    print(df_cleaned.tail())
+    df_cleaned = pd.concat([df_cleaned, df_075])
+    df_cleaned = pd.concat([df_cleaned, df_09])
+    
+    # print values
+    
+    
+    
+    df_cleaned.to_csv("temp.csv",index=False,date_format='$Y-$m-$d')
+    reader = csv.reader(open("temp.csv"), delimiter=',')
+    writer = csv.writer(open("../crypto-gaze/db/csv/data_model.Crypto.csv", 'w'), delimiter=';')
+    writer.writerows(reader)
 else:
     exit()
