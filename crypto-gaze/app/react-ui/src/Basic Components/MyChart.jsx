@@ -13,14 +13,27 @@ export function MyChart(args) {
     const fetchData = async () => {
         let res = null;
         if(args.args.chart_type == "simple") {
-            let queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq '" + "real"+"'";
+            let queryString = null;
+            console.log(args.args)
+            if(args.args.toggle_05 != "true" && args.args.toggle_075 != "true" && args.args.toggle_09 != "true") {
+                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq '" + "real"+"'";
+            }
+            else if(args.args.toggle_05 == "true") {
+                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq 'forecast_05' )";
+            } 
+            else if(args.args.toggle_075 == "true") {
+                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq 'forecast_075' )";
+            } 
+            else if(args.args.toggle_09 == "true") {
+                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq 'forecast_09' )";
+            } 
             if(args.args.start_date)
             {
                 queryString += " and date ge " + args.args.start_date;
             }
             if(args.args.end_date)
             {
-                queryString += " and date ge " + args.args.end_date;
+                queryString += " and date le " + args.args.end_date;
             }
              res = await axios.get(queryString)
         }
@@ -36,7 +49,7 @@ export function MyChart(args) {
         if (dataFetched < 1) {
             fetchData();
         }
-    })
+    },[args])
 
     return (
         <>

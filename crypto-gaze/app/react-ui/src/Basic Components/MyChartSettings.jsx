@@ -5,84 +5,23 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import {   SwipeableDrawer, Switch,  FormControlLabel } from "@mui/material";
+import FormGroup from '@mui/material/FormGroup'
+
 
 export default function MyChartSettings(args) {
 
     const [displayValues, setDisplayValues] = useState({})
     const [ticker, setTicker] = useState("");
-    const [type, setType] = useState("");
-    const [label, setLabel] = useState("");
-    const [chartToggle, setChartToggle] = useState(false)
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-
-    const handleTickerChange = (event) => {
-        console.log("[DEBUG]: handleTickerChange.event.target.value : " + event.target.value);
-        setDisplayValues({
-            ticker: event.target.value,
-            type: `${type}`,
-            label: `${label}`,            
-            timestamp_start : `${startDate}`,
-            timestamp_end : `${endDate}`
-        });
-        setTicker(event.target.value);
-    }
-
-    const handleTypeChange = (event) => {
-        console.log("[DEBUG]: handleTypeChange.event.target.value : " + event.target.value);
-        setDisplayValues({
-            ticker: `${ticker}`,
-            type: event.target.value,
-            label: `${label}`,            
-            timestamp_start : `${startDate}`,
-            timestamp_end : `${endDate}`
-        });
-        setType(event.target.value);
-    }
-
-    const handleLabelChange = (event) => {
-        console.log("[DEBUG]: handleLabelChange.event.target.value : " + event.target.value);
-        setDisplayValues({
-            ticker: `${ticker}`,
-            type: `${type}`,
-            label: event.target.value,            
-            timestamp_start : `${startDate}`,
-            timestamp_end : `${endDate}`
-        });
-        setLabel(event.target.value);
-    }
-
-    const handleStartDateChange = (event) => {
-        console.log("[DEBUG]: handleStartDateChange.event.target.value : " + event);
-/*         setDisplayValues({
-            ticker: `${ticker}`,
-            type: `${type}`,
-            label: `${label}`,  
-            timestamp_start : moment(event).format(
-                'YYYY-MM-DD'
-            ),
-            timestamp_end : `${endDate}`
-        });
-        setStartDate(moment(event).format(
-            'YYYY-MM-DD'
-        ));  */
-    }
-
-    const handleEndDateChange = (event) => {
-/*         console.log("[DEBUG]: handleEndDateChange.event.target.value : " + event);
-        setDisplayValues({
-            ticker: `${ticker}`,
-            type: `${type}`,
-            label: `${label}`,  
-            timestamp_start : `${startDate}`,
-            timestamp_end : moment(event).format(
-                'YYYY-MM-DD'
-            )
-        });
-        setEndDate(moment(event).format(
-            'YYYY-MM-DD'
-        )); */
-    }
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+    const [label, setLabel] = useState();
+    const [title, setTitle] = useState();
+    const [field, setField] = useState();
+    const [toggle_05, setToggle_05] = useState();
+    const [toggle_075, setToggle_075] = useState();
+    const [toggle_09, setToggle_09] = useState();
+    const [chartToggle, setChartToggle] = useState();
 
     const toggle = (event) => {
         if (chartToggle) {
@@ -90,100 +29,51 @@ export default function MyChartSettings(args) {
         }
         else {
             setChartToggle(true);
-            console.log(displayValues)
         }
     }
 
-    useEffect( () =>{
+    useEffect(() => {
         setDisplayValues({
             ticker: `${ticker}`,
-            type: `${type}`,
-            label: `${label}`,            
-            timestamp_start : `${moment(startDate).format("YYYY-MM-DD")}`,
-            timestamp_end : `${moment(endDate).format("YYYY-MM-DD")}`
-        });
-    }, [startDate,endDate] );
+            field: `${field}`,
+            label: `${label}`,
+            start_date: `${moment(startDate).format("YYYY-MM-DD")}`,
+            end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
+            title: `${title}`,
+            toggle_05: `${toggle_05}`,
+            toggle_075: `${toggle_075}`,
+            toggle_09: `${toggle_09}`,
+            chart_type : "simple"
 
-    const addChart = async () => {
-        const res = await axios.post('http://localhost:4004/chart/Chart', {
-            id: 99,
-            ticker: `${ticker}`,
-            type : `${type}`,
-            label : `${label}`
-        },
-        {
-                headers: {
-                    /* 'Authorization' : 'Basic admin', */
-                    /* 'Content-type' : 'application/json;IEEE754Compatible=true' */
-                }
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-                console.log(error);
         });
-    }
+    }, [ticker, startDate, endDate, label, title, field, toggle_05, toggle_075, toggle_09]);
+
 
     return (
         <>
-
-            <FormControl variant="filled">
-                <InputLabel>
-                    Ticker
-                </InputLabel>
-                <Select value={ticker}
-                    onChange={handleTickerChange}>
-                    <MenuItem value={"BTC"}>
-                        BTC
-                    </MenuItem>
-                    <MenuItem value={"ETH"}>
-                        ETH
-                    </MenuItem>
-                    <MenuItem value={"XMR"}>
-                        XMR
-                    </MenuItem>
-                </Select>
-            </FormControl>
-
-            <FormControl variant="filled">
-                <InputLabel>
-                    Type
-                </InputLabel>
-                <Select value={type}
-                    onChange={handleTypeChange}>
-                    <MenuItem value={"open"}>
-                        Open
-                    </MenuItem>
-                    <MenuItem value={"close"}>
-                        Close
-                    </MenuItem>
-                    <MenuItem value={"high"}>
-                        High
-                    </MenuItem>
-                    <MenuItem value={"low"}>
-                        Low
-                    </MenuItem>
-                    <MenuItem value={"volume"}>
-                        Volume
-                    </MenuItem>
-                    <MenuItem value={"adj_close"}>
-                        Adjusted Close
-                    </MenuItem>
-                </Select>
-            </FormControl>
-            <TextField label="Label" defaultValue={args.args.label} variant="filled" onChange={handleLabelChange}>
-            </TextField>
-            <DatePicker selected={startDate} onChange={(date) => setStartDate(date) } dateFormat="yyyy/MM/dd" />
+            <TextField label="Ticker" variant="filled" onChange={(event) => setTicker(event.target.value)} />
+            <TextField label="Title" variant="filled" onChange={(event) => setTitle(event.target.value)} />
+            <TextField label="Field" variant="filled" onChange={(event) => setField(event.target.value)} />
+            <TextField label="Label" variant="filled" onChange={(event) => setLabel(event.target.value)} />
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
             <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
             <Button onClick={toggle}>
                 Preview Chart
             </Button>
+            <FormGroup>
+                <FormControlLabel control={<Switch />} label="Toggle forecast 05" onChange={(event) => setToggle_05(event.target.checked)} />
+            </FormGroup>
+            <FormGroup>
+                <FormControlLabel control={<Switch />} label="Toggle forecast 075" onChange={(event) => setToggle_075(event.target.checked)} />
+            </FormGroup>
+            <FormGroup>
+                <FormControlLabel control={<Switch />} label="Toggle forecast 09" onChange={(event) => setToggle_09(event.target.checked)} />
+            </FormGroup>
             {chartToggle === true
                 ? <MyChart args={displayValues} />
                 : <> </>
             }
-            <Button onClick={addChart}>
+            <Button disabled>
                 Add Chart
             </Button>
         </>

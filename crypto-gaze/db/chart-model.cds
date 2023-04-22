@@ -12,6 +12,9 @@ entity CustomCharts {
     ticker2 : String;
     field2: String;
     label2 : String;
+    toggle_05 : Boolean;
+    toggle_075 : Boolean;
+    toggle_09 : Boolean;
 }
 
 entity PreDefinedCharts {
@@ -22,37 +25,4 @@ entity PreDefinedCharts {
     label : String;
     title : String;
     // TODO : Script for updating this every day for this month, or last 30 days
-}
-
-
-entity Chart {
-    id : Integer;
-    ticker: String;
-    type : String;
-    label : String;
-    timestamp_start : Date;
-    timestamp_end : Date;
-}
-
-entity OpenChart {
-    id : Integer;
-    ticker : String;
-    type : String;
-    label : String;
-}
-
-entity MultiChart {
-    id : Integer;
-    text : String;
-    ticker : String;
-    type : String;
-    label : String;
-    timestamp : Boolean;
-    timestamp_start : Date;
-    timestamp_end : Date;
-    axis2 : Boolean;
-    ticker2 : String;
-    type2: String;
-    label2 : String;
-
 }

@@ -57,7 +57,7 @@ export function MyChart2(args) {
             queryString += " and date ge " + args.args.start_date;
         }
         if (args.args.end_date) {
-            queryString += " and date ge " + args.args.end_date;
+            queryString += " and date le " + args.args.end_date;
         }
         const res1 = await axios.get(queryString);
         const dates = pluck(res1.data.value, "date");
