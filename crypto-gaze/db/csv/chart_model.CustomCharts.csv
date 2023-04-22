@@ -1,0 +1,3 @@
+id;ticker;start_date;end_date;label;title;field;chart_type;ticker2;field2;label2
+6c60d642-44d9-4020-961b-b5a1002a0a8c;"BTC";"2023-01-01";;"BTC - USD";"Sample chart BTC this year";"close";"simple";;;
+f8f96826-d018-4adf-87ff-20ffa0ce588a;"ETH";"2023-01-01";;"ETH - USD";"Sample chart of ETH & XMR this year";"close";"complex";"XMR";"close";"XMR - USD"

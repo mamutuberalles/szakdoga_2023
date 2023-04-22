@@ -57,7 +57,7 @@ elif( mode == "crypto" ):
     # read existing data
     df = pd.read_csv("../crypto-gaze/db/csv/data_model.Crypto.csv", sep=";")
     # remove requested data
-    df_cleaned = df[df['ticker'] != 'BTC']
+    df_cleaned = df[df['ticker'] != ticker]
     # add requested data
     now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
     url = url1 + ticker + url2 + str(now) + url3

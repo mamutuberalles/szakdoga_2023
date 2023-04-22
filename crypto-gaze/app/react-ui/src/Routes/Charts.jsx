@@ -7,45 +7,30 @@ import MyChart2 from "../Basic Components/MyChart2";
 
 export function Charts() {
 
-    const [chartValues, setChartValues] = useState([]);
+    const [fetchedCharts, setFetchedCharts] = useState([]);
     const [dataFetched, setDataFetched] = useState(0);
-    const [complexChartValues, setcomplexChartValues] = useState([]);
-    const [complexDataFetched, setcomplexDataFetched] = useState(0);
 
     const fetchChart = async () => {
-        const res = await axios.get("http://localhost:4004/chart/Chart");
-        //console.log(res.data.value[0].ticker);
-        setChartValues(res.data.value);
-        setDataFetched(dataFetched + 1);
-
-    };
-
-    const fetchComplexChart = async () => {
-        const res = await axios.get("http://localhost:4004/chart/MultiChart");
-        //console.log(res.data.value[0].ticker);
-        setcomplexChartValues(res.data.value);
-        setcomplexDataFetched(complexDataFetched + 1);
+        const res = await axios.get('http://localhost:4004/chart/CustomCharts')
+        setFetchedCharts(res.data.value)
+        setDataFetched(dataFetched + 1)
     };
 
     useEffect(() => {
-        if (dataFetched < 3 || complexDataFetched < 3) {
+        if (dataFetched < 1) {
             fetchChart();
-            fetchComplexChart();
         }
     })
 
     return (
         <>
-            {chartValues.map(item =>
-                <MyChart args={item} />
-            )}
-            {complexChartValues.map(item =>
-                <MyChart2 args={item} />
+            {fetchedCharts.map(item =>
+                item.chart_type == "simple" ?
+                    <MyChart args = {item} /> :
+                    <MyChart2 args = {item} />
             )}
         </>
     );
-
-
 }
 
 export default Charts;

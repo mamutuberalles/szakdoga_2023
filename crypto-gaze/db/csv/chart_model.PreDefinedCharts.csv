@@ -1,0 +1,4 @@
+id;ticker;start_date;end_date;label;title
+08d0d94b-46de-4fda-aded-e8801ecbcac4;"BTC";"2023-04-01";"2023-04-30";"BTC - USD";"Price of BTC this month";
+b02d4fe7-63f7-47d8-bd3f-8a59c181b5f3;"ETH";"2023-04-01";"2023-04-30";"ETH - USD";"Price of ETH this month";
+f6da8d89-9ee4-4929-95c5-c0c5be94cefe;"XMR";"2023-04-01";"2023-04-30";"XMR - USD";"Price of XMR this month";

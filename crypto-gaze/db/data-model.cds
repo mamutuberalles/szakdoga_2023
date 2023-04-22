@@ -14,7 +14,7 @@ entity Crypto : managed {
     type: String; // Real, forecast_05, forecast_075, forecast_09
 }
 
-entity BTC : managed {
+/* entity BTC : managed {
 //    id : UUID;
     date : Date;
     open : Double;
@@ -67,4 +67,4 @@ entity EXPERIMENTAL : managed {
     btc_close : Double;
     btc_adj_close : Double;
     btc_volume : Double;
-}
+} */
