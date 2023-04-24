@@ -49,7 +49,7 @@ export function MyChart(args) {
         if (dataFetched < 1) {
             fetchData();
         }
-    },[args])
+    },[args.args])
 
     return (
         <>

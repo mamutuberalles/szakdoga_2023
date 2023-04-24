@@ -23,7 +23,7 @@ export default function MyChartSettings(args) {
     const [toggle_09, setToggle_09] = useState();
     const [chartToggle, setChartToggle] = useState();
 
-    const toggle = (event) => {
+    const toggle = () => {
         if (chartToggle) {
             setChartToggle(false);
         }

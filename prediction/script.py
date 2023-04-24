@@ -9,6 +9,7 @@ import wget
 import darts
 import darts.datasets as dds
 import datetime
+import os
 
 mode = (sys.argv[1])
 ticker = (sys.argv[2])
@@ -60,16 +61,20 @@ elif( mode == "crypto" ):
     df_cleaned = df[df['ticker'] != ticker]
     # add requested data
     now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
+    
     url = url1 + ticker + url2 + str(now) + url3
     r = wget.download(url, ticker+"-USD.csv")
     #open(ticker+'-USD.csv', 'wb').write(r.content)
     df_downloaded = pd.read_csv(ticker+"-USD.csv")
+    #print(df_downloaded.tail())
+    os.remove(ticker+"-USD.csv")
     df2 = df_downloaded.rename( columns= { 'Date' : 'date', 'Open' : 'open', 'High' : 'high', 'Low' : 'low', 'Close' : 'close', 'Adj Close' : 'adj_close', 'Volume' : 'volume'})
     count = df2.shape[0]
     ticker_field = [ticker] * count
     type_field = ['real'] * count
     df2.insert(7,'ticker',ticker_field, True)
     df2.insert(8,'type',type_field, True)
+    #print(df2.tail())
     # add forecasted data
     series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
     _,series_05 = series.split_before(0.5)
