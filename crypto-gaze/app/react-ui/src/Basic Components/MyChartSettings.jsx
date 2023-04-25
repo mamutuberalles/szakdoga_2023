@@ -46,7 +46,12 @@ export default function MyChartSettings(args) {
 
 
     const addChart = async () => {
-        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues)
+        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues, {
+            headers : {
+                "Authorization" : "Basic admin",
+                "Content-Type" : "application/json;IEEE754Compatible=true"
+            }
+        })
         console.log(res)
     }
 

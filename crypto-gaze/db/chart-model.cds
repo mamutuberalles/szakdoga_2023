@@ -1,7 +1,7 @@
 namespace chart_model;
 
 entity CustomCharts {
-    id : UUID;
+    key id : UUID;
     ticker : String;
     start_date : Date;
     end_date : Date;
@@ -16,7 +16,7 @@ entity CustomCharts {
 }
 
 entity PreDefinedCharts {
-    id : UUID;
+    key id : UUID;
     ticker : String;
     start_date : Date;
     end_date : Date;

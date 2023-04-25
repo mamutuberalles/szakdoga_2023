@@ -5,6 +5,7 @@ import { Button, Input, SwipeableDrawer, Switch, TextField, FormControlLabel } f
 import FormGroup from '@mui/material/FormGroup';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
+import axios from 'axios';
 
 export function MyChart2Settings(args) {
 
@@ -30,6 +31,17 @@ export function MyChart2Settings(args) {
             setChartToggle(true);
             console.log(displayValues)
         }
+    }
+
+
+    const addChart = async () => {
+        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues, {
+            headers : {
+                "Authorization" : "Basic admin",
+                "Content-Type" : "application/json;IEEE754Compatible=true"
+            }
+        })
+        console.log(res)
     }
 
     useEffect(() => {
@@ -64,7 +76,7 @@ export function MyChart2Settings(args) {
                 Preview Chart
             </Button>
 
-            <Button disabled>
+            <Button onClick={addChart}>
                 Add Chart
             </Button>
             <TextField label="Chart Title" variant="filled" onChange={(event) => setTitle(event.target.value)}>
