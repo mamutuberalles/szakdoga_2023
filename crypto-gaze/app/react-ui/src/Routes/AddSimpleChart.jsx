@@ -7,7 +7,7 @@ export function AddSimpleChart() {
 
     return (
         <>  
-            <MyChartSettings args = {chartValues} />
+            <MyChartSettings args = {chartValues} updaterFunction = {setChartValues}  />
         </>
     );
 }

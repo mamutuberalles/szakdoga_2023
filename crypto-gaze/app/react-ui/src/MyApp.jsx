@@ -6,6 +6,7 @@ import Layout from "./Layout/Layout";
 import Charts from "./Routes/Charts";
 import AddSimpleChart from "./Routes/AddSimpleChart";
 import AddComplexChart from "./Routes/AddComplexChart";
+import ChartModifier from "./Routes/ChartModifier";
 
 export function MyApp() {
 
@@ -19,6 +20,7 @@ export function MyApp() {
                         <Route path="/charts" element={<Charts />} />
                         <Route path="/addsimplechart" element={<AddSimpleChart />} />
                         <Route path="/addcomplexchart" element={<AddComplexChart />} />
+                        <Route path="/chartmodifier" element={<ChartModifier />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>

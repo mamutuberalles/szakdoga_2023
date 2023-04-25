@@ -7,7 +7,7 @@ export function AddComplexChart() {
 
     return (
         <>
-            <MyChart2Settings args = {chartValues} />
+            <MyChart2Settings args = {chartValues} updaterFunction = {setChartValues} update = {false} />
         </>
     );
 }
