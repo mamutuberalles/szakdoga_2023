@@ -12,9 +12,7 @@ entity CustomCharts {
     ticker2 : String;
     field2: String;
     label2 : String;
-    toggle_05 : Boolean;
-    toggle_075 : Boolean;
-    toggle_09 : Boolean;
+    forecast : String;
 }
 
 entity PreDefinedCharts {

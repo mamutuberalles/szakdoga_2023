@@ -5,7 +5,7 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import {   SwipeableDrawer, Switch,  FormControlLabel } from "@mui/material";
+import { SwipeableDrawer, Switch, FormControlLabel, FormLabel,RadioGroup,Radio } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup'
 
 
@@ -18,9 +18,7 @@ export default function MyChartSettings(args) {
     const [label, setLabel] = useState();
     const [title, setTitle] = useState();
     const [field, setField] = useState();
-    const [toggle_05, setToggle_05] = useState();
-    const [toggle_075, setToggle_075] = useState();
-    const [toggle_09, setToggle_09] = useState();
+    const [forecast, setForecast] = useState("")
     const [chartToggle, setChartToggle] = useState();
 
     const toggle = () => {
@@ -40,13 +38,17 @@ export default function MyChartSettings(args) {
             start_date: `${moment(startDate).format("YYYY-MM-DD")}`,
             end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
             title: `${title}`,
-            toggle_05: `${toggle_05}`,
-            toggle_075: `${toggle_075}`,
-            toggle_09: `${toggle_09}`,
-            chart_type : "simple"
+            forecast: `${forecast}`,
+            chart_type: "simple"
 
         });
-    }, [ticker, startDate, endDate, label, title, field, toggle_05, toggle_075, toggle_09]);
+    }, [ticker, startDate, endDate, label, title, field, forecast]);
+
+
+    const addChart = async () => {
+        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues)
+        console.log(res)
+    }
 
 
     return (
@@ -60,20 +62,25 @@ export default function MyChartSettings(args) {
             <Button onClick={toggle}>
                 Preview Chart
             </Button>
-            <FormGroup>
-                <FormControlLabel control={<Switch />} label="Toggle forecast 05" onChange={(event) => setToggle_05(event.target.checked)} />
-            </FormGroup>
-            <FormGroup>
-                <FormControlLabel control={<Switch />} label="Toggle forecast 075" onChange={(event) => setToggle_075(event.target.checked)} />
-            </FormGroup>
-            <FormGroup>
-                <FormControlLabel control={<Switch />} label="Toggle forecast 09" onChange={(event) => setToggle_09(event.target.checked)} />
-            </FormGroup>
+            <FormControl>
+                <FormLabel id="radio-buttons-group-label">Forecast</FormLabel>
+                <RadioGroup
+                    aria-labelledby="radio-buttons-group-label"
+                    defaultValue="None"
+                    name="radio-buttons-group"
+                    onChange={(event) => setForecast(event.target.value) }
+                >
+                    <FormControlLabel value="None" control={<Radio />} label="None" />
+                    <FormControlLabel value="forecast_05" control={<Radio />} label="Forecast with 50% of the data" />
+                    <FormControlLabel value="forecast_075" control={<Radio />} label="Forecast with 25% of the data" />
+                    <FormControlLabel value="forecast_09" control={<Radio />} label="Forecast with 10% of the data" />
+                </RadioGroup>
+            </FormControl>
             {chartToggle === true
                 ? <MyChart args={displayValues} />
                 : <> </>
             }
-            <Button disabled>
+            <Button onClick={addChart}>
                 Add Chart
             </Button>
         </>

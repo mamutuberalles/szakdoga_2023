@@ -15,18 +15,14 @@ export function MyChart(args) {
         if(args.args.chart_type == "simple") {
             let queryString = null;
             console.log(args.args)
-            if(args.args.toggle_05 != "true" && args.args.toggle_075 != "true" && args.args.toggle_09 != "true") {
+           
+            if(args.args.forecast == "None") {
                 queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq '" + "real"+"'";
             }
-            else if(args.args.toggle_05 == "true") {
-                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq 'forecast_05' )";
+            else  {
+                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq '"+args.args.forecast+"' )";
             } 
-            else if(args.args.toggle_075 == "true") {
-                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq 'forecast_075' )";
-            } 
-            else if(args.args.toggle_09 == "true") {
-                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq 'forecast_09' )";
-            } 
+            
             if(args.args.start_date)
             {
                 queryString += " and date ge " + args.args.start_date;

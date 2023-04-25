@@ -162,5 +162,7 @@ elif( mode == "crypto" ):
     reader = csv.reader(open("temp.csv"), delimiter=',')
     writer = csv.writer(open("../crypto-gaze/db/csv/data_model.Crypto.csv", 'w'), delimiter=';')
     writer.writerows(reader)
+    print("Script finished")
+    sys.stdout.flush()
 else:
     exit()

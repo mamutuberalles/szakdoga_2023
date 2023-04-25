@@ -51,4 +51,10 @@ GET http://localhost:4004/catalog/BTC?$filter=(year(date) gte 2023 and month(dat
 #
 #
 
-GET http://localhost:4004/catalog/BTC?$filter=date ge 2023-04-01
+POST http://localhost:4004/endpoint/RefreshData
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+    "ticker" : "BTC"
+}
