@@ -10,7 +10,7 @@ import FormGroup from '@mui/material/FormGroup'
 import { useNavigate } from "react-router-dom";
 
 
-export default function MyChartSettings({ args, updaterFunction }) {
+export default function MyChartSettingsUpdate({ args, updaterFunction }) {
 
     const [tickers, setTickers] = useState( [] )
     const [tickersFetched, setTickersFetched] = useState(0)
@@ -84,17 +84,6 @@ export default function MyChartSettings({ args, updaterFunction }) {
         setTickersFetched(fetchTickers + 1)
     }
 
-    const addChart = async () => {
-        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-        console.log(res)
-        navigate('/charts')
-    }
-
 
     return (
         <>
@@ -157,11 +146,6 @@ export default function MyChartSettings({ args, updaterFunction }) {
             {chartToggle === true
                 ? <MyChart args={displayValues} />
                 : <> </>
-            }
-            {args.update === "true" ? <> </> :
-                <Button onClick={addChart}>
-                    Add Chart
-                </Button>
             }
         </>
     );

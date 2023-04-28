@@ -4,6 +4,8 @@ import { FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material
 import MyChartSettings from "../Basic Components/MyChartSettings";
 import MyChart2Settings from "../Basic Components/MyChart2Settings";
 import { useNavigate } from "react-router-dom";
+import MyChartSettingsUpdate from "../Basic Components/MyChartSettingsUpdate";
+import MyChart2SettingsUpdate from "../Basic Components/MyChartSettings2Update";
 
 
 export function ChartModifier() {
@@ -94,11 +96,11 @@ export function ChartModifier() {
             </Button>
 
             {chartType == "simple"
-                ? <MyChartSettings args={chartData} updaterFunction = {updaterFunction} />
+                ? <MyChartSettingsUpdate args={chartData} updaterFunction = {updaterFunction} />
                 : <> </>}
 
             {chartType == "complex"
-                ? <MyChart2Settings args={chartData} updaterFunction = {updaterFunction}  />
+                ? <MyChart2SettingsUpdate args={chartData} updaterFunction = {updaterFunction}  />
                 : <> </>}
         </>
     );

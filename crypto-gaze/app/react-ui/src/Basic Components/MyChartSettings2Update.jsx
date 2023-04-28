@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
-export function MyChart2Settings({ args, updaterFunction }, update) {
+export function MyChart2SettingsUpdate({ args, updaterFunction }, update) {
 
     const navigate = useNavigate();
 
@@ -36,16 +36,7 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
     }
 
 
-    const addChart = async () => {
-        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-        console.log(res)
-        navigate('/charts');
-    }
+
 
     const fetchTickers = async () => {
         const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
@@ -176,11 +167,6 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
             <Button onClick={toggle}>
                 Preview Chart
             </Button>
-            {args.update == "true" ? <> </> :
-                <Button onClick={addChart}>
-                    Add Chart
-                </Button>
-            }
             <TextField label="Chart Title" variant="filled" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
 
 
@@ -196,4 +182,4 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
         </>
     );
 }
-export default MyChart2Settings;
+export default MyChart2SettingsUpdate;

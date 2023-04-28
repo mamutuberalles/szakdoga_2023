@@ -60,6 +60,7 @@ export function MyChart2(args) {
         if (args.args.end_date) {
             queryString += " and date le " + args.args.end_date;
         }
+        queryString += "&$orderby=date asc"
         const res1 = await axios.get(queryString);
         const dates = pluck(res1.data.value, "date");
         const data = pluck(res1.data.value, args.args.field);
@@ -73,6 +74,7 @@ export function MyChart2(args) {
             if (args.args.end_date) {
                 queryString2 += " and date le " + args.args.end_date;
             }
+            queryString2 += "&$orderby=date asc"
             const res2 = await axios.get(queryString2);
             const data2 = pluck(res2.data.value, args.args.field2);
             setOptions({

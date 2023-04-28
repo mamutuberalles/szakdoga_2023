@@ -31,10 +31,11 @@ export function MyChart(args) {
             {
                 queryString += " and date le " + args.args.end_date;
             }
+            queryString += "&$orderby=date asc"
              res = await axios.get(queryString)
         }
         else {
-             res = await axios.get('http://localhost:4004/catalog/Crypto' + "?$filter=date ge " + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'")
+             res = await axios.get('http://localhost:4004/catalog/Crypto' + "?$filter=date ge " + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc")
              args.args.field = "close"
         }
         setDataset(res.data.value);
