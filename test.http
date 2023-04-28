@@ -51,10 +51,32 @@ GET http://localhost:4004/catalog/BTC?$filter=(year(date) gte 2023 and month(dat
 #
 #
 
-POST http://localhost:4004/endpoint/RefreshData
+POST http://localhost:4004/endpoint/RefreshData/
 Authorization: Basic admin
 Content-Type: application/json;IEEE754Compatible=true
 
 {
     "ticker" : "BTC"
 }
+
+
+
+###
+#
+#
+
+
+DELETE  http://localhost:4004/catalog/Crypto/00149bbd-3438-4916-8076-b17624b0c0eb
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+
+###
+#
+#
+
+POST http://localhost:4004/catalog/Crypto
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{"date":"2018-10-13","open":100.678001,"high":102.987999,"low":100.678001,"close":102.137001,"adj_close":102.137001,"volume":12537800,"ticker":"XMR","type":"real"}

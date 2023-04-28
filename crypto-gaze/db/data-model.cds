@@ -3,6 +3,7 @@ using { managed } from '@sap/cds/common';
 
 
 entity Crypto : managed {
+    key id : UUID;
     date : Date;
     open : Double;
     high : Double;
