@@ -1,11 +1,8 @@
 module.exports = (srv) => {
   
   srv.before('CREATE', 'RefreshData', (req)=> {
-
-    console.log("Data was refreshed " + req.data.ticker)
-
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["../prediction/script.py", "crypto", req.data.ticker]);
+    const pythonProcess = spawn('python', ["../prediction/script.py", "final", req.data.ticker]);
     console.log("Python process started")
     pythonProcess.stdout.on('data', (data) => {
         console.log(data);

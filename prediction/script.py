@@ -251,7 +251,7 @@ elif( mode == "final" ):
     #df2 = pd.concat([df2, df_09])
 # Send every row of df2 to the database
     #print(df2.to_json(orient = 'records'))
-    headers = {"Content-Type" : "application/json;IEEE754Compatible=true"}
+    headers = {"Content-Type" : "application/json;IEEE754Compatible=true", "Authorization" : "Basic admin"}
     #'{"date":"2018-12-28","open":116.898201,"high":137.647018,"low":115.69313,"close":137.647018,"adj_close":137.647018,"volume":3130201009.0,"ticker":"ETH","type":"real"}'
     #requests.post(db_url, json = '{"date":"2018-12-28","open":116.898201,"high":137.647018,"low":115.69313,"close":137.647018,"adj_close":137.647018,"volume":3130201009.0,"ticker":"ETH","type":"real"}', headers=headers)
     #exit()
