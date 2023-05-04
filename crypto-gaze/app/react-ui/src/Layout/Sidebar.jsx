@@ -1,10 +1,16 @@
 import { Card, SideNavigation, SideNavigationItem } from "@ui5/webcomponents-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 
 export function Sidebar() {
+
+    const usePathname = () => {
+        const location = useLocation();
+        console.log("[DEBUG] pathname : " + location.pathname)
+        return location.pathname;
+      }
 
     const navigate = useNavigate();
 
@@ -16,14 +22,14 @@ export function Sidebar() {
     return (
         <>
             <SideNavigation>
-                <SideNavigationItem text="Home" onClick={handleClick} id="home"/>
-                <SideNavigationItem text="My Charts" onClick={handleClick} id="charts" />
-                <SideNavigationItem text="Create Simple Chart" onClick={handleClick} id="addsimplechart" />
-                <SideNavigationItem text="Create Complex Chart" onClick={handleClick} id="addcomplexchart" />
-                <SideNavigationItem text="Modify or Delete Chart" onClick={handleClick} id="chartmodifier" />
-                <SideNavigationItem text="Run Script" onClick={handleClick} id="experimental" />
-                <SideNavigationItem text="Bookmarked Charts" onClick={handleClick} id="bookmarkedcharts" />
-                <SideNavigationItem text="Hidden Charts" onClick={handleClick} id="hiddencharts" />
+                <SideNavigationItem text="Home" onClick={handleClick} id="home" selected={usePathname == "home" ? true : false}/>
+                <SideNavigationItem text="My Charts" onClick={handleClick} id="charts" selected={usePathname == "charts" ? true : false} />
+                <SideNavigationItem text="Create Simple Chart" onClick={handleClick} id="addsimplechart" selected={window.location.pathname == "addsimplechart" ? true : false}/>
+                <SideNavigationItem text="Create Complex Chart" onClick={handleClick} id="addcomplexchart" selected={window.location.pathname == "addcomplexchart" ? true : false}/>
+                <SideNavigationItem text="Modify or Delete Chart" onClick={handleClick} id="chartmodifier" selected={window.location.pathname == "chartmodifier" ? true : false}/>
+                <SideNavigationItem text="Run Script" onClick={handleClick} id="experimental" selected={window.location.pathname == "experimental" ? true : false}/>
+                <SideNavigationItem text="Bookmarked Charts" onClick={handleClick} id="bookmarkedcharts" selected={window.location.pathname == "bookmarkedcharts" ? true : false}/>
+                <SideNavigationItem text="Hidden Charts" onClick={handleClick} id="hiddencharts" selected={window.location.pathname == "hiddencharts" ? true : false}/>
             </SideNavigation>
         </>
     );
