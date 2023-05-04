@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,7 +11,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { Button } from '@mui/material';
+import { Button } from '@ui5/webcomponents-react';
 import axios from "axios";
 
 ChartJS.register(
@@ -24,6 +25,59 @@ ChartJS.register(
 );
 
 export function MyChart2(args) {
+
+    const navigate = useNavigate()
+
+    const unhide = async () => {
+        args.args.hidden = "false"
+        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            headers: {
+                "Authorization": "Basic admin",
+                "Content-Type": "application/json;IEEE754Compatible=true"
+            }
+        })
+        console.log(res)
+        navigate('/charts')
+    }
+
+    const hide = async () => {
+        args.args.hidden = "true"
+        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            headers: {
+                "Authorization": "Basic admin",
+                "Content-Type": "application/json;IEEE754Compatible=true"
+            }
+        })
+        console.log(res)
+        navigate('/hiddencharts')
+    }
+
+    const bookmark = async () => {
+        args.args.bookmarked = "true"
+        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            headers: {
+                "Authorization": "Basic admin",
+                "Content-Type": "application/json;IEEE754Compatible=true"
+            }
+        })
+        console.log(res)
+        navigate('/bookmarkedcharts')
+    }
+
+    const unbookmark = async () => {
+        args.args.bookmarked = "false"
+        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            headers: {
+                "Authorization": "Basic admin",
+                "Content-Type": "application/json;IEEE754Compatible=true"
+            }
+        })
+        console.log(res)
+        navigate('/charts')
+    }
+
+
+
     const [options, setOptions] = useState({
         responsive: true,
         interaction: {
@@ -181,6 +235,22 @@ export function MyChart2(args) {
     return (
         <>
             <Line options={options} data={data} />
+            {args.args.hidden == "true"
+                ? <Button onClick={unhide}> Unhide Chart </Button>
+                : <> </>
+            }
+            {args.args.hidden == "false"
+                ? <Button onClick={hide}> Hide Chart </Button>
+                : <> </>
+            }
+            {args.args.bookmarked == "true"
+                ? <Button onClick={unbookmark}> Remove Bookmark </Button>
+                : <> </>
+            }
+            {args.args.bookmarked == "false"
+                ? <Button onClick={bookmark}> Bookmark </Button>
+                : <> </>
+            }
         </>
     );
 };

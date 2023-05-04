@@ -8,6 +8,8 @@ import AddSimpleChart from "./Routes/AddSimpleChart";
 import AddComplexChart from "./Routes/AddComplexChart";
 import ChartModifier from "./Routes/ChartModifier";
 import { Experimental } from "./Routes/Experimental";
+import BookmarkedCharts from "./Routes/BookmarkedCharts";
+import HiddenCharts from "./Routes/HiddenCharts";
 
 export function MyApp() {
 
@@ -23,6 +25,8 @@ export function MyApp() {
                         <Route path="/addcomplexchart" element={<AddComplexChart />} />
                         <Route path="/chartmodifier" element={<ChartModifier />} />
                         <Route path="/experimental" element={<Experimental />} />
+                        <Route path="/bookmarkedcharts" element={<BookmarkedCharts />} />
+                        <Route path="/hiddencharts" element={<HiddenCharts />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>

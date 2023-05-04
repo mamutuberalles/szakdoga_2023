@@ -49,7 +49,9 @@ export default function MyChartSettings({ args, updaterFunction }) {
             end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
             title: `${title}`,
             forecast: `${forecast}`,
-            chart_type: "simple"
+            chart_type: "simple",
+            bookmarked: "false",
+            hidden: "false"
 
         });
 
@@ -70,12 +72,12 @@ export default function MyChartSettings({ args, updaterFunction }) {
             end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
             title: `${title}`,
             forecast: `${forecast}`,
-            chart_type: "simple"
+            chart_type: "simple",
+            bookmarked: "false",
+            hidden: "false"
         })
 
-        console.log(args.update === "true")
-        console.log(args.update == true)
-        console.log(typeof(args.update))
+        setChartToggle(false);
     }, [ticker, startDate, endDate, label, title, field, forecast]);
 
     const fetchTickers = async () => {

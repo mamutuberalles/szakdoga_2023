@@ -5,14 +5,14 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import { SwipeableDrawer, Switch, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
+import { SwipeableDrawer, Switch, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup'
 import { useNavigate } from "react-router-dom";
 
 
 export default function MyChartSettingsUpdate({ args, updaterFunction }) {
 
-    const [tickers, setTickers] = useState( [] )
+    const [tickers, setTickers] = useState([])
     const [tickersFetched, setTickersFetched] = useState(0)
     const [displayValues, setDisplayValues] = useState({})
     const [ticker, setTicker] = useState(args.ticker);
@@ -23,6 +23,9 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
     const [field, setField] = useState(args.field);
     const [forecast, setForecast] = useState(args.forecast)
     const [chartToggle, setChartToggle] = useState();
+
+    const [bookmarked, setBookmarked] = useState(args.bookmarked)
+    const [hidden, setHidden] = useState(args.hidden)
 
     const navigate = useNavigate();
 
@@ -37,7 +40,7 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
 
     useEffect(() => {
 
-        if(tickersFetched < 1) {
+        if (tickersFetched < 1) {
             fetchTickers()
         }
 
@@ -49,7 +52,9 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
             end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
             title: `${title}`,
             forecast: `${forecast}`,
-            chart_type: "simple"
+            chart_type: "simple",
+            bookmarked: `${bookmarked}`,
+            hidden: `${hidden}`
 
         });
 
@@ -70,13 +75,13 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
             end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
             title: `${title}`,
             forecast: `${forecast}`,
-            chart_type: "simple"
+            chart_type: "simple",
+            bookmarked: `${bookmarked}`,
+            hidden: `${hidden}`
         })
 
-        console.log(args.update === "true")
-        console.log(args.update == true)
-        console.log(typeof(args.update))
-    }, [ticker, startDate, endDate, label, title, field, forecast]);
+        setChartToggle(false);
+    }, [ticker, startDate, endDate, label, title, field, forecast,bookmarked,hidden]);
 
     const fetchTickers = async () => {
         const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
@@ -94,13 +99,13 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
                     id="demo-simple-select"
                     onChange={(event) => setTicker(event.target.value)}
                     variant="filled"
-                    label = "Ticker"
+                    label="Ticker"
                     defaultValue={args.ticker}
                 >
                     {tickers.map(item =>
                         <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
                     )}
-                
+
                 </Select>
             </FormControl>
             <FormControl variant="filled">
@@ -110,16 +115,16 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
                     id="demo-simple-select"
                     onChange={(event) => setField(event.target.value)}
                     variant="filled"
-                    label = "Field"
+                    label="Field"
                     defaultValue={args.field}
                 >
-                    <MenuItem value = "open">Open</MenuItem>
-                    <MenuItem value = "high">High</MenuItem>
-                    <MenuItem value = "low">Low</MenuItem>
-                    <MenuItem value = "close">Close</MenuItem>
-                    <MenuItem value = "adj_close">Adjusted Close</MenuItem>
-                    <MenuItem value = "volume">Volume</MenuItem>
-                
+                    <MenuItem value="open">Open</MenuItem>
+                    <MenuItem value="high">High</MenuItem>
+                    <MenuItem value="low">Low</MenuItem>
+                    <MenuItem value="close">Close</MenuItem>
+                    <MenuItem value="adj_close">Adjusted Close</MenuItem>
+                    <MenuItem value="volume">Volume</MenuItem>
+
                 </Select>
             </FormControl>
             <TextField label="Title" variant="filled" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
@@ -143,6 +148,13 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
                     <FormControlLabel value="forecast_09" control={<Radio />} label="Forecast with 10% of the data" />
                 </RadioGroup>
             </FormControl>
+
+
+            <FormGroup>
+                <FormControlLabel control={<Checkbox defaultChecked={args.hidden == "true"} />} label="Hidden" onClick={(event) => setHidden(event.target.checked)}  />
+                <FormControlLabel control={<Checkbox defaultChecked={args.bookmarked == "true"} />} label="Bookmarked"  onClick={(event) => setBookmarked(event.target.checked)} />
+            </FormGroup>
+
             {chartToggle === true
                 ? <MyChart args={displayValues} />
                 : <> </>

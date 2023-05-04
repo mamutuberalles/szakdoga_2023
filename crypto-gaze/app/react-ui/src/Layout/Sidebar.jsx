@@ -22,6 +22,8 @@ export function Sidebar() {
                 <SideNavigationItem text="Create Complex Chart" onClick={handleClick} id="addcomplexchart" />
                 <SideNavigationItem text="Modify or Delete Chart" onClick={handleClick} id="chartmodifier" />
                 <SideNavigationItem text="Run Script" onClick={handleClick} id="experimental" />
+                <SideNavigationItem text="Bookmarked Charts" onClick={handleClick} id="bookmarkedcharts" />
+                <SideNavigationItem text="Hidden Charts" onClick={handleClick} id="hiddencharts" />
             </SideNavigation>
         </>
     );

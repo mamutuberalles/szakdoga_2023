@@ -13,6 +13,8 @@ entity CustomCharts {
     field2: String;
     label2 : String;
     forecast : String;
+    bookmarked : String;
+    hidden : String;
 }
 
 entity PreDefinedCharts {

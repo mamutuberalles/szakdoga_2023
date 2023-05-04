@@ -68,7 +68,9 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
             ticker2: `${ticker2}`,
             label2: `${label2}`,
             field2: `${field2}`,
-            chart_type: "complex"
+            chart_type: "complex",
+            bookmarked: "false",
+            hidden: "false"
 
         });
 
@@ -91,8 +93,12 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
             ticker2: `${ticker2}`,
             label2: `${label2}`,
             field2: `${field2}`,
-            chart_type: "complex"
+            chart_type: "complex",
+            bookmarked: "false",
+            hidden: "false"
+            
         })
+        setChartToggle(false);
     }, [ticker, startDate, endDate, label, title, field, ticker2, label2, field2]);
 
     return (

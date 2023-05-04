@@ -6,6 +6,7 @@ import MyChart2Settings from "../Basic Components/MyChart2Settings";
 import { useNavigate } from "react-router-dom";
 import MyChartSettingsUpdate from "../Basic Components/MyChartSettingsUpdate";
 import MyChart2SettingsUpdate from "../Basic Components/MyChartSettings2Update";
+import ChartEditor from "../Basic Components/ChartEditor";
 
 
 export function ChartModifier() {
@@ -15,8 +16,8 @@ export function ChartModifier() {
     const [chartSelected, setChartSelected] = useState();
     const [charts, setCharts] = useState([])
     const [chartData, setChartData] = useState([])
-    const [chartType, setChartType] = useState("none")
     const [update, setUpdate] = useState("True")
+    const [toggleEditor, setToggleEditor] = useState()
 
     const fetchCharts = async () => {
         const res = await axios.get('http://localhost:4004/chart/CustomCharts')
@@ -30,25 +31,18 @@ export function ChartModifier() {
             fetchCharts();
         }
         if (chartSelected != "") {
-            redrawChart()
-        }
+            selectChart()
+        } 
+        setToggleEditor(false)
 
     }, [chartSelected])
 
 
-    const redrawChart = () => {
-        console.log("Redraw Chart")
-        console.log(charts)
+    const selectChart = () => {
+        console.log("Select Chart")
         let chart = charts.find(item => item["id"] == chartSelected)
-        chart = {...chart, update: "true"}
         setChartData(chart)
-        console.log(charts.find(item => item["id"] == chartSelected))
-        console.log(chart)
-        if (chart['ticker'] != undefined) {
-            setChartType(charts.find(item => item["id"] == chartSelected)["chart_type"])
-        }
-        
-
+        console.log(chart)  
     }
 
 
@@ -73,6 +67,16 @@ export function ChartModifier() {
         setChartData(values)
     }
 
+
+    const toggle = () => {
+        if (toggleEditor) {
+            setToggleEditor(false);
+        }
+        else {
+            setToggleEditor(true);
+        }
+    }
+
     return (
         <>
             <FormControl fullWidth>
@@ -94,14 +98,17 @@ export function ChartModifier() {
             <Button onClick={deleteChart}>
                 Delete Chart
             </Button>
+            
+            <Button onClick={toggle}>
+                Edit Chart
+            </Button>
 
-            {chartType == "simple"
-                ? <MyChartSettingsUpdate args={chartData} updaterFunction = {updaterFunction} />
-                : <> </>}
+            { toggleEditor === true 
+                ? <ChartEditor params = {chartData} updaterFunction={updaterFunction}/>
+                : <> </> 
+            }
 
-            {chartType == "complex"
-                ? <MyChart2SettingsUpdate args={chartData} updaterFunction = {updaterFunction}  />
-                : <> </>}
+
         </>
     );
 }
