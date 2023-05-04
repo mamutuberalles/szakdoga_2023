@@ -1,25 +1,16 @@
 module.exports = (srv) => {
-  
-  srv.before('CREATE', 'RefreshData', (req)=> {
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["../prediction/script.py", "final", req.data.ticker]);
-    console.log("Python process started")
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(data);
-     });
+  srv.before('CREATE', 'RunCommand', (req) => {
+    const command  = req.data.command.replace(/"/g, '')
+    const { spawn } = require("child_process");
+    console.log("Running script : " +command)
+    const pythonProcess = spawn('python', ["../python_scripts/"+command]);
 
+    pythonProcess.stdout.on('data', function (data) {
+      console.log("[DEBUG] Recieved data from "+command+" : " + data.toString())
+    });
+
+    pythonProcess.on('close', (code) => {
+      console.log("Python process "+command+" finished with code "+code)
+    })
   })
 }
-/* const ORIGINS = { 'http://localhost/': 3000 }
-cds.on('bootstrap', async app => {
-  app.use((req, res, next) => {
-    const { origin } = req.headers
-    // standard request
-    if (origin && ORIGINS[origin]) res.set('access-control-allow-origin', origin)
-    // preflight request
-    if (origin && ORIGINS[origin] && req.method === 'OPTIONS')
-      return res.set('access-control-allow-methods', 'GET,HEAD,PUT,PATCH,POST,DELETE').end()
-    next()
-  })
-})
- */

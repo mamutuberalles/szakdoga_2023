@@ -6,24 +6,12 @@ export function Experimental() {
 
     const [tickers, setTickers] = useState( [] )
     const [tickersFetched, setTickersFetched] = useState(0)
-    const [tickerSelected, setTickerSelected] = useState()
-
-    const fetchTickers = async () => {
-        const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
-        setTickers(res.data.value)
-        setTickersFetched(fetchTickers + 1)
-    }
-
-    useEffect( () =>{
-        if(tickersFetched < 1) {
-            fetchTickers();
-        }
-    } )
+    const [commandSelected, setCommandSelected] = useState()
 
     const runScript = async () =>{
-        console.log("Script request sent with: " + tickerSelected)
-        const res = await axios.post('http://localhost:4004/endpoint/RefreshData',{
-            "ticker" : `"${tickerSelected}"`
+        console.log("Script request sent with: " + commandSelected)
+        const res = await axios.post('http://localhost:4004/endpoint/RunCommand',{
+            "command" : `"${commandSelected}"`
         }, {
             headers: {
                 "Authorization": "Basic admin",
@@ -38,12 +26,10 @@ export function Experimental() {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    onChange={(event) => setTickerSelected(event.target.value)}
+                    onChange={(event) => setCommandSelected(event.target.value)}
                     variant="filled"
                 >
-                    {tickers.map(item =>
-                        <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
-                    )}
+                    <MenuItem value="monthly_charts.py" >Monthly Chart refresh</MenuItem>
                 
                 </Select>
             </FormControl>

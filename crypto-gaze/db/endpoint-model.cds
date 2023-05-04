@@ -1,5 +1,5 @@
 namespace endpoint_model;
 
-entity RefreshData {
-    ticker : String;
+entity RunCommand {
+    command : String;
 }
