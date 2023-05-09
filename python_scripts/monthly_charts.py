@@ -23,45 +23,56 @@ ids = requests.get(charts_url).json()["value"]
 ids_plucked = [item["id"] for item in ids]
 df = pd.DataFrame(ids_plucked)
 count = df.shape[0]
-print("Deleting charts")
 
-while count > 0:
-    for index, row in df.iterrows():
-        requests.delete(charts_url + "/" + row.iloc[0])
-        print("Deleting chart : " + row.iloc[0])
-    ids = requests.get(charts_url).json()["value"]
-    ids_plucked = [item["id"] for item in ids]
-    df = pd.DataFrame(ids_plucked)
-    count = df.shape[0]
+if count > 0:
 
-print("Charts deleted")
+    print("[INFO] Deleting charts")
 
-print("Creating monthly charts")
+    while count > 0:
+        for index, row in df.iterrows():
+            requests.delete(charts_url + "/" + row.iloc[0])
+            print("[INFO] Deleting chart : " + row.iloc[0])
+        ids = requests.get(charts_url).json()["value"]
+        ids_plucked = [item["id"] for item in ids]
+        df = pd.DataFrame(ids_plucked)
+        count = df.shape[0]
 
-headers = {
-    "Content-Type": "application/json;IEEE754Compatible=true",
-    "Authorization": "Basic admin",
-}
+    print("[INFO] Charts deleted")
 
-# Fix month because zero padding :(
+else:
+    print("[INFO] No charts to be deleted")
 
-month = str(datetime.datetime.today().month)
+if len(tickers_plucked) > 0:
 
-if (len(month) == 1):
-    month = "0" + month
+    print("[INFO] Creating monthly charts")
 
-for ticker in tickers_plucked:
-    response = requests.post(
-        charts_url,
-        json={
-            "ticker": ticker,
-            "start_date": "2023-"+month+"-01",
-            "end_date": "2023-"+month+"-31",
-            "label": ticker+" - USD",
-            "title": "Value of "+ticker+" this month",
-        },
-        headers=headers,
-    )
-    print("Creating chart " + ticker)
+    headers = {
+        "Content-Type": "application/json;IEEE754Compatible=true",
+        "Authorization": "Basic admin",
+    }
 
-print("Monthly charts created")
+    # Fix month because zero padding :(
+
+    month = str(datetime.datetime.today().month)
+
+    if (len(month) == 1):
+        month = "0" + month
+
+    for ticker in tickers_plucked:
+        response = requests.post(
+            charts_url,
+            json={
+                "ticker": ticker,
+                "start_date": "2023-"+month+"-01",
+                "end_date": "2023-"+month+"-31",
+                "label": ticker+" - USD",
+                "title": "Value of "+ticker+" this month",
+            },
+            headers=headers,
+        )
+        print("[INFO] Creating chart " + ticker)
+
+    print("[INFO] Monthly charts created")
+
+else:
+        print("[INFO] No charts to be created")

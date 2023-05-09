@@ -13,51 +13,75 @@ export function MyChart(args) {
     const [dataFetched, setDataFetched] = useState(0);
 
     const unhide = async () => {
-        args.args.hidden = "false"
-        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-        console.log(res)
-        navigate('/charts')
+        try {
+            args.args.hidden = "false"
+            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+                headers: {
+                    "Authorization": "Basic admin",
+                    "Content-Type": "application/json;IEEE754Compatible=true"
+                }
+            })
+            console.log(res)
+            navigate('/charts')
+        } catch (error) {
+            args.args.hidden = "true"
+            console.log("[INFO] Can't use this feature right now.")
+        }
     }
 
     const hide = async () => {
-        args.args.hidden = "true"
-        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-        console.log(res)
-        navigate('/hiddencharts')
+
+        try {
+            args.args.hidden = "true"
+            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+                headers: {
+                    "Authorization": "Basic admin",
+                    "Content-Type": "application/json;IEEE754Compatible=true"
+                }
+            })
+            console.log(res)
+            navigate('/hiddencharts')
+        } catch (error) {
+            args.args.hidden = "false"
+            console.log("[INFO] Can't use this feature right now.")
+        }
     }
 
     const bookmark = async () => {
-        args.args.bookmarked = "true"
-        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-        console.log(res)
-        navigate('/bookmarkedcharts')
+
+        try {
+            args.args.bookmarked = "true"
+            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+                headers: {
+                    "Authorization": "Basic admin",
+                    "Content-Type": "application/json;IEEE754Compatible=true"
+                }
+            })
+            console.log(res)
+            navigate('/bookmarkedcharts')
+        } catch (error) {
+            args.args.bookmarked="false"
+            console.log("[INFO] Can't use this feature right now.")
+        }
+
+
     }
 
     const unbookmark = async () => {
-        args.args.bookmarked = "false"
-        const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-        console.log(res)
-        navigate('/charts')
+        try {
+            args.args.bookmarked = "false"
+            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+                headers: {
+                    "Authorization": "Basic admin",
+                    "Content-Type": "application/json;IEEE754Compatible=true"
+                }
+            })
+            console.log(res)
+            navigate('/charts')
+        } catch (error) {
+            args.args.bookmarked="true"
+            console.log("[INFO] Can't use this feature right now.")
+        }
     }
 
     const fetchData = async () => {

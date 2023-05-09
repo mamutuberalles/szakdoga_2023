@@ -12,7 +12,15 @@ import darts.datasets as dds
 import datetime
 import os
 
-ticker = (sys.argv[1])
+ticker="None"
+
+try:
+    ticker = (sys.argv[1])
+except:
+    print("No ticker given, please add a ticker as the first argument.")
+    exit(1)
+
+
 db_url = 'http://localhost:4004/catalog/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
 url2 = "-USD?period1=1524096000&period2="
@@ -26,12 +34,18 @@ print("Looking for values")
 df = pd.DataFrame(response.json()['value'])
 if (df.shape[0] > 0):
     print("Data exists already, please use the refresh script")
-    exit()
+    exit(1)
 
 print("Data not found, fetching")
 now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
 url = url1 + ticker + url2 + str(now) + url3
-r = wget.download(url, ticker+"-USD.csv")
+try:
+    r = wget.download(url, ticker+"-USD.csv")
+except Exception as e:
+    print("Exception encountered as trying to get data from yahoo with ticker: "+ticker)
+    print(e)
+    exit(1)
+
 df_downloaded = pd.read_csv(ticker+"-USD.csv")
 os.remove(ticker+"-USD.csv")
 df2 = df_downloaded.rename( columns= { 'Date' : 'date', 'Open' : 'open', 'High' : 'high', 'Low' : 'low', 'Close' : 'close', 'Adj Close' : 'adj_close', 'Volume' : 'volume'})
@@ -104,6 +118,25 @@ headers = {"Content-Type" : "application/json;IEEE754Compatible=true", "Authoriz
 # "type":"real"}'
 #requests.post(db_url, json = '{"date":"2018-12-28","open":116.898201,"high":137.647018,"low":115.69313,"close":137.647018,"adj_close":137.647018,"volume":3130201009.0,"ticker":"ETH","type":"real"}', headers=headers)
 #exit()
+new_index = pd.Index([item for item in range(0, df_05.shape[0])])
+df_05.set_index(new_index, inplace=True)
+
+new_index = pd.Index([item for item in range(0, df_075.shape[0])])
+df_075.set_index(new_index, inplace=True)
+
+new_index = pd.Index([item for item in range(0, df_09.shape[0])])
+df_09.set_index(new_index, inplace=True)
+
+""" print("[DEBUG] DF2:")
+print(df2.head(1))
+print("[DEBUG] DF_05:")
+print(df_05.head(1))
+print("[DEBUG] DF_075:")
+print(df_075.head(1))
+print("[DEBUG] DF_09:")
+print(df_09.head(1))
+exit() """
+
 for index in df2.index:
     print("****DATA****")
     print(df2.iloc[index].to_json())
@@ -121,7 +154,64 @@ for index in df2.index:
             "type" : df2.iloc[index]['type'],
         }, headers=headers)
     except:
-        print("Wrong value deetected, skipping")
+        print("Wrong value detected, skipping")
+
+for index2 in df_05.index:
+    print("****DATA****")
+    print(df_05.iloc[index2].to_json())
+
+    try:
+        requests.post(db_url, json = {
+            "date" : df_05.iloc[index2]['date'],
+            "open" : df_05.iloc[index2]['open'],
+            "high" : df_05.iloc[index2]['high'],
+            "low" : df_05.iloc[index2]['low'],
+            "close" : df_05.iloc[index2]['close'],
+            "adj_close" : df_05.iloc[index2]['adj_close'],
+            "volume" : df_05.iloc[index2]['open'],
+            "ticker" : df_05.iloc[index2]['ticker'],
+            "type" : df_05.iloc[index2]['type'],
+        }, headers=headers)
+    except:
+        print("Wrong value detected, skipping")
+
+for index3 in df_075.index:
+    print("****DATA****")
+    print(df_075.iloc[index3].to_json())
+
+    try:
+        requests.post(db_url, json = {
+            "date" : df_075.iloc[index3]['date'],
+            "open" : df_075.iloc[index3]['open'],
+            "high" : df_075.iloc[index3]['high'],
+            "low" : df_075.iloc[index3]['low'],
+            "close" : df_075.iloc[index3]['close'],
+            "adj_close" : df_075.iloc[index3]['adj_close'],
+            "volume" : df_075.iloc[index3]['open'],
+            "ticker" : df_075.iloc[index3]['ticker'],
+            "type" : df_075.iloc[index3]['type'],
+        }, headers=headers)
+    except:
+        print("Wrong value detected, skipping")
+
+for index4 in df_09.index:
+    print("****DATA****")
+    print(df_09.iloc[index4].to_json())
+
+    try:
+        requests.post(db_url, json = {
+            "date" : df_09.iloc[index4]['date'],
+            "open" : df_09.iloc[index4]['open'],
+            "high" : df_09.iloc[index4]['high'],
+            "low" : df_09.iloc[index4]['low'],
+            "close" : df_09.iloc[index4]['close'],
+            "adj_close" : df_09.iloc[index4]['adj_close'],
+            "volume" : df_09.iloc[index4]['open'],
+            "ticker" : df_09.iloc[index4]['ticker'],
+            "type" : df_09.iloc[index4]['type'],
+        }, headers=headers)
+    except:
+        print("Wrong value detected, skipping")
 print(ticker + " added. ")
 
 

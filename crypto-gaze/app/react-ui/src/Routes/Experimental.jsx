@@ -5,9 +5,9 @@ import { FormControl, Select, MenuItem, Button, TextField } from "@mui/material"
 export function Experimental() {
 
     const [tickers, setTickers] = useState([])
-    const [tickersFetched, setTickersFetched] = useState(0)
     const [commandSelected, setCommandSelected] = useState()
     const [argTicker, setargTicker] = useState()
+    const [commandResponse, setCommandResponse] = useState();
 
     const fetchTickers = async () => {
         const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
@@ -19,16 +19,51 @@ export function Experimental() {
     }, [commandSelected])
 
     const runScript = async () => {
-        console.log("Script request sent with: " + commandSelected)
-        const res = await axios.post('http://localhost:4004/endpoint/RunCommand', {
-            "command": `"${commandSelected}"`,
-            "argTicker": `${argTicker}`
-        }, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
+
+        switch (commandSelected) {
+            case "add_ticker":
+                let res1 = await axios.post('http://localhost:4004/Catalog/AddTicker', {
+                    "ticker": `${argTicker}`,
+                }, {
+                    headers: {
+                        "Authorization": "Basic admin",
+                        "Content-Type": "application/json;IEEE754Compatible=true"
+                    }
+                })
+                return;
+            case "remove_ticker":
+                let res2 = await axios.post('http://localhost:4004/Catalog/DeleteTicker', {
+                    "ticker": `${argTicker}`,
+                }, {
+                    headers: {
+                        "Authorization": "Basic admin",
+                        "Content-Type": "application/json;IEEE754Compatible=true"
+                    }
+                })
+                return;
+            case "refresh_ticker":
+                let res3 = await axios.post('http://localhost:4004/Catalog/RefreshTicker', {
+                    "ticker": `${argTicker}`,
+                }, {
+                    headers: {
+                        "Authorization": "Basic admin",
+                        "Content-Type": "application/json;IEEE754Compatible=true"
+                    }
+                })
+                return;
+            case "monthly_charts":
+                let res4 = await axios.post('http://localhost:4004/Chart/RefreshCharts', {
+                }, {
+                    headers: {
+                        "Authorization": "Basic admin",
+                        "Content-Type": "application/json;IEEE754Compatible=true"
+                    }
+                })
+                return;
+            default:
+                break;
+        }
+
     }
 
     return (
@@ -40,16 +75,17 @@ export function Experimental() {
                     onChange={(event) => setCommandSelected(event.target.value)}
                     variant="filled"
                 >
-                    <MenuItem value="monthly_charts.py" >Monthly Chart refresh</MenuItem>
-                    <MenuItem value="refresh_data.py" >Refresh ticker data</MenuItem>
-                    <MenuItem value="add_data.py" >Add new crypto data</MenuItem>
+                    <MenuItem value="monthly_charts" >Monthly Chart refresh</MenuItem>
+                    <MenuItem value="refresh_ticker" >Refresh ticker data</MenuItem>
+                    <MenuItem value="add_ticker" >Add new ticker data</MenuItem>
+                    <MenuItem value="remove_ticker" >Remove ticker data</MenuItem>
 
                 </Select>
             </FormControl>
             <Button onClick={runScript}>
                 Run Script
             </Button>
-            {commandSelected == "refresh_data.py"
+            {commandSelected == "refresh_ticker" || commandSelected == "remove_ticker"
                 ?
                 <FormControl fullWidth>
                     <Select
@@ -66,8 +102,8 @@ export function Experimental() {
                 </FormControl>
                 : <> </>
             }
-            {commandSelected == "add_data.py"
-                ? <TextField label="Ticker" variant="filled" onChange={(event) => setargTicker(event.target.value)}/>
+            {commandSelected == "add_ticker"
+                ? <TextField label="Ticker" variant="filled" onChange={(event) => setargTicker(event.target.value)} />
                 : <> </>
             }
         </>

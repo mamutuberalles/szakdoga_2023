@@ -160,11 +160,9 @@ export default function MyChartSettings({ args, updaterFunction }) {
                 ? <MyChart args={displayValues} />
                 : <> </>
             }
-            {args.update === "true" ? <> </> :
                 <Button onClick={addChart}>
                     Add Chart
                 </Button>
-            }
         </>
     );
 }

@@ -80,3 +80,27 @@ Authorization: Basic admin
 Content-Type: application/json;IEEE754Compatible=true
 
 {"date":"2018-10-13","open":100.678001,"high":102.987999,"low":100.678001,"close":102.137001,"adj_close":102.137001,"volume":12537800,"ticker":"XMR","type":"real"}
+
+
+###
+#   Test action
+#
+POST http://localhost:4004/Catalog/DeleteTicker
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+    "ticker" : "USDT"
+}
+
+###
+#   Test command
+#
+
+POST http://localhost:4004/catalog/AddTicker
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+    "ticker" : "USDT"
+}
