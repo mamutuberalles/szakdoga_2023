@@ -1,4 +1,5 @@
 module.exports = (srv) => {
+  const {CommandResult} = cds.entities('endpoint_model');
   srv.on("DeleteTicker", async (req) => {
     ticker = req.data.ticker
     console.log("[INFO] Deleting data for ticker: " + ticker)
@@ -8,6 +9,13 @@ module.exports = (srv) => {
     else {
       await DELETE.from`data_model.Crypto`.where({ ticker: req.data.ticker })
       console.log("[INFO] Ticker data deleted for: "+ ticker)
+      const result = [{ command:'delete_data',data:"[INFO] Ticker data deleted for: "+ ticker }]
+      console.log("[DEBUG] result: ")
+      await INSERT (result) .into`endpoint_model.CommandResult`
+      return;
+      result = SELECT`endpoint_model.CommandResult`.groupBy(ticker)
+      console.log("[DEBUG] result: ")
+      console.log(result)
     }
   }
   );
@@ -51,7 +59,7 @@ module.exports = (srv) => {
       console.log("[ERROR] Ticker data not given, please enter ticker data.")
     }
     else {
-      await DELETE.from`data_model.Crypto`.where({ ticker: req.data.ticker })
+      await DELETE.from`data_model.Crypto`.where({ ticker: ticker })
       console.log("[INFO] Ticker data deleted for: "+ ticker)
       const { spawn } = require("child_process");
       console.log("[INFO] Running script add_data.py with argument " + ticker + " "+ date)

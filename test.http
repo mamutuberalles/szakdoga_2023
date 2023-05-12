@@ -116,3 +116,15 @@ Content-Type: application/json;IEEE754Compatible=true
 {
 
 }
+
+###
+#   Test command
+#
+
+POST http://localhost:4004/endpoint/Experimental
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+
+}

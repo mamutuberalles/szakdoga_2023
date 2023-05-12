@@ -24,7 +24,7 @@ export function Experimental() {
         setTickers(res.data.value)
     }
 
-    useEffect(() => {
+    useEffect( () => {
         fetchTickers()
     }, [commandSelected])
 
@@ -51,6 +51,13 @@ export function Experimental() {
     }
 
     const runScript = async () => {
+        await axios.post('http://localhost:4004/endpoint/DeleteResult', {
+        }, {
+            headers: {
+                "Authorization": "Basic admin",
+                "Content-Type": "application/json;IEEE754Compatible=true"
+            }
+        })
         setScriptRunning(true)
         switch (commandSelected) {
             case "add_ticker":
