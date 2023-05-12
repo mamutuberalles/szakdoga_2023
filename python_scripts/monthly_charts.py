@@ -13,6 +13,7 @@ import os
 
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
 crypto_url = "http://localhost:4004/catalog/Crypto"
+result_url = "http://localhost:4004/endpoint/CommandResult"
 
 # Get available tickers
 tickers = requests.get(crypto_url + "?$apply=groupby((ticker))").json()["value"]
@@ -76,3 +77,12 @@ if len(tickers_plucked) > 0:
 
 else:
         print("[INFO] No charts to be created")
+
+requests.post(
+            result_url,
+            json={
+                "command": "chart_refresh",
+                "data": "[INFO] Charts refreshed.",
+            },
+            headers=headers,
+        )

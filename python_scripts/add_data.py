@@ -11,20 +11,62 @@ import darts.utils
 import darts.datasets as dds
 import datetime
 import os
+import time
 
 ticker="None"
+
+date ="None"
+
+headers = {"Content-Type" : "application/json;IEEE754Compatible=true", "Authorization" : "Basic admin"}
+issues = ""
+
+result_url = "http://localhost:4004/endpoint/CommandResult"
 
 try:
     ticker = (sys.argv[1])
 except:
-    print("No ticker given, please add a ticker as the first argument.")
+    print("[ERROR] No ticker given, please add a ticker as the first argument.")
+    requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] No ticker given, please add a ticker as the first argument.",
+            },
+            headers=headers,
+        )
     exit(1)
+
+if ticker == "undefined" or ticker == "null":
+    print("[ERROR] No ticker given, please add a ticker as the first argument.")
+    requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] No ticker given, please add a ticker as the first argument.",
+            },
+            headers=headers,
+        )
+    exit(1)
+
+try:
+    date = (sys.argv[2])
+    date = int(time.mktime(datetime.datetime.strptime(date, "%Y-%m-%d").timetuple()))
+except:
+    print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.")
+    issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.\n"
+
+
+if date == "undefined" or date == "null":
+    print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.")
+    issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.\n"
 
 
 db_url = 'http://localhost:4004/catalog/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
-url2 = "-USD?period1=1524096000&period2="
-url3 = "&interval=1d&events=history&includeAdjustedClose=true"
+url2 = "-USD?period1="
+no_date = "1524096000"
+url3 = "&period2="
+url4 = "&interval=1d&events=history&includeAdjustedClose=true"
 
 response = requests.get(db_url+"?$filter=ticker eq '" +ticker+"' and type eq 'real'")
 
@@ -33,17 +75,41 @@ response = requests.get(db_url+"?$filter=ticker eq '" +ticker+"' and type eq 're
 print("Looking for values")
 df = pd.DataFrame(response.json()['value'])
 if (df.shape[0] > 0):
-    print("Data exists already, please use the refresh script")
+    print("[ERROR] Data exists already, please use the refresh script")
+    requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Data exists already, please use the refresh script",
+            },
+            headers=headers,
+        )
     exit(1)
 
-print("Data not found, fetching")
+print("[INFO] Data not found, fetching")
 now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
-url = url1 + ticker + url2 + str(now) + url3
+
+url = ""
+
+if date == "None":
+    url = url1 + ticker + url2 +no_date+url3 +str(now) + url4
+else:
+    url = url1 + ticker + url2 +str(date)+url3 +str(now) + url4
+
+
 try:
     r = wget.download(url, ticker+"-USD.csv")
 except Exception as e:
-    print("Exception encountered as trying to get data from yahoo with ticker: "+ticker)
+    print("[ERROR] Exception encountered as trying to get data from yahoo with ticker: "+ticker)
     print(e)
+    requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Exception encountered as trying to get data from yahoo with ticker: "+ticker+"\n"+str(e),
+            },
+            headers=headers,
+        )
     exit(1)
 
 df_downloaded = pd.read_csv(ticker+"-USD.csv")
@@ -54,6 +120,8 @@ ticker_field = [ticker] * count
 type_field = ['real'] * count
 df2.insert(7,'ticker',ticker_field, True)
 df2.insert(8,'type',type_field, True)
+print()
+print("[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
 _,series_05 = series.split_before(0.5)
 _,series_075 = series.split_before(0.75)
@@ -66,15 +134,8 @@ from darts.models import CatBoostModel
 model_05 = CatBoostModel([-10,-1],output_chunk_length=5)
 model_075 = CatBoostModel([-10,-1],output_chunk_length=5)
 model_09 = CatBoostModel([-10,-1],output_chunk_length=5)
-model_05.fit(series_05)
-model_075.fit(series_075)
-model_09.fit(series_09)
-forecast_05 = model_05.predict(60)
-forecast_075 = model_075.predict(60)
-forecast_09 = model_09.predict(60)
-df_05 = forecast_05.pd_dataframe()
-df_075 = forecast_075.pd_dataframe()
-df_09 = forecast_09.pd_dataframe()
+
+
 start_dt = datetime.date.today() + datetime.timedelta(days=1)
 end_dt = datetime.date.today() + datetime.timedelta(days=60)  #FIXIT
 delta = datetime.timedelta(days=1)
@@ -82,136 +143,204 @@ dates = []
 while start_dt <= end_dt:
     dates.append(start_dt.isoformat())
     start_dt += delta
-ticker_field = [ticker] * 60
-type_field = ['forecast_05'] * 60
-df_05.insert(1,'date',dates, True)
-column_list = ['date','open','high','low','close','adj_close','volume']
-df_05 = df_05.reindex(columns = column_list)
-df_05.insert(7,'ticker',ticker_field, True)
-df_05.insert(8,'type',type_field, True)
-ticker_field = [ticker] * 60
-type_field = ['forecast_075'] * 60
-df_075.insert(1,'date',dates, True)
-column_list = ['date','open','high','low','close','adj_close','volume']
-df_075 = df_075.reindex(columns = column_list)
-df_075.insert(7,'ticker',ticker_field, True)
-df_075.insert(8,'type',type_field, True)
-ticker_field = [ticker] * 60
-type_field = ['forecast_09'] * 60
-df_09.insert(1,'date',dates, True)
-column_list = ['date','open','high','low','close','adj_close','volume']
-df_09 = df_09.reindex(columns = column_list)
-df_09.insert(7,'ticker',ticker_field, True)
-df_09.insert(8,'type',type_field, True)
-df_05.fillna(0, inplace=True)
-df_075.fillna(0, inplace=True)
-df_09.fillna(0, inplace=True)
-# Send every row of df2 to the database
-headers = {"Content-Type" : "application/json;IEEE754Compatible=true", "Authorization" : "Basic admin"}
-#'{"date":"2018-12-28","open":116.898201,
-# "high":137.647018,"
-# low":115.69313,
-# "close":137.647018,
-# "adj_close":137.647018,
-# "volume":3130201009.0,
-# "ticker":"ETH",
-# "type":"real"}'
-#requests.post(db_url, json = '{"date":"2018-12-28","open":116.898201,"high":137.647018,"low":115.69313,"close":137.647018,"adj_close":137.647018,"volume":3130201009.0,"ticker":"ETH","type":"real"}', headers=headers)
-#exit()
-new_index = pd.Index([item for item in range(0, df_05.shape[0])])
-df_05.set_index(new_index, inplace=True)
 
-new_index = pd.Index([item for item in range(0, df_075.shape[0])])
-df_075.set_index(new_index, inplace=True)
 
-new_index = pd.Index([item for item in range(0, df_09.shape[0])])
-df_09.set_index(new_index, inplace=True)
+df_05 = 0
+df_075 = 0
+df_09 = 0
 
-""" print("[DEBUG] DF2:")
-print(df2.head(1))
-print("[DEBUG] DF_05:")
-print(df_05.head(1))
-print("[DEBUG] DF_075:")
-print(df_075.head(1))
-print("[DEBUG] DF_09:")
-print(df_09.head(1))
-exit() """
+try:
+    print("[INFO] Predicting 05 values")
+    ticker_field = [ticker] * 60
+    type_field = ['forecast_05'] * 60
+    model_05.fit(series_05)
+    forecast_05 = model_05.predict(60)
+    df_05 = forecast_05.pd_dataframe()
+    df_05.insert(1,'date',dates, True)
+    column_list = ['date','open','high','low','close','adj_close','volume']
+    df_05 = df_05.reindex(columns = column_list)
+    df_05.insert(7,'ticker',ticker_field, True)
+    df_05.insert(8,'type',type_field, True)
+    df_05.fillna(0, inplace=True)
+    new_index = pd.Index([item for item in range(0, df_05.shape[0])])
+    df_05.set_index(new_index, inplace=True)
+except Exception as e:
+    print("[ERROR] Exception encountered: "+str(e))
+    print("[ERROR] 05 prediction failed as not enough data was given, please pick an earlier date")
+    issues += "[ERROR] Exception encountered: "+str(e)+"\n"+"[ERROR] 05 prediction failed as not enough data was given, please pick an earlier date"+"\n"
+
+
+try:
+    print("[INFO] Predicting 075 values")
+    model_075.fit(series_075)
+    forecast_075 = model_075.predict(60)
+    df_075 = forecast_075.pd_dataframe()
+    ticker_field = [ticker] * 60
+    type_field = ['forecast_075'] * 60
+    df_075.insert(1,'date',dates, True)
+    column_list = ['date','open','high','low','close','adj_close','volume']
+    df_075 = df_075.reindex(columns = column_list)
+    df_075.insert(7,'ticker',ticker_field, True)
+    df_075.insert(8,'type',type_field, True)
+    df_075.fillna(0, inplace=True)
+    new_index = pd.Index([item for item in range(0, df_075.shape[0])])
+    df_075.set_index(new_index, inplace=True)
+except Exception as e:
+    print("[ERROR] Exception encountered: "+str(e))
+    print("[ERROR] 075 prediction failed as not enough data was given, please pick an earlier date")
+    issues += "[ERROR] Exception encountered: "+str(e)+"\n"+"[ERROR] 075 prediction failed as not enough data was given, please pick an earlier date"+"\n"
+
+try:
+    print("[INFO] Predicting 09 values")
+    model_09.fit(series_09)
+    forecast_09 = model_09.predict(60)
+    df_09 = forecast_09.pd_dataframe()
+    ticker_field = [ticker] * 60
+    type_field = ['forecast_09'] * 60
+    df_09.insert(1,'date',dates, True)
+    column_list = ['date','open','high','low','close','adj_close','volume']
+    df_09 = df_09.reindex(columns = column_list)
+    df_09.insert(7,'ticker',ticker_field, True)
+    df_09.insert(8,'type',type_field, True)
+    df_09.fillna(0, inplace=True)
+    new_index = pd.Index([item for item in range(0, df_09.shape[0])])
+    df_09.set_index(new_index, inplace=True)
+except Exception as e:
+    print("[ERROR] Exception encountered: "+str(e))
+    print("[ERROR] 09 prediction failed as not enough data was given, please pick an earlier date")
+    issues += "[ERROR] Exception encountered: "+str(e)+"\n"+"[ERROR] 09 prediction failed as not enough data was given, please pick an earlier date"+"\n"
+
+
+
+
+""" print("[DEBUG] Type of df_05 "+str(type(df_05)))
+print("[DEBUG] Type of df_05 equals int " + str( type(df_05) == type(0)))
+print("[DEBUG] Type of df_05 equals pandas "+ str(type(df_05) == "<class 'pandas.core.frame.DataFrame'>"))
+print("[DEBUG] Type of df_05 isinstance pandas "+ str(isinstance(df_05,pd.DataFrame))) """
+
+print("[INFO] Adding real values")
 
 for index in df2.index:
-    print("****DATA****")
-    print(df2.iloc[index].to_json())
-
+#    print("[DEBUG] Adding record "+df2.iloc[index].to_json())
     try:
         requests.post(db_url, json = {
             "date" : df2.iloc[index]['date'],
-            "open" : df2.iloc[index]['open'],
-            "high" : df2.iloc[index]['high'],
-            "low" : df2.iloc[index]['low'],
-            "close" : df2.iloc[index]['close'],
-            "adj_close" : df2.iloc[index]['adj_close'],
-            "volume" : df2.iloc[index]['open'],
+            "open" : round(df2.iloc[index]['open'],2),
+            "high" : round(df2.iloc[index]['high'],2),
+            "low" : round(df2.iloc[index]['low'],2),
+            "close" : round(df2.iloc[index]['close'],2),
+            "adj_close" : round(df2.iloc[index]['adj_close'],2),
+            "volume" : int(df2.iloc[index]['volume']),
             "ticker" : df2.iloc[index]['ticker'],
             "type" : df2.iloc[index]['type'],
         }, headers=headers)
-    except:
-        print("Wrong value detected, skipping")
+    except Exception as e:
+        print("[ERROR] Exception encountered, please check on it:"+str(e))
+        requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Exception encountered, please check on it:"+str(e),
+            },
+            headers=headers,
+        )
+        exit(1)
 
-for index2 in df_05.index:
-    print("****DATA****")
-    print(df_05.iloc[index2].to_json())
 
-    try:
-        requests.post(db_url, json = {
-            "date" : df_05.iloc[index2]['date'],
-            "open" : df_05.iloc[index2]['open'],
-            "high" : df_05.iloc[index2]['high'],
-            "low" : df_05.iloc[index2]['low'],
-            "close" : df_05.iloc[index2]['close'],
-            "adj_close" : df_05.iloc[index2]['adj_close'],
-            "volume" : df_05.iloc[index2]['open'],
-            "ticker" : df_05.iloc[index2]['ticker'],
-            "type" : df_05.iloc[index2]['type'],
-        }, headers=headers)
-    except:
-        print("Wrong value detected, skipping")
+if isinstance(df_05,pd.DataFrame):
+    print("[INFO] Adding forecasted values (05)")
 
-for index3 in df_075.index:
-    print("****DATA****")
-    print(df_075.iloc[index3].to_json())
+    for index in df_05.index:
+    #    print("[INFO] Adding record "+df_05.iloc[index].to_json())
+        try:
+            requests.post(db_url, json = {
+                "date" : df_05.iloc[index]['date'],
+                "open" : round(df_05.iloc[index]['open'],2),
+                "high" : round(df_05.iloc[index]['high'],2),
+                "low" : round(df_05.iloc[index]['low'],2),
+                "close" : round(df_05.iloc[index]['close'],2),
+                "adj_close" : round(df_05.iloc[index]['adj_close'],2),
+                "volume" : int(df_05.iloc[index]['volume']),
+                "ticker" : df_05.iloc[index]['ticker'],
+                "type" : df_05.iloc[index]['type'],
+            }, headers=headers)
+        except Exception as e:
+            print("[ERROR] Exception encountered, please check on it:"+str(e))
+            requests.post(
+                result_url,
+                json={
+                    "command": "add_data",
+                    "data": "[ERROR] Exception encountered, please check on it:"+str(e),
+                },
+                headers=headers,
+            )
+            exit(1)
 
-    try:
-        requests.post(db_url, json = {
-            "date" : df_075.iloc[index3]['date'],
-            "open" : df_075.iloc[index3]['open'],
-            "high" : df_075.iloc[index3]['high'],
-            "low" : df_075.iloc[index3]['low'],
-            "close" : df_075.iloc[index3]['close'],
-            "adj_close" : df_075.iloc[index3]['adj_close'],
-            "volume" : df_075.iloc[index3]['open'],
-            "ticker" : df_075.iloc[index3]['ticker'],
-            "type" : df_075.iloc[index3]['type'],
-        }, headers=headers)
-    except:
-        print("Wrong value detected, skipping")
 
-for index4 in df_09.index:
-    print("****DATA****")
-    print(df_09.iloc[index4].to_json())
+if isinstance(df_075,pd.DataFrame):
+    print("[INFO] Adding forecasted values (075)")
 
-    try:
-        requests.post(db_url, json = {
-            "date" : df_09.iloc[index4]['date'],
-            "open" : df_09.iloc[index4]['open'],
-            "high" : df_09.iloc[index4]['high'],
-            "low" : df_09.iloc[index4]['low'],
-            "close" : df_09.iloc[index4]['close'],
-            "adj_close" : df_09.iloc[index4]['adj_close'],
-            "volume" : df_09.iloc[index4]['open'],
-            "ticker" : df_09.iloc[index4]['ticker'],
-            "type" : df_09.iloc[index4]['type'],
-        }, headers=headers)
-    except:
-        print("Wrong value detected, skipping")
-print(ticker + " added. ")
+    for index in df_075.index:
+    #    print("[INFO] Adding record "+df_075.iloc[index].to_json())
+        try:
+            requests.post(db_url, json = {
+                "date" : df_075.iloc[index]['date'],
+                "open" : round(df_075.iloc[index]['open'],2),
+                "high" : round(df_075.iloc[index]['high'],2),
+                "low" : round(df_075.iloc[index]['low'],2),
+                "close" : round(df_075.iloc[index]['close'],2),
+                "adj_close" : round(df_075.iloc[index]['adj_close'],2),
+                "volume" : int(df_075.iloc[index]['volume']),
+                "ticker" : df_075.iloc[index]['ticker'],
+                "type" : df_075.iloc[index]['type'],
+            }, headers=headers)
+        except Exception as e:
+            print("[ERROR] Exception encountered, please check on it:"+str(e))
+            requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Exception encountered, please check on it:"+str(e),
+            },
+            headers=headers,
+        )
+            exit(1)
+
+if isinstance(df_09,pd.DataFrame):
+    print("[INFO] Adding forecasted values (09)")
+    for index in df_09.index:
+    #    print("[INFO] Adding record "+df_09.iloc[index].to_json())
+        try:
+            requests.post(db_url, json = {
+                "date" : df_09.iloc[index]['date'],
+                "open" : round(df_09.iloc[index]['open'],2),
+                "high" : round(df_09.iloc[index]['high'],2),
+                "low" : round(df_09.iloc[index]['low'],2),
+                "close" : round(df_09.iloc[index]['close'],2),
+                "adj_close" : round(df_09.iloc[index]['adj_close'],2),
+                "volume" : int(df_09.iloc[index]['volume']),
+                "ticker" : df_09.iloc[index]['ticker'],
+                "type" : df_09.iloc[index]['type'],
+            }, headers=headers)
+        except Exception as e:
+            print("[ERROR] Exception encountered, please check on it:"+str(e))
+            requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Exception encountered, please check on it:"+str(e),
+            },
+            headers=headers,
+        )
+            exit(1)
+print("[INFO] " + ticker + " added. ")
+requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": issues + "\n[INFO] " + ticker + " added. ",
+            },
+            headers=headers,
+        )
 
 

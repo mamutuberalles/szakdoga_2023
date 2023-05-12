@@ -4,6 +4,6 @@ service CatalogService {
     entity Crypto  as projection on model.Crypto;
 
     action DeleteTicker(ticker: String);
-    action AddTicker(ticker: String);
-    action RefreshTicker(ticker: String);
+    action AddTicker(ticker: String, date: String);
+    action RefreshTicker(ticker: String, date: String);
 }

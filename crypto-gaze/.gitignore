@@ -1,6 +1,7 @@
 # CAP crypto-gaze
 _out
 *.db
+*.db-journal
 connection.properties
 default-*.json
 .cdsrc-private.json

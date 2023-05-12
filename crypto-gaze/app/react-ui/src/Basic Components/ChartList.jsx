@@ -4,12 +4,6 @@ import { MyChart } from "./MyChart";
 import MyChart2 from "./MyChart2";
 
 export default function ChartList(charts) {
-
-
-    useEffect( () =>{
-        console.log(charts);
-    });
-
     return (
         <>
             {charts.charts.map(item =>

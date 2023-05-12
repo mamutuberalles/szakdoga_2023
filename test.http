@@ -102,5 +102,17 @@ Authorization: Basic admin
 Content-Type: application/json;IEEE754Compatible=true
 
 {
-    "ticker" : "USDT"
+    "ticker" : "XMR"
+}
+
+###
+#   Test command
+#
+
+POST http://localhost:4004/endpoint/DeleteResult
+Authorization: Basic admin
+Content-Type: application/json;IEEE754Compatible=true
+
+{
+
 }

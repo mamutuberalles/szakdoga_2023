@@ -15,14 +15,15 @@ module.exports = (srv) => {
 
   srv.on("AddTicker", async (req) => {
     ticker = req.data.ticker
-    console.log("[INFO] Adding data for:" + ticker)
+    date = req.data.date
+    console.log("[INFO] Adding data for:" + ticker+" from " + date)
     if (ticker == "") {
       console.log("[ERROR] Ticker data not given, please enter ticker data.")
     }
     else {
       const { spawn } = require("child_process");
-      console.log("[INFO] Running script add_data.py with argument " + ticker)
-      const pythonProcess = spawn('python', ["../python_scripts/add_data.py", ticker]);
+      console.log("[INFO] Running script add_data.py with argument " + ticker + " "+ date)
+      const pythonProcess = spawn('python', ["../python_scripts/add_data.py", ticker,date]);
 
       pythonProcess.stdout.on('data', function (data) {
         console.log("[INFO] Recieved data from add_data.py: " + data.toString())
@@ -44,7 +45,8 @@ module.exports = (srv) => {
 
   srv.on("RefreshTicker", async (req) => {
     ticker = req.data.ticker
-    console.log("[INFO] Refreshing data for: " + ticker)
+    date = req.data.date
+    console.log("[INFO] Refreshing data for: " + ticker+" from " + date)
     if (ticker == "") {
       console.log("[ERROR] Ticker data not given, please enter ticker data.")
     }
@@ -52,8 +54,8 @@ module.exports = (srv) => {
       await DELETE.from`data_model.Crypto`.where({ ticker: req.data.ticker })
       console.log("[INFO] Ticker data deleted for: "+ ticker)
       const { spawn } = require("child_process");
-      console.log("[INFO] Running script add_data.py with argument " + ticker)
-      const pythonProcess = spawn('python', ["../python_scripts/add_data.py", ticker]);
+      console.log("[INFO] Running script add_data.py with argument " + ticker + " "+ date)
+      const pythonProcess = spawn('python', ["../python_scripts/add_data.py", ticker,date]);
 
       pythonProcess.stdout.on('data', function (data) {
         console.log("[INFO] Recieved data from add_data.py: " + data.toString())
