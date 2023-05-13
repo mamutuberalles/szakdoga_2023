@@ -6,20 +6,19 @@ import {
     LinearScale,
     PointElement,
     LineElement,
-    Title,
     Tooltip,
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Button } from '@ui5/webcomponents-react';
 import axios from "axios";
+import { Card, CardContent, CardHeader } from "@mui/material";
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
-    Title,
     Tooltip,
     Legend
 );
@@ -76,7 +75,7 @@ export function MyChart2(args) {
             console.log(res)
             navigate('/bookmarkedcharts')
         } catch (error) {
-            args.args.bookmarked="false"
+            args.args.bookmarked = "false"
             console.log("[INFO] Can't use this feature right now.")
         }
 
@@ -95,7 +94,7 @@ export function MyChart2(args) {
             console.log(res)
             navigate('/charts')
         } catch (error) {
-            args.args.bookmarked="true"
+            args.args.bookmarked = "true"
             console.log("[INFO] Can't use this feature right now.")
         }
     }
@@ -128,10 +127,9 @@ export function MyChart2(args) {
 
 
     const fetchData = async () => {
-        //console.log(args.args)
-        setDataFetched(dataFetched +1);
+        setDataFetched(dataFetched + 1);
         let res = null;
-        let queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "'"  + " and type eq 'real'"
+        let queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "'" + " and type eq 'real'"
         if (args.args.start_date) {
             queryString += " and date ge " + args.args.start_date;
         }
@@ -145,7 +143,7 @@ export function MyChart2(args) {
         let axis2 = (args.args.ticker2 != "")
         let queryString2 = null;
         if (axis2) {
-            queryString2 = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker2 +"'"  + " and type eq 'real'"
+            queryString2 = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker2 + "'" + " and type eq 'real'"
             if (args.args.start_date) {
                 queryString2 += " and date ge " + args.args.start_date;
             }
@@ -156,16 +154,20 @@ export function MyChart2(args) {
             const res2 = await axios.get(queryString2);
             const data2 = pluck(res2.data.value, args.args.field2);
             setOptions({
-                responsive: true,
+                responsive: false,
                 interaction: {
                     mode: 'index',
                     intersect: false,
                 },
                 stacked: false,
+                //chart.options.plugins.legend.title.position = 'start';
                 plugins: {
-                    title: {
-                        display: true,
-                        text: `${args.args.title}`,
+                    legend: {
+                      position: 'bottom',
+                      align: 'start',
+                      title: {
+                        position: 'start',
+                      },
                     },
                 },
                 scales: {
@@ -207,16 +209,15 @@ export function MyChart2(args) {
         else {
             setOptions({
 
-                responsive: true,
-/*                 interaction: {
-                    mode: 'index',
-                    intersect: false,
-                }, */
+                responsive: false,
                 stacked: false,
                 plugins: {
-                    title: {
-                        display: true,
-                        text: `${args.args.title}`,
+                    legend: {
+                      position: 'bottom',
+                      align: 'start',
+                      title: {
+                        position: 'start',
+                      },
                     },
                 },
                 scales: {
@@ -241,7 +242,7 @@ export function MyChart2(args) {
                 ]
             });
         }
-        
+
 
 
     }
@@ -252,29 +253,34 @@ export function MyChart2(args) {
         if (dataFetched < 1) {
             fetchData();
         }
-    },[args]);
+    }, [args]);
 
 
 
     return (
         <>
-            <Line options={options} data={data} />
-            {args.args.hidden == "true"
-                ? <Button onClick={unhide}> Unhide Chart </Button>
-                : <> </>
-            }
-            {args.args.hidden == "false"
-                ? <Button onClick={hide}> Hide Chart </Button>
-                : <> </>
-            }
-            {args.args.bookmarked == "true"
-                ? <Button onClick={unbookmark}> Remove Bookmark </Button>
-                : <> </>
-            }
-            {args.args.bookmarked == "false"
-                ? <Button onClick={bookmark}> Bookmark </Button>
-                : <> </>
-            }
+            <Card >
+                <CardHeader title={args.args.title} />
+                <Line options={options} data={data} />
+                {args.args.hidden == "true"
+                    ? <Button onClick={unhide}> Unhide Chart </Button>
+                    : <> </>
+                }
+                {args.args.hidden == "false"
+                    ? <Button onClick={hide}> Hide Chart </Button>
+                    : <> </>
+                }
+                {args.args.bookmarked == "true"
+                    ? <Button onClick={unbookmark}> Remove Bookmark </Button>
+                    : <> </>
+                }
+                {args.args.bookmarked == "false"
+                    ? <Button onClick={bookmark}> Bookmark </Button>
+                    : <> </>
+                }
+            </Card>
+
+
         </>
     );
 };

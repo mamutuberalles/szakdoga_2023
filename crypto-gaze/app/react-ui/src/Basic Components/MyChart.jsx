@@ -142,24 +142,6 @@ export function MyChart(args) {
                     : <> </>
                 }
             </Card>
-            {/* <Title>{args.args.title}</Title>
-            
-            {args.args.hidden == "true"
-                ? <Button onClick={unhide}> Unhide Chart </Button>
-                : <> </>
-            }
-            {args.args.hidden == "false"
-                ? <Button onClick={hide}> Hide Chart </Button>
-                : <> </>
-            }
-            {args.args.bookmarked == "true"
-                ? <Button onClick={unbookmark}> Remove Bookmark </Button>
-                : <> </>
-            }
-            {args.args.bookmarked == "false"
-                ? <Button onClick={bookmark}> Bookmark </Button>
-                : <> </>
-            } */}
         </>
 
     );
