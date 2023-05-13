@@ -4,6 +4,7 @@ import axios from "axios";
 import { Button } from "@ui5/webcomponents-react";
 import { Title } from '@ui5/webcomponents-react';
 import { useNavigate } from "react-router-dom";
+import { Card, CardHeader } from '@ui5/webcomponents-react';
 
 export function MyChart(args) {
 
@@ -60,7 +61,7 @@ export function MyChart(args) {
             console.log(res)
             navigate('/bookmarkedcharts')
         } catch (error) {
-            args.args.bookmarked="false"
+            args.args.bookmarked = "false"
             console.log("[INFO] Can't use this feature right now.")
         }
 
@@ -79,7 +80,7 @@ export function MyChart(args) {
             console.log(res)
             navigate('/charts')
         } catch (error) {
-            args.args.bookmarked="true"
+            args.args.bookmarked = "true"
             console.log("[INFO] Can't use this feature right now.")
         }
     }
@@ -122,8 +123,27 @@ export function MyChart(args) {
 
     return (
         <>
-            <Title>{args.args.title}</Title>
-            <LineChart measures={[{ accessor: `${args.args.field}`, label: `${args.args.label}` }]} dimensions={[{ accessor: "timestamp" }]} dataset={dataset} />
+            <Card header={<CardHeader titleText={args.args.title} />}>
+                <LineChart measures={[{ accessor: `${args.args.field}`, label: `${args.args.label}` }]} dimensions={[{ accessor: "date", intervl:0 }]} dataset={dataset} />
+                {args.args.hidden == "true"
+                    ? <Button onClick={unhide}> Unhide Chart </Button>
+                    : <> </>
+                }
+                {args.args.hidden == "false"
+                    ? <Button onClick={hide}> Hide Chart </Button>
+                    : <> </>
+                }
+                {args.args.bookmarked == "true"
+                    ? <Button onClick={unbookmark}> Remove Bookmark </Button>
+                    : <> </>
+                }
+                {args.args.bookmarked == "false"
+                    ? <Button onClick={bookmark}> Bookmark </Button>
+                    : <> </>
+                }
+            </Card>
+            {/* <Title>{args.args.title}</Title>
+            
             {args.args.hidden == "true"
                 ? <Button onClick={unhide}> Unhide Chart </Button>
                 : <> </>
@@ -139,7 +159,7 @@ export function MyChart(args) {
             {args.args.bookmarked == "false"
                 ? <Button onClick={bookmark}> Bookmark </Button>
                 : <> </>
-            }
+            } */}
         </>
 
     );
