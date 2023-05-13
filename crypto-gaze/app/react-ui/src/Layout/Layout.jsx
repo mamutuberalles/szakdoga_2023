@@ -10,13 +10,13 @@ import {
     SideNavigationSubItem,
 } from '@ui5/webcomponents-react'
 import { Text } from '@ui5/webcomponents-react';
-import Sidebar from "./Sidebar";
+import Sidebar from "./SidebarComponent";
 
 
 const Layout = ({ children }) => {
     return (
         <>
-            <Header />
+{/*             <Header /> */}
             <FlexBox fitContainer>
                 <Sidebar />
                 <div style={{ flex: 1}}>

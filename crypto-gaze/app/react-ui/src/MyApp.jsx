@@ -10,26 +10,29 @@ import ChartModifier from "./Routes/ChartModifier";
 import { Experimental } from "./Routes/Experimental";
 import BookmarkedCharts from "./Routes/BookmarkedCharts";
 import HiddenCharts from "./Routes/HiddenCharts";
-
+import { ProSidebarProvider } from "react-pro-sidebar";
 export function MyApp() {
 
     return (
         <>
-            <BrowserRouter>
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<Navigate replace to="/home" />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/charts" element={<Charts />} />
-                        <Route path="/addsimplechart" element={<AddSimpleChart />} />
-                        <Route path="/addcomplexchart" element={<AddComplexChart />} />
-                        <Route path="/chartmodifier" element={<ChartModifier />} />
-                        <Route path="/experimental" element={<Experimental />} />
-                        <Route path="/bookmarkedcharts" element={<BookmarkedCharts />} />
-                        <Route path="/hiddencharts" element={<HiddenCharts />} />
-                    </Routes>
-                </Layout>
-            </BrowserRouter>
+            <ProSidebarProvider>
+                <BrowserRouter>
+                    <Layout>
+                        <Routes>
+                            <Route path="/" element={<Navigate replace to="/home" />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/charts" element={<Charts />} />
+                            <Route path="/addsimplechart" element={<AddSimpleChart />} />
+                            <Route path="/addcomplexchart" element={<AddComplexChart />} />
+                            <Route path="/chartmodifier" element={<ChartModifier />} />
+                            <Route path="/experimental" element={<Experimental />} />
+                            <Route path="/bookmarkedcharts" element={<BookmarkedCharts />} />
+                            <Route path="/hiddencharts" element={<HiddenCharts />} />
+                        </Routes>
+                    </Layout>
+                </BrowserRouter>
+            </ProSidebarProvider>
+
         </>
     );
 

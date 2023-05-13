@@ -9,7 +9,8 @@
     "@sap/cds": "^6",
     "cors": "^2.8.5",
     "express": "^4",
-    "node-schedule": "^2.1.1"
+    "node-schedule": "^2.1.1",
+    "react-pro-sidebar": "^1.0.0"
   },
   "devDependencies": {
     "sqlite3": "^5.1.6"
