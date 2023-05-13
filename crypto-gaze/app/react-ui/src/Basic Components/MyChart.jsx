@@ -58,7 +58,7 @@ export function MyChart(args) {
                     "Content-Type": "application/json;IEEE754Compatible=true"
                 }
             })
-            console.log(res)
+            //console.log(res)
             navigate('/bookmarkedcharts')
         } catch (error) {
             args.args.bookmarked = "false"
