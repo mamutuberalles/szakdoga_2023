@@ -102,7 +102,7 @@ export default function MyChartSettings({ args, updaterFunction }) {
         <>
             <Card>
                 <FlexBox  alignItems="Center" justifyContent="SpaceAround">
-                    <Title>UI5 Settings: </Title>
+                    <Title>Chart Settings: </Title>
                     <TextField label="Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} sx={{ m: 1, minWidth: 200 }} />
                     <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
                         <InputLabel>Ticker</InputLabel>

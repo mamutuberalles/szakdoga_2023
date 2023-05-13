@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import MyChart2 from "./MyChart2";
-import { Card } from "@ui5/webcomponents-react";
-import { Button, Input, SwipeableDrawer, Switch, TextField, FormControlLabel, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+
+import { Input, SwipeableDrawer, Switch, TextField, FormControlLabel, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { Button, Card, FlexBox, Title, Text } from "@ui5/webcomponents-react";
 
 export function MyChart2Settings({ args, updaterFunction }, update) {
 
     const navigate = useNavigate();
 
-    const [tickers, setTickers] = useState( [] )
+    const [tickers, setTickers] = useState([])
     const [tickersFetched, setTickersFetched] = useState(0)
     const [displayValues, setDisplayValues] = useState({})
     const [ticker, setTicker] = useState(args.ticker);
@@ -55,7 +56,7 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
 
     useEffect(() => {
 
-        if(tickersFetched < 1) {
+        if (tickersFetched < 1) {
             fetchTickers()
         }
         setDisplayValues({
@@ -96,102 +97,110 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
             chart_type: "complex",
             bookmarked: "false",
             hidden: "false"
-            
+
         })
         setChartToggle(false);
     }, [ticker, startDate, endDate, label, title, field, ticker2, label2, field2]);
 
     return (
         <>
+            <Card>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+                    <Title>Axis 1 Settings: </Title>
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Ticker</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setTicker(event.target.value)}
+                            label="Ticker"
+                            defaultValue={args.ticker}
+                        >
+                            {tickers.map(item =>
+                                <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
+                            )}
 
-            <FormControl variant="filled">
-                <InputLabel>Ticker</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setTicker(event.target.value)}
-                    variant="filled"
-                    label = "Ticker"
-                    defaultValue={args.ticker}
-                >
-                    {tickers.map(item =>
-                        <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
-                    )}
-                
-                </Select>
-            </FormControl>
-            <FormControl variant="filled">
-                <InputLabel>Field</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setField(event.target.value)}
-                    variant="filled"
-                    label = "Field"
-                    defaultValue={args.field}
-                >
-                    <MenuItem value = "open">Open</MenuItem>
-                    <MenuItem value = "high">High</MenuItem>
-                    <MenuItem value = "low">Low</MenuItem>
-                    <MenuItem value = "close">Close</MenuItem>
-                    <MenuItem value = "adj_close">Adjusted Close</MenuItem>
-                    <MenuItem value = "volume">Volume</MenuItem>
-                
-                </Select>
-            </FormControl>
-            <TextField label="Label" variant="filled" onChange={(event) => setLabel(event.target.value)} defaultValue={args.label} />
+                        </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Field</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setField(event.target.value)}
+                            label="Field"
+                            defaultValue={args.field}
+                        >
+                            <MenuItem value="open">Open</MenuItem>
+                            <MenuItem value="high">High</MenuItem>
+                            <MenuItem value="low">Low</MenuItem>
+                            <MenuItem value="close">Close</MenuItem>
+                            <MenuItem value="adj_close">Adjusted Close</MenuItem>
+                            <MenuItem value="volume">Volume</MenuItem>
 
-            <FormControl variant="filled">
-                <InputLabel>Second Ticker</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setTicker2(event.target.value)}
-                    variant="filled"
-                    label = "Ticker2"
-                    defaultValue={args.ticker2}
-                >
-                    {tickers.map(item =>
-                        <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
-                    )}
-                
-                </Select>
-            </FormControl>
-            <FormControl variant="filled">
-                <InputLabel>Second Field</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setField2(event.target.value)}
-                    variant="filled"
-                    label = "Field2"
-                    defaultValue={args.field2}
-                >
-                    <MenuItem value = "open">Open</MenuItem>
-                    <MenuItem value = "high">High</MenuItem>
-                    <MenuItem value = "low">Low</MenuItem>
-                    <MenuItem value = "close">Close</MenuItem>
-                    <MenuItem value = "adj_close">Adjusted Close</MenuItem>
-                    <MenuItem value = "volume">Volume</MenuItem>
-                
-                </Select>
-            </FormControl>
-            <TextField label="Second Label" variant="filled" onChange={(event) => setLabel2(event.target.value)} defaultValue={args.label2} />
+                        </Select>
+                    </FormControl>
+                    <TextField label="Label" variant="outlined" onChange={(event) => setLabel(event.target.value)} defaultValue={args.label} />
+                </FlexBox>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+                    <Title>Axis 2 Settings: </Title>
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Second Ticker</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setTicker2(event.target.value)}
+                            label="Ticker2"
+                            defaultValue={args.ticker2}
+                        >
+                            {tickers.map(item =>
+                                <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
+                            )}
 
+                        </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Second Field</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setField2(event.target.value)}
+                            label="Field2"
+                            defaultValue={args.field2}
+                        >
+                            <MenuItem value="open">Open</MenuItem>
+                            <MenuItem value="high">High</MenuItem>
+                            <MenuItem value="low">Low</MenuItem>
+                            <MenuItem value="close">Close</MenuItem>
+                            <MenuItem value="adj_close">Adjusted Close</MenuItem>
+                            <MenuItem value="volume">Volume</MenuItem>
 
-            <Button onClick={toggle}>
-                Preview Chart
-            </Button>
-            {args.update == "true" ? <> </> :
-                <Button onClick={addChart}>
-                    Add Chart
-                </Button>
-            }
-            <TextField label="Chart Title" variant="filled" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
+                        </Select>
+                    </FormControl>
+                    <TextField label="Second Label" variant="outlined" onChange={(event) => setLabel2(event.target.value)} defaultValue={args.label2} />
+                </FlexBox>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+                    <Text >Start date</Text>
+                    <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                    <Text >End date</Text>
+                    <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                </FlexBox>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+                    <TextField label="Chart Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
+                    <Button onClick={toggle}>
+                        Preview Chart
+                    </Button>
+                    <Button onClick={addChart}>
+                        Add Chart
+                    </Button>
+                </FlexBox>
+            </Card>
 
 
-            <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
-            <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+
+
+
+
 
             {chartToggle === true
                 ? <MyChart2 args={displayValues} />
