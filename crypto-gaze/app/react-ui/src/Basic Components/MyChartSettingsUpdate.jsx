@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MyChart } from "./MyChart";
-import { Button, FormControl, Input, InputLabel, MenuItem, TextField, Select, Menu } from "@mui/material";
+import { FormControl, Input, InputLabel, MenuItem, TextField, Select, Menu } from "@mui/material";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +8,8 @@ import moment from 'moment';
 import { SwipeableDrawer, Switch, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup'
 import { useNavigate } from "react-router-dom";
+import { Button, Card, FlexBox, Title, Text } from "@ui5/webcomponents-react";
+import { MyChartUpdate } from "./MyChartUpdate";
 
 
 export default function MyChartSettingsUpdate({ args, updaterFunction }) {
@@ -81,7 +83,7 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
         })
 
         setChartToggle(false);
-    }, [ticker, startDate, endDate, label, title, field, forecast,bookmarked,hidden]);
+    }, [ticker, startDate, endDate, label, title, field, forecast, bookmarked, hidden]);
 
     const fetchTickers = async () => {
         const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
@@ -92,73 +94,85 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
 
     return (
         <>
-            <FormControl variant="filled">
-                <InputLabel>Ticker</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setTicker(event.target.value)}
-                    variant="filled"
-                    label="Ticker"
-                    defaultValue={args.ticker}
-                >
-                    {tickers.map(item =>
-                        <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
-                    )}
+            <Card>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+                    <Title>Chart Settings: </Title>
+                    <TextField label="Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} sx={{ m: 1, minWidth: 200 }} />
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Ticker</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setTicker(event.target.value)}
+                            label="Ticker"
+                            defaultValue={args.ticker}
+                        >
+                            {tickers.map(item =>
+                                <MenuItem value={item.ticker}>{item.ticker}</MenuItem>
+                            )}
 
-                </Select>
-            </FormControl>
-            <FormControl variant="filled">
-                <InputLabel>Field</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setField(event.target.value)}
-                    variant="filled"
-                    label="Field"
-                    defaultValue={args.field}
-                >
-                    <MenuItem value="open">Open</MenuItem>
-                    <MenuItem value="high">High</MenuItem>
-                    <MenuItem value="low">Low</MenuItem>
-                    <MenuItem value="close">Close</MenuItem>
-                    <MenuItem value="adj_close">Adjusted Close</MenuItem>
-                    <MenuItem value="volume">Volume</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Field</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setField(event.target.value)}
+                            label="Field"
+                            defaultValue={args.field}
+                        >
+                            <MenuItem value="open">Open</MenuItem>
+                            <MenuItem value="high">High</MenuItem>
+                            <MenuItem value="low">Low</MenuItem>
+                            <MenuItem value="close">Close</MenuItem>
+                            <MenuItem value="adj_close">Adjusted Close</MenuItem>
+                            <MenuItem value="volume">Volume</MenuItem>
 
-                </Select>
-            </FormControl>
-            <TextField label="Title" variant="filled" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
-            <TextField label="Label" variant="filled" onChange={(event) => setLabel(event.target.value)} defaultValue={args.label} />
-            <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
-            <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
-            <Button onClick={toggle}>
-                Preview Chart
-            </Button>
-            <FormControl>
-                <FormLabel id="radio-buttons-group-label">Forecast</FormLabel>
-                <RadioGroup
-                    aria-labelledby="radio-buttons-group-label"
-                    defaultValue={args.forecast == undefined ? "None" : args.forecast}
-                    name="radio-buttons-group"
-                    onChange={(event) => setForecast(event.target.value)}
-                >
-                    <FormControlLabel value="None" control={<Radio />} label="None" />
-                    <FormControlLabel value="forecast_05" control={<Radio />} label="Forecast with 50% of the data" />
-                    <FormControlLabel value="forecast_075" control={<Radio />} label="Forecast with 25% of the data" />
-                    <FormControlLabel value="forecast_09" control={<Radio />} label="Forecast with 10% of the data" />
-                </RadioGroup>
-            </FormControl>
+                        </Select>
+                    </FormControl>
 
+                    <TextField label="Label" variant="outlined" onChange={(event) => setLabel(event.target.value)} defaultValue={args.label} sx={{ m: 1, minWidth: 200 }} />
+                </FlexBox >
+                <FlexBox >
+                    <Text >Start date</Text>
+                    <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                    <Text >End date</Text>
+                    <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                </FlexBox>
+                <FlexBox wrap="Wrap" alignItems="Center" justifyContent="SpaceAround">
+                    <FormControl>
+                        <FormLabel id="radio-buttons-group-label">Forecast</FormLabel>
+                        <RadioGroup
+                            aria-labelledby="radio-buttons-group-label"
+                            defaultValue={args.forecast == undefined ? "None" : args.forecast}
+                            name="radio-buttons-group"
+                            onChange={(event) => setForecast(event.target.value)}
+                            row
+                        >
+                            <FormControlLabel value="None" control={<Radio />} label="None" />
+                            <FormControlLabel value="forecast_05" control={<Radio />} label="Forecast with 50% of the data" />
+                            <FormControlLabel value="forecast_075" control={<Radio />} label="Forecast with 25% of the data" />
+                            <FormControlLabel value="forecast_09" control={<Radio />} label="Forecast with 10% of the data" />
+                        </RadioGroup>
+                    </FormControl>
 
-            <FormGroup>
-                <FormControlLabel control={<Checkbox defaultChecked={args.hidden == "true"} />} label="Hidden" onClick={(event) => setHidden(event.target.checked)}  />
-                <FormControlLabel control={<Checkbox defaultChecked={args.bookmarked == "true"} />} label="Bookmarked"  onClick={(event) => setBookmarked(event.target.checked)} />
-            </FormGroup>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox defaultChecked={args.hidden == "true"} />} label="Hidden" onClick={(event) => setHidden(event.target.checked)} />
+                        <FormControlLabel control={<Checkbox defaultChecked={args.bookmarked == "true"} />} label="Bookmarked" onClick={(event) => setBookmarked(event.target.checked)} />
+                    </FormGroup>
+                    <Button onClick={toggle}>
+                        Preview Chart
+                    </Button>
+                </FlexBox>
+            </Card>
+
 
             {chartToggle === true
-                ? <MyChart args={displayValues} />
+                ? <MyChartUpdate args={displayValues} />
                 : <> </>
             }
+
         </>
     );
 }

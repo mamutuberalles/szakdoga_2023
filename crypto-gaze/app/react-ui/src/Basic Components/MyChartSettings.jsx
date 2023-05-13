@@ -8,6 +8,7 @@ import moment from 'moment';
 import { SwipeableDrawer, Switch, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, FlexBox, Title, Text } from "@ui5/webcomponents-react";
+import { MyChartUpdate } from "./MyChartUpdate";
 
 
 export default function MyChartSettings({ args, updaterFunction }) {
@@ -174,7 +175,7 @@ export default function MyChartSettings({ args, updaterFunction }) {
 
 
             {chartToggle === true
-                ? <MyChart args={displayValues} />
+                ? <MyChartUpdate args={displayValues} />
                 : <> </>
             }
 

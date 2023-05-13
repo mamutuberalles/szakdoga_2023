@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import MyChartSettings from "../Basic Components/MyChartSettings";
 import MyChart2Settings from "../Basic Components/MyChart2Settings";
 import { useNavigate } from "react-router-dom";
 import MyChartSettingsUpdate from "../Basic Components/MyChartSettingsUpdate";
 import MyChart2SettingsUpdate from "../Basic Components/MyChartSettings2Update";
 import ChartEditor from "../Basic Components/ChartEditor";
-
+import { Button, Card, FlexBox, Title, Text } from "@ui5/webcomponents-react";
 
 export function ChartModifier() {
 
@@ -32,7 +32,7 @@ export function ChartModifier() {
         }
         if (chartSelected != "") {
             selectChart()
-        } 
+        }
         setToggleEditor(false)
 
     }, [chartSelected])
@@ -42,7 +42,7 @@ export function ChartModifier() {
         console.log("Select Chart")
         let chart = charts.find(item => item["id"] == chartSelected)
         setChartData(chart)
-        console.log(chart)  
+        console.log(chart)
     }
 
 
@@ -63,7 +63,7 @@ export function ChartModifier() {
         navigate('/charts')
     }
 
-    const updaterFunction = (values) =>{
+    const updaterFunction = (values) => {
         setChartData(values)
     }
 
@@ -79,33 +79,39 @@ export function ChartModifier() {
 
     return (
         <>
-            <FormControl fullWidth>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    onChange={(event) => setChartSelected(event.target.value)}
-                    variant="filled"
-                >
-                    {charts.map(item =>
-                        <MenuItem value={item.id}>{item.title}</MenuItem>
-                    )}
-                </Select>
-            </FormControl>
+            <Card>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+                <Title>Select chart: </Title>
+                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 200 }}>
+                        <InputLabel>Chart title</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            onChange={(event) => setChartSelected(event.target.value)}
+                        >
+                            {charts.map(item =>
+                                <MenuItem value={item.id}>{item.title}</MenuItem>
+                            )}
+                        </Select>
+                    </FormControl>
 
-            <Button onClick={updateChart}>
-                Update Chart
-            </Button>
-            <Button onClick={deleteChart}>
-                Delete Chart
-            </Button>
-            
-            <Button onClick={toggle}>
-                Edit Chart
-            </Button>
+                    <Button onClick={updateChart}>
+                        Update Chart
+                    </Button>
+                    <Button onClick={deleteChart}>
+                        Delete Chart
+                    </Button>
 
-            { toggleEditor === true 
-                ? <ChartEditor params = {chartData} updaterFunction={updaterFunction}/>
-                : <> </> 
+                    <Button onClick={toggle}>
+                        Edit Chart
+                    </Button>
+                </FlexBox>
+            </Card>
+
+
+            {toggleEditor === true
+                ? <ChartEditor params={chartData} updaterFunction={updaterFunction} />
+                : <> </>
             }
 
 

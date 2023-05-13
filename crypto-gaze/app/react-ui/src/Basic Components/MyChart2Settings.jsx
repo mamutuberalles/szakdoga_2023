@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button, Card, FlexBox, Title, Text } from "@ui5/webcomponents-react";
+import MyChart2Update from "./MyChart2Update";
 
 export function MyChart2Settings({ args, updaterFunction }, update) {
 
@@ -203,7 +204,7 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
 
 
             {chartToggle === true
-                ? <MyChart2 args={displayValues} />
+                ? <MyChart2Update args={displayValues} />
                 : <> </>
             }
 
