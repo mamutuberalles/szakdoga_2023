@@ -8,14 +8,14 @@ module.exports = (srv) => {
   srv.on("Experimental", async (req) => {
     // Refreshing full dataset at midnight
     let CRYPTOS = await SELECT`data_model.Crypto`.groupBy('ticker')
-    console.log("[INFO] Refreshing available crypto data")
-    CRYPTOS.forEach(async element => {
-      console.log("[INFO] Refreshing available crypto data for: " + element.ticker)
-      ticker = element.ticker
+    //console.log("[INFO] Refreshing available crypto data")
+    for(const crypto of CRYPTOS) {
+      console.log("[INFO] Refreshing available crypto data for: " + crypto.ticker)
+      ticker = crypto.ticker
       date = await SELECT`from data_model.Crypto where ticker = ${ticker}`.orderBy('date asc').limit('1')
       date = date[0].date
       console.log("[INFO] Refreshing data for: " + ticker + " from " + date)
-      if (ticker == "") {
+       if (ticker == "") {
         console.log("[ERROR] Ticker data not given, please enter ticker data.")
       }
       else {
@@ -38,8 +38,8 @@ module.exports = (srv) => {
             return ("The operation failed with code: " + code)
           }
         })
-      }
-    });
+      } 
+    }
   });
 
 }
