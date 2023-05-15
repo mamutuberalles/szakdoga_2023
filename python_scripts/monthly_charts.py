@@ -14,6 +14,11 @@ import os
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
 crypto_url = "http://localhost:4004/catalog/Crypto"
 result_url = "http://localhost:4004/endpoint/CommandResult"
+req_headers = {
+    "Content-Type": "application/json;IEEE754Compatible=true",
+    "Authorization": "Basic admin",
+}
+
 
 # Get available tickers
 tickers = requests.get(crypto_url + "?$apply=groupby((ticker))").json()["value"]
@@ -26,7 +31,6 @@ df = pd.DataFrame(ids_plucked)
 count = df.shape[0]
 
 if count > 0:
-
     print("[INFO] Deleting charts")
 
     while count > 0:
@@ -44,19 +48,13 @@ else:
     print("[INFO] No charts to be deleted")
 
 if len(tickers_plucked) > 0:
-
     print("[INFO] Creating monthly charts")
-
-    headers = {
-        "Content-Type": "application/json;IEEE754Compatible=true",
-        "Authorization": "Basic admin",
-    }
 
     # Fix month because zero padding :(
 
     month = str(datetime.datetime.today().month)
 
-    if (len(month) == 1):
+    if len(month) == 1:
         month = "0" + month
 
     for ticker in tickers_plucked:
@@ -64,25 +62,25 @@ if len(tickers_plucked) > 0:
             charts_url,
             json={
                 "ticker": ticker,
-                "start_date": "2023-"+month+"-01",
-                "end_date": "2023-"+month+"-31",
-                "label": ticker+" - USD",
-                "title": "Value of "+ticker+" this month",
+                "start_date": "2023-" + month + "-01",
+                "end_date": "2023-" + month + "-31",
+                "label": ticker + " - USD",
+                "title": "Value of " + ticker + " this month",
             },
-            headers=headers,
+            headers=req_headers,
         )
         print("[INFO] Creating chart " + ticker)
 
     print("[INFO] Monthly charts created")
 
 else:
-        print("[INFO] No charts to be created")
+    print("[INFO] No charts to be created")
 
 requests.post(
-            result_url,
-            json={
-                "command": "chart_refresh",
-                "data": "[INFO] Charts refreshed.",
-            },
-            headers=headers,
-        )
+    result_url,
+    json={
+        "command": "chart_refresh",
+        "data": "[INFO] Charts refreshed.",
+    },
+    headers=req_headers,
+)
