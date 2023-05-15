@@ -5,12 +5,12 @@ using { managed } from '@sap/cds/common';
 entity Crypto : managed {
     key id : UUID;
     date : Date;
-    open : Double;
-    high : Double;
-    low : Double;
-    close : Double;
-    adj_close : Double;
-    volume : Double;
+    open : Double null;
+    high : Double null;
+    low : Double null;
+    close : Double null;
+    adj_close : Double null;
+    volume : Double null;
     ticker : String; //BTC, ETH, XMR
     type: String; // Real, forecast_05, forecast_075, forecast_09
 }
