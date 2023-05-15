@@ -120,6 +120,7 @@ ticker_field = [ticker] * count
 type_field = ['real'] * count
 df2.insert(7,'ticker',ticker_field, True)
 df2.insert(8,'type',type_field, True)
+df2.fillna(0, inplace=True)
 print()
 print("[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
