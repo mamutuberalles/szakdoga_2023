@@ -1,0 +1,108 @@
+= Felhasználói dokumentáció
+
+== Megoldott probléma rövid megfogalmazása
+
+A szoftver egy kényelmes letisztult megoldást ad különböző kriptovaluták árfolyamának követésére, és összehasonlítására grafikonok segítségével egy webes felületen keresztül. Itt a felhasználó saját maga hozzáadhatja a kriptovalutákat melyeket követni kíván, és hozzáadhat grafikonokat melyek segítségével a felhasználó maga adja meg a követés/elemzés módját. 
+
+== Felhasznált módszerek rövid leírása
+
+A felhasználói élményt egy React-ben fejlesztett webes felület segítségével nyújtjuk UI5 és Material UI csomagok segítségével, melyek az irányítási elemek nagyrészét adják, illetve a Chart-js csomag segítségével mely a komplex grafikonokat nyújtja. A szoftver üzleti logikájának egy részét egy capire alkalmazás nyújtja mely alatt egy node.js backend fut. A programhoz tartozik még kettő python script melyek az adatok frissítéséhez, hozzáadásához, és az előrejelzésekhez kellenek.
+
+== Program használatához szükséges összes információ
+
+=== Előfeltételek
+
+A szoftver használatához npm, és egy böngésző szükséges és python szükséges csomagokkal együtt.
+
+=== Telepítés
+
+==== React telepítése
+
+npm i a /crypto-gaze/app/react-ui mappában
+
+==== Backend telepítése
+
+npm i a /crypto-gaze mappában
+
+=== Futtatás
+
+==== Frontend futtatása
+
+npm start a /crypto-gaze/app/react-ui mappában
+
+==== Backend futtatása
+
+cds deploy, cds serve
+
+=== Alaphelyzetbe állítás
+
+cds deploy
+
+=== Webes felület használata
+
+elindult automatikusan miután elindítjuk a frontendet
+
+==== Grafikonok
+egy vagy kettő kriptovalutának egy értékét egy adott időintervallumon belül nézik, van rajtuk elrejtés gomb, és könyvjelző gomb
+
+==== UI5 grafikonok
+egy kripto egy értéke, illetve az előrejelzések ezen a grafikonokon találhatóak
+
+==== Chart-js grafikonok
+kettő krippto értékei, vagy egy kriptonak különböző értékei időrendben összehasonlítva különöbző léptékekkel hogy a korrelációk láthatóak legyenek
+
+==== Home
+
+megatlálhatóak a különböző automatikusan létrehozott grafikonok, ezt szkriptel lehet megcsinálni, és az elérhető kripto-k ehavi árfolyamváltozását mutatják
+
+==== My Charts
+
+ezek a menüpontok között vannak a saját magunk által létrehozott grafikonok
+
+===== Chartok
+
+itt különböző sorrendben meg lehet jeleníteni az összes garfikont amiket létrehoztunk az alkalmazáson belül
+opció hogy a könyvjelzőzött grafikonok sorrenden kívül elől jelenjenek meg 
+a rejtett grafikonok nem jelennek meg
+
+===== Rejtett
+
+amikor egy grafikont elrejtünk, csak ebben a menüpontban találhatóak meg sehol máshol, illetve ide dob be, innen az unhde gombbal lehet eltüntetni
+
+===== Könyvjelzőzött
+
+amikor egy grafikont könyvjelzőzünk azok itt is megjelennek extrán a gyorsabb elérés kedvéért
+
+==== Chart operations
+
+a grafikonokkal való műveletek ezen a menüpontokon belül jelennek meg
+
+===== UI5
+
+itt lehet ui5-ös chartot létrehozni, egy adatszerkezetet megadni, címet, címkét és opcionálisan előrejelzéseket is
+
+===== Chart-js
+ 
+itt lehet chart-jses chartot létrehozni ahol kettő adatszerekezetet lehet, és célszerű megadni ahol különböző léptékkel de egy grafikonon lesznek megjelenítve az adatok
+
+===== Módosítás
+
+itt lehet törölni és módosítani a chartokat, lehet itt is az elrejtettségét, és a könvjelzzött állapotát is módosítani
+
+==== Szkriptek futtatása
+
+itt lehet különböző adatmódosítási műveleteket végezni
+lehet frissíteni az automatikusan létrehozott grafikonokat
+lehet új kripto adatot felvinni
+lehet kripto adatot törölni
+lehet kripto adatot frissíteni (törlés és hozzáadás egyszerre)
+
+itt meg is jelennek a szkripteknek a futási eredményei
+
+=== Backend tudnivalók
+
+cds serve-el elindul a backend, és fut a localhost:4004-en , a terminálban itt láthatóak különböző események és kommunikáció a szkriptekkel, és bármilyen esemény megjelenítése
+
+=== Szkriptek használata
+
+a szkripteket lehet az webes felületen kívül is használni bár nem célszerű
