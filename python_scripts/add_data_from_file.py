@@ -254,12 +254,12 @@ for index in df2.index:
         try:
                 requests.post(db_url, json = {
                     "date" : df2.iloc[index]['date'],
-                    "open" : 0,
-                    "high" : 0,
-                    "low" : 0,
-                    "close" : 0,
-                    "adj_close" : 0,
-                    "volume" : 0,
+                    "open" : None,
+                    "high" : None,
+                    "low" : None,
+                    "close" : None,
+                    "adj_close" : None,
+                    "volume" : None,
                     "ticker" : df2.iloc[index]['ticker'],
                     "type" : df2.iloc[index]['type'],
                 }, headers=headers)
