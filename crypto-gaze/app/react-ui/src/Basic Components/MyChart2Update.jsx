@@ -103,11 +103,6 @@ export function MyChart2Update(args) {
 
     const [options, setOptions] = useState({
         responsive: true,
-        interaction: {
-            mode: 'index',
-            intersect: false,
-        },
-        stacked: false,
         plugins: {
         },
         scales: {
@@ -140,7 +135,7 @@ export function MyChart2Update(args) {
         const res1 = await axios.get(queryString);
         const dates = pluck(res1.data.value, "date");
         const data = pluck(res1.data.value, args.args.field);
-        let axis2 = (args.args.ticker2 != "")
+        let axis2 = !(args.args.ticker2 == "" || args.args.ticker2 == "undefined")
         let queryString2 = null;
         if (axis2) {
             queryString2 = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker2 + "'" + " and type eq 'real'"
@@ -208,9 +203,7 @@ export function MyChart2Update(args) {
         }
         else {
             setOptions({
-
                 responsive: false,
-                stacked: false,
                 plugins: {
                     legend: {
                       position: 'bottom',
@@ -220,14 +213,6 @@ export function MyChart2Update(args) {
                       },
                     },
                 },
-                scales: {
-                    y: {
-                        type: 'linear',
-                        display: true,
-                        position: 'left'
-                    }
-                }
-
             });
             setData({
                 labels: dates,
@@ -237,7 +222,6 @@ export function MyChart2Update(args) {
                         data: data,
                         borderColor: 'rgb(255, 99, 132)',
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                        yAxisID: 'y',
                     }
                 ]
             });

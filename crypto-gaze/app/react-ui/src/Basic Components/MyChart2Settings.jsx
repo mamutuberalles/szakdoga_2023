@@ -45,7 +45,6 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
                 "Content-Type": "application/json;IEEE754Compatible=true"
             }
         })
-        console.log(res)
         navigate('/charts');
     }
 
