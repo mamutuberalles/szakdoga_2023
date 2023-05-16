@@ -22,6 +22,13 @@ issues = ""
 
 result_url = "http://localhost:4004/endpoint/CommandResult"
 
+db_url = 'http://localhost:4004/catalog/Crypto'
+url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
+url2 = "-USD?period1="
+no_date = "1524096000"
+url3 = "&period2="
+url4 = "&interval=1d&events=history&includeAdjustedClose=true"
+
 try:
     ticker = (sys.argv[1])
 except:
@@ -50,23 +57,21 @@ if ticker == "undefined" or ticker == "null":
 
 try:
     date = (sys.argv[2])
-    date = int(time.mktime(datetime.datetime.strptime(date, "%Y-%m-%d").timetuple()))
-except:
-    print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.")
-    issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.\n"
+    print("[DEBUG] date in date format: "+date)
+    date = int(time.mktime(datetime.datetime.strptime(date, "%Y-%m-%d").timetuple()))+3600
+    print("[DEBUG] date in timestamp format: "+str(date))
+except Exception as e:
+    print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception: "+str(e))
+    issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19 Exception: "+str(e)+".\n"
+    date = no_date
 
 
 if date == "undefined" or date == "null":
-    print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.")
-    issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.\n"
+    print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19."+str(e))
+    issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception :"+str(e)+".\n"
 
 
-db_url = 'http://localhost:4004/catalog/Crypto'
-url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
-url2 = "-USD?period1="
-no_date = "1524096000"
-url3 = "&period2="
-url4 = "&interval=1d&events=history&includeAdjustedClose=true"
+
 
 response = requests.get(db_url+"?$filter=ticker eq '" +ticker+"' and type eq 'real'")
 
