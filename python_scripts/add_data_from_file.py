@@ -19,6 +19,7 @@ date ="None"
 
 headers = {"Content-Type" : "application/json;IEEE754Compatible=true", "Authorization" : "Basic admin"}
 issues = ""
+filename = ""
 
 result_url = "http://localhost:4004/endpoint/CommandResult"
 
@@ -61,6 +62,34 @@ if date == "undefined" or date == "null":
     issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19.\n"
 
 
+
+try:
+    filename = (sys.argv[3])
+except:
+    print("[ERROR] No file given, please add a file as the third argument.")
+    requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] No file given, please add a file as the third argument.",
+            },
+            headers=headers,
+        )
+    exit(1)
+
+if ticker == "undefined" or ticker == "null":
+    print("[ERROR] No file given, please add a file as the third argument.")
+    requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] No file given, please add a file as the third argument.",
+            },
+            headers=headers,
+        )
+    exit(1)
+
+
 db_url = 'http://localhost:4004/catalog/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
 url2 = "-USD?period1="
@@ -97,30 +126,15 @@ else:
     url = url1 + ticker + url2 +str(date)+url3 +str(now) + url4
 
 
-try:
-    r = wget.download(url, ticker+"-USD.csv")
-except Exception as e:
-    print("[ERROR] Exception encountered as trying to get data from yahoo with ticker: "+ticker)
-    print(e)
-    requests.post(
-            result_url,
-            json={
-                "command": "add_data",
-                "data": "[ERROR] Exception encountered as trying to get data from yahoo with ticker: "+ticker+"\n"+str(e),
-            },
-            headers=headers,
-        )
-    exit(1)
 
-df_downloaded = pd.read_csv(ticker+"-USD.csv")
-os.remove(ticker+"-USD.csv")
+df_downloaded = pd.read_csv(filename)
 df2 = df_downloaded.rename( columns= { 'Date' : 'date', 'Open' : 'open', 'High' : 'high', 'Low' : 'low', 'Close' : 'close', 'Adj Close' : 'adj_close', 'Volume' : 'volume'})
 count = df2.shape[0]
 ticker_field = [ticker] * count
 type_field = ['real'] * count
 df2.insert(7,'ticker',ticker_field, True)
 df2.insert(8,'type',type_field, True)
-df2.fillna(0, inplace=True)
+#df2.fillna(0, inplace=True)
 print()
 print("[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
@@ -221,7 +235,6 @@ print("[DEBUG] Type of df_05 isinstance pandas "+ str(isinstance(df_05,pd.DataFr
 
 print("[INFO] Adding real values")
 
-
 for index in df2.index:
 #    print("[DEBUG] Adding record "+df2.iloc[index].to_json())
     try:
@@ -281,30 +294,30 @@ if isinstance(df_05,pd.DataFrame):
                 "type" : df_05.iloc[index]['type'],
             }, headers=headers)
         except Exception as e:
-            print("[ERROR] Exception encountered during upload, trying null values: "+str(e))
+
             try:
-                    requests.post(db_url, json = {
-                        "date" : df_05.iloc[index]['date'],
-                        "open" : None,
-                        "high" : None,
-                        "low" : None,
-                        "close" : None,
-                        "adj_close" : None,
-                        "volume" : None,
-                        "ticker" : df_05.iloc[index]['ticker'],
-                        "type" : df_05.iloc[index]['type'],
-                    }, headers=headers)
+                requests.post(db_url, json = {
+                    "date" : df_05.iloc[index]['date'],
+                    "open" : 0,
+                    "high" : 0,
+                    "low" : 0,
+                    "close" : 0,
+                    "adj_close" : 0,
+                    "volume" : 0,
+                    "ticker" : df_05.iloc[index]['ticker'],
+                    "type" : df_05.iloc[index]['type'],
+                }, headers=headers)
             except:
-                    print("[ERROR] Exception encountered during upload, please check on it: "+str(e))
-                    requests.post(
-                        result_url,
-                        json={
-                            "command": "add_data",
-                            "data": "[ERROR] Exception encountered during upload, please check on it: "+str(e),
-                        },
-                        headers=headers,
-                    )
-                    exit(1)
+                print("[ERROR] Exception encountered during upload, please check on it:"+str(e))
+                requests.post(
+                    result_url,
+                    json={
+                        "command": "add_data",
+                        "data": "[ERROR] Exception encountered during upload, please check on it:"+str(e),
+                    },
+                    headers=headers,
+                )
+                exit(1)
 
 
 if isinstance(df_075,pd.DataFrame):
@@ -325,30 +338,16 @@ if isinstance(df_075,pd.DataFrame):
                 "type" : df_075.iloc[index]['type'],
             }, headers=headers)
         except Exception as e:
-            print("[ERROR] Exception encountered during upload, trying null values: "+str(e))
-            try:
-                    requests.post(db_url, json = {
-                        "date" : df_075.iloc[index]['date'],
-                        "open" : None,
-                        "high" : None,
-                        "low" : None,
-                        "close" : None,
-                        "adj_close" : None,
-                        "volume" : None,
-                        "ticker" : df_075.iloc[index]['ticker'],
-                        "type" : df_075.iloc[index]['type'],
-                    }, headers=headers)
-            except:
-                    print("[ERROR] Exception encountered during upload, please check on it: "+str(e))
-                    requests.post(
-                        result_url,
-                        json={
-                            "command": "add_data",
-                            "data": "[ERROR] Exception encountered during upload, please check on it: "+str(e),
-                        },
-                        headers=headers,
-                    )
-                    exit(1)
+            print("[ERROR] Exception encountered during upload, please check on it:"+str(e))
+            requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Exception encountered during upload, please check on it:"+str(e),
+            },
+            headers=headers,
+        )
+            exit(1)
 
 if isinstance(df_09,pd.DataFrame):
     print("[INFO] Adding forecasted values (09)")
@@ -367,30 +366,16 @@ if isinstance(df_09,pd.DataFrame):
                 "type" : df_09.iloc[index]['type'],
             }, headers=headers)
         except Exception as e:
-            print("[ERROR] Exception encountered during upload, trying null values: "+str(e))
-            try:
-                    requests.post(db_url, json = {
-                        "date" : df_09.iloc[index]['date'],
-                        "open" : None,
-                        "high" : None,
-                        "low" : None,
-                        "close" : None,
-                        "adj_close" : None,
-                        "volume" : None,
-                        "ticker" : df_09.iloc[index]['ticker'],
-                        "type" : df_09.iloc[index]['type'],
-                    }, headers=headers)
-            except:
-                    print("[ERROR] Exception encountered during upload, please check on it: "+str(e))
-                    requests.post(
-                        result_url,
-                        json={
-                            "command": "add_data",
-                            "data": "[ERROR] Exception encountered during upload, please check on it: "+str(e),
-                        },
-                        headers=headers,
-                    )
-                    exit(1)
+            print("[ERROR] Exception encountered during upload, please check on it:"+str(e))
+            requests.post(
+            result_url,
+            json={
+                "command": "add_data",
+                "data": "[ERROR] Exception encountered during upload, please check on it:"+str(e),
+            },
+            headers=headers,
+        )
+            exit(1)
 print("[INFO] " + ticker + " added. ")
 requests.post(
             result_url,
