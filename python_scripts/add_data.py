@@ -57,9 +57,7 @@ if ticker == "undefined" or ticker == "null":
 
 try:
     date = (sys.argv[2])
-    print("[DEBUG] date in date format: "+date)
     date = int(time.mktime(datetime.datetime.strptime(date, "%Y-%m-%d").timetuple()))+3600
-    print("[DEBUG] date in timestamp format: "+str(date))
 except Exception as e:
     print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception: "+str(e))
     issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19 Exception: "+str(e)+".\n"
@@ -125,7 +123,7 @@ ticker_field = [ticker] * count
 type_field = ['real'] * count
 df2.insert(7,'ticker',ticker_field, True)
 df2.insert(8,'type',type_field, True)
-df2.fillna(0, inplace=True)
+#df2.fillna(0, inplace=True)
 print()
 print("[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
@@ -136,11 +134,16 @@ from darts.utils import missing_values
 series_05 = darts.utils.missing_values.fill_missing_values(series_05)
 series_075 = darts.utils.missing_values.fill_missing_values(series_075)
 series_09 = darts.utils.missing_values.fill_missing_values(series_09)
-from darts.models import CatBoostModel
+from darts.models import CatBoostModel, XGBModel
 model_05 = CatBoostModel([-10,-1],output_chunk_length=5)
 model_075 = CatBoostModel([-10,-1],output_chunk_length=5)
 model_09 = CatBoostModel([-10,-1],output_chunk_length=5)
 
+
+""" model_05 = XGBModel(lags=3,output_chunk_length=5)
+model_075 = XGBModel(lags=3,output_chunk_length=5)
+model_09 = XGBModel(lags=3,output_chunk_length=5)
+ """
 
 start_dt = datetime.date.today() + datetime.timedelta(days=1)
 end_dt = datetime.date.today() + datetime.timedelta(days=60)  #FIXIT
@@ -217,12 +220,6 @@ except Exception as e:
     issues += "[ERROR] Exception encountered: "+str(e)+"\n"+"[ERROR] 09 prediction failed as not enough data was given, please pick an earlier date"+"\n"
 
 
-
-
-""" print("[DEBUG] Type of df_05 "+str(type(df_05)))
-print("[DEBUG] Type of df_05 equals int " + str( type(df_05) == type(0)))
-print("[DEBUG] Type of df_05 equals pandas "+ str(type(df_05) == "<class 'pandas.core.frame.DataFrame'>"))
-print("[DEBUG] Type of df_05 isinstance pandas "+ str(isinstance(df_05,pd.DataFrame))) """
 
 print("[INFO] Adding real values")
 
