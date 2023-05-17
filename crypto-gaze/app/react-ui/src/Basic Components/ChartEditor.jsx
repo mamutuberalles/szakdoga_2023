@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import MyChart2SettingsUpdate from "./MyChartSettings2Update";
 import MyChartSettingsUpdate from "./MyChartSettingsUpdate";
 export function ChartEditor({params, updaterFunction} ) {

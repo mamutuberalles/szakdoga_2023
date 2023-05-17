@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { Button, Text } from "@ui5/webcomponents-react";
-import {Card, CardContent } from "@mui/material";
-import { LineChart } from "@ui5/webcomponents-react-charts";
 import { MyChart } from "../Basic Components/MyChart";
 import axios from "axios";
 

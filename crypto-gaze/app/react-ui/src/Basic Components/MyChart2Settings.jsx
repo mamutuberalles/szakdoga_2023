@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MyChart2 from "./MyChart2";
-
-import { Input, SwipeableDrawer, Switch, TextField, FormControlLabel, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import FormGroup from '@mui/material/FormGroup';
+import { TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
@@ -39,7 +36,7 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
 
 
     const addChart = async () => {
-        const res = await axios.post('http://localhost:4004/chart/CustomCharts', displayValues, {
+        await axios.post('http://localhost:4004/chart/CustomCharts', displayValues, {
             headers: {
                 "Authorization": "Basic admin",
                 "Content-Type": "application/json;IEEE754Compatible=true"
@@ -75,11 +72,11 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
 
         });
 
-        if (args.start_date == null) {
+        if (args.start_date === null) {
             args.start_date = new Date('2018-04-19')
         }
 
-        if (args.end_date == null) {
+        if (args.end_date === null) {
             console.log(args.end_date)
             args.end_date = new Date('9999-12-31')
         }
@@ -181,9 +178,9 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
                 </FlexBox>
                 <FlexBox alignItems="Center" justifyContent="SpaceAround">
                     <Text >Start date</Text>
-                    <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                    <DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
                     <Text >End date</Text>
-                    <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                    <DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
                 </FlexBox>
                 <FlexBox alignItems="Center" justifyContent="SpaceAround">
                     <TextField label="Chart Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />

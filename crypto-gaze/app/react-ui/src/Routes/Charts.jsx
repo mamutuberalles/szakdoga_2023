@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { MyChart } from "../Basic Components/MyChart";
-import { MyChartSettings } from "../Basic Components/MyChartSettings";
 import { Button, Card } from "@ui5/webcomponents-react";
-import MyChart2 from "../Basic Components/MyChart2";
 import { FormControl, InputLabel, Select, MenuItem, FormGroup, FormControlLabel } from "@mui/material"
 import { Title, FlexBox } from '@ui5/webcomponents-react';
 import ChartList from "../Basic Components/ChartList";
@@ -19,34 +16,31 @@ export function Charts() {
     const [initial, setInitial] = useState(0)
 
     const fetchChart = async () => {
-        const res = await axios.get('http://localhost:4004/chart/CustomCharts?$filter=hidden eq ' + "'false'")
+        const res = await axios.get('http://localhost:4004/chart/CustomCharts?$filter=hidden eq \'false\'')
 
         let data = res.data.value;
 
-        data = data.filter(item => item.hidden == "false")
+        data = data.filter(item => item.hidden === "false")
 
-        let favorites = data.filter(item => item.bookmarked == "true")
+        let favorites = data.filter(item => item.bookmarked === "true")
 
         let charts;
 
-        if (bookmarksFirst == true) {
-            data = data.filter(item => item.bookmarked == "false")
-            if (orderField != undefined) {
-                //console.log("[DEBUG] : Ordering with favs")
+        if (bookmarksFirst === true) {
+            data = data.filter(item => item.bookmarked === "false")
+            if (orderField !== undefined) {
                 data.sort((a, b) => {
 
-                    if (orderField != "start_date" && orderField != "end_date") {
+                    if (orderField !== "start_date" && orderField !== "end_date") {
                         return a[orderField].localeCompare(b[orderField])
                     }
                     else {
                         if (a[orderField] < b[orderField]) {
-                            console.log("[DEBUG] : " + a[orderField] + " < " + b[orderField])
                             return -1;
                         }
 
 
                         if (a[orderField] > b[orderField]) {
-                            console.log("[DEBUG] : " + a[orderField] + " > " + b[orderField])
                             return 1;
                         }
 
@@ -58,18 +52,16 @@ export function Charts() {
                 })
                 favorites.sort((a, b) => {
 
-                    if (orderField != "start_date" && orderField != "end_date") {
+                    if (orderField !== "start_date" && orderField !== "end_date") {
                         return a[orderField].localeCompare(b[orderField])
                     }
                     else {
                         if (a[orderField] < b[orderField]) {
-                            console.log("[DEBUG] : " + a[orderField] + " < " + b[orderField])
                             return -1;
                         }
 
 
                         if (a[orderField] > b[orderField]) {
-                            console.log("[DEBUG] : " + a[orderField] + " > " + b[orderField])
                             return 1;
                         }
 
@@ -80,18 +72,17 @@ export function Charts() {
 
                 })
             }
-            if (direction == "desc") {
+            if (direction === "desc") {
                 favorites.reverse();
                 data.reverse();
             }
             charts = favorites.concat(data)
         }
         else {
-            if (orderField != undefined) {
-                //console.log("[DEBUG] : Ordering without favs")
+            if (orderField !== undefined) {
                 data.sort((a, b) => {
 
-                    if (orderField != "start_date" && orderField != "end_date") {
+                    if (orderField !== "start_date" && orderField !== "end_date") {
                         return a[orderField].localeCompare(b[orderField])
                     }
                     else {
@@ -114,12 +105,11 @@ export function Charts() {
             }
 
             charts = data
-            if (direction == "desc") {
+            if (direction === "desc") {
                 charts.reverse();
             }
         }
 
-        //console.log("[DEBUG] bookmarksFirst:  "+bookmarksFirst)
         setFetchedCharts(charts)
     };
 
@@ -135,7 +125,7 @@ export function Charts() {
 
     useEffect(() => {
         fetchChart();
-        if (initial == 0) {
+        if (initial === 0) {
             setChartToggle(true);
             setInitial(1)
         }
@@ -159,7 +149,6 @@ export function Charts() {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             onChange={(event) => setOrderField(event.target.value)}
-                            //variant="standard"
                             label="Order by"
                             defaultValue={"ticker"}
                         >
@@ -183,7 +172,6 @@ export function Charts() {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             onChange={(event) => setDirection(event.target.value)}
-                            //variant="standard"
                             label="Direction"
                             defaultValue={"asc"}
                         >

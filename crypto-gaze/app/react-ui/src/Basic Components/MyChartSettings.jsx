@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { MyChart } from "./MyChart";
-import { FormControl, Input, InputLabel, MenuItem, TextField, Select, Menu } from "@mui/material";
+import { FormControl,  InputLabel, MenuItem, TextField, Select } from "@mui/material";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import { SwipeableDrawer, Switch, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
+import { FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, FlexBox, Title, Text } from "@ui5/webcomponents-react";
 import { MyChartUpdate } from "./MyChartUpdate";
@@ -56,11 +55,11 @@ export default function MyChartSettings({ args, updaterFunction }) {
 
         });
 
-        if (args.start_date == null) {
+        if (args.start_date === null) {
             args.start_date = new Date('2018-04-19')
         }
 
-        if (args.end_date == null) {
+        if (args.end_date === null) {
             console.log(args.end_date)
             args.end_date = new Date('9999-12-31')
         }
@@ -143,16 +142,16 @@ export default function MyChartSettings({ args, updaterFunction }) {
                 </FlexBox >
                 <FlexBox >
                     <Text >Start date</Text>
-                    <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                    <DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
                     <Text >End date</Text>
-                    <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                    <DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
                 </FlexBox>
                 <FlexBox wrap="Wrap" alignItems="Center" justifyContent="SpaceAround">
                     <FormControl>
                         <FormLabel id="radio-buttons-group-label">Forecast</FormLabel>
                         <RadioGroup
                             aria-labelledby="radio-buttons-group-label"
-                            defaultValue={args.forecast == undefined ? "None" : args.forecast}
+                            defaultValue={args.forecast === undefined ? "None" : args.forecast}
                             name="radio-buttons-group"
                             onChange={(event) => setForecast(event.target.value)}
                             row

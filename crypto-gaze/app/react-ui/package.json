@@ -31,6 +31,7 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "^5.0.1",
     "react-spinners": "^0.13.8",
+    "source-map-explorer": "^2.5.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -38,6 +39,7 @@
     "build": "react-scripts build",
     "test": "cypress run --component --browser chrome",
     "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test:open": "cypress open --component --browser chrome"
   },
   "eslintConfig": {

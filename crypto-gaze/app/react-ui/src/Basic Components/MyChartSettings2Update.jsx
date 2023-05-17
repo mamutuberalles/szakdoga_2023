@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import MyChart2 from "./MyChart2";
 import { Card } from "@ui5/webcomponents-react";
-import { Input, SwipeableDrawer, Switch, TextField, FormControlLabel, FormControl, InputLabel, Select, MenuItem, Checkbox } from "@mui/material";
+import {  TextField, FormControlLabel, FormControl, InputLabel, Select, MenuItem, Checkbox } from "@mui/material";
 import FormGroup from '@mui/material/FormGroup';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+
 import MyChart2Update from "./MyChart2Update";
 import { Button, FlexBox, Title, Text } from "@ui5/webcomponents-react";
 
 export function MyChart2SettingsUpdate({ args, updaterFunction }) {
 
-    const navigate = useNavigate();
+
 
     const [tickers, setTickers] = useState([])
     const [tickersFetched, setTickersFetched] = useState(0)
@@ -70,11 +69,11 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
 
         });
 
-        if (args.start_date == null) {
+        if (args.start_date === null) {
             args.start_date = new Date('2018-04-19')
         }
 
-        if (args.end_date == null) {
+        if (args.end_date === null) {
             console.log(args.end_date)
             args.end_date = new Date('9999-12-31')
         }
@@ -176,15 +175,15 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
                 </FlexBox>
                 <FlexBox alignItems="Center" justifyContent="SpaceAround">
                     <Text >Start date</Text>
-                    <DatePicker selected={startDate == undefined && args.start_date != undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                    <DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
                     <Text >End date</Text>
-                    <DatePicker selected={endDate == undefined && args.end_date != undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                    <DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
                 </FlexBox>
                 <FlexBox alignItems="Center" justifyContent="SpaceAround">
                     <TextField label="Chart Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox defaultChecked={args.hidden == "true"} />} label="Hidden" onClick={(event) => setHidden(event.target.checked)} />
-                        <FormControlLabel control={<Checkbox defaultChecked={args.bookmarked == "true"} />} label="Bookmarked" onClick={(event) => setBookmarked(event.target.checked)} />
+                        <FormControlLabel control={<Checkbox defaultChecked={args.hidden === "true"} />} label="Hidden" onClick={(event) => setHidden(event.target.checked)} />
+                        <FormControlLabel control={<Checkbox defaultChecked={args.bookmarked === "true"} />} label="Bookmarked" onClick={(event) => setBookmarked(event.target.checked)} />
                     </FormGroup>
                     <Button onClick={toggle}>
                         Preview Chart

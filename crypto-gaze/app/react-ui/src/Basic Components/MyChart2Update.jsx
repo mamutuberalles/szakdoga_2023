@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,9 +9,9 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { Button } from '@ui5/webcomponents-react';
+
 import axios from "axios";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Card,  CardHeader } from "@mui/material";
 
 ChartJS.register(
     CategoryScale,
@@ -24,83 +23,6 @@ ChartJS.register(
 );
 
 export function MyChart2Update(args) {
-
-    const navigate = useNavigate()
-
-    const unhide = async () => {
-        try {
-            args.args.hidden = "false"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-                headers: {
-                    "Authorization": "Basic admin",
-                    "Content-Type": "application/json;IEEE754Compatible=true"
-                }
-            })
-            console.log(res)
-            navigate('/charts')
-        } catch (error) {
-            args.args.hidden = "true"
-            console.log("[INFO] Can't use this feature right now.")
-        }
-    }
-
-    const hide = async () => {
-
-        try {
-            args.args.hidden = "true"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-                headers: {
-                    "Authorization": "Basic admin",
-                    "Content-Type": "application/json;IEEE754Compatible=true"
-                }
-            })
-            console.log(res)
-            navigate('/hiddencharts')
-        } catch (error) {
-            args.args.hidden = "false"
-            console.log("[INFO] Can't use this feature right now.")
-        }
-    }
-
-    const bookmark = async () => {
-
-        try {
-            args.args.bookmarked = "true"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-                headers: {
-                    "Authorization": "Basic admin",
-                    "Content-Type": "application/json;IEEE754Compatible=true"
-                }
-            })
-            console.log(res)
-            navigate('/bookmarkedcharts')
-        } catch (error) {
-            args.args.bookmarked = "false"
-            console.log("[INFO] Can't use this feature right now.")
-        }
-
-
-    }
-
-    const unbookmark = async () => {
-        try {
-            args.args.bookmarked = "false"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
-                headers: {
-                    "Authorization": "Basic admin",
-                    "Content-Type": "application/json;IEEE754Compatible=true"
-                }
-            })
-            console.log(res)
-            navigate('/charts')
-        } catch (error) {
-            args.args.bookmarked = "true"
-            console.log("[INFO] Can't use this feature right now.")
-        }
-    }
-
-
-
     const [options, setOptions] = useState({
         responsive: true,
         plugins: {
@@ -123,8 +45,8 @@ export function MyChart2Update(args) {
 
     const fetchData = async () => {
         setDataFetched(dataFetched + 1);
-        let res = null;
-        let queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "'" + " and type eq 'real'"
+
+        let queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq 'real'"
         if (args.args.start_date) {
             queryString += " and date ge " + args.args.start_date;
         }
@@ -135,10 +57,10 @@ export function MyChart2Update(args) {
         const res1 = await axios.get(queryString);
         const dates = pluck(res1.data.value, "date");
         const data = pluck(res1.data.value, args.args.field);
-        let axis2 = !(args.args.ticker2 == "" || args.args.ticker2 == "undefined")
+        let axis2 = !(args.args.ticker2 === "" || args.args.ticker2 === "undefined")
         let queryString2 = null;
         if (axis2) {
-            queryString2 = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker2 + "'" + " and type eq 'real'"
+            queryString2 = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker2 + "' and type eq 'real'"
             if (args.args.start_date) {
                 queryString2 += " and date ge " + args.args.start_date;
             }

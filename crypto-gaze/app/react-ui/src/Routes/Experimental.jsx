@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 import moment from 'moment';
 import { Button, FlexBox, Text, Card, Title } from '@ui5/webcomponents-react';
 import CommandResponse from "../Basic Components/CommandResponse";
-import {BarLoader,BeatLoader,BounceLoader,ClipLoader} from "react-spinners/ClipLoader";
 
 
 export function Experimental() {
@@ -33,7 +32,7 @@ export function Experimental() {
     const waitForResponse = async () => {
         let result = await axios.get('http://localhost:4004/endpoint/CommandResult')
         let n = 0;
-        while (result.data.value.length == 0) {
+        while (result.data.value.length === 0) {
             await delay(1000)
             n = n + 1
             result = await axios.get('http://localhost:4004/endpoint/CommandResult')
@@ -63,7 +62,7 @@ export function Experimental() {
         setScriptRunning(true)
         switch (commandSelected) {
             case "add_ticker":
-                let res1 = await axios.post('http://localhost:4004/Catalog/AddTicker', {
+                await axios.post('http://localhost:4004/Catalog/AddTicker', {
                     "ticker": `${argTicker}`,
                     "date": `${moment(date).format("YYYY-MM-DD")}`
                 }, {
@@ -74,7 +73,7 @@ export function Experimental() {
                 })
                 break;
             case "remove_ticker":
-                let res2 = await axios.post('http://localhost:4004/Catalog/DeleteTicker', {
+                await axios.post('http://localhost:4004/Catalog/DeleteTicker', {
                     "ticker": `${argTicker}`,
                 }, {
                     headers: {
@@ -84,7 +83,7 @@ export function Experimental() {
                 })
                 break;
             case "refresh_ticker":
-                let res3 = await axios.post('http://localhost:4004/Catalog/RefreshTicker', {
+                await axios.post('http://localhost:4004/Catalog/RefreshTicker', {
                     "ticker": `${argTicker}`,
                     "date": `${moment(date).format("YYYY-MM-DD")}`
                 }, {
@@ -95,7 +94,7 @@ export function Experimental() {
                 })
                 break;
             case "monthly_charts":
-                let res4 = await axios.post('http://localhost:4004/Chart/RefreshCharts', {
+                await axios.post('http://localhost:4004/Chart/RefreshCharts', {
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -131,7 +130,7 @@ export function Experimental() {
                         </Select>
                     </FormControl>
 
-                    {commandSelected == "refresh_ticker" || commandSelected == "remove_ticker"
+                    {commandSelected === "refresh_ticker" || commandSelected === "remove_ticker"
                         ?
                         <FormControl fullWidth sx={{ m: 1, minWidth: 200 }}  variant="outlined">
                             <InputLabel>Ticker</InputLabel>
@@ -149,15 +148,15 @@ export function Experimental() {
                         </FormControl>
                         : <> </>
                     }
-                    {commandSelected == "add_ticker"
+                    {commandSelected === "add_ticker"
                         ? <TextField label="Ticker" variant="outlined" onChange={(event) => setargTicker(event.target.value)} />
                         : <> </>
                     }
-                    {commandSelected != "remove_ticker" && commandSelected != "monthly_charts" && commandSelected != undefined
+                    {commandSelected !== "remove_ticker" && commandSelected !== "monthly_charts" && commandSelected !== undefined
                         ? <Text >Start date</Text>
                         : <> </>
                     }
-                    {commandSelected != "remove_ticker" && commandSelected != "monthly_charts" && commandSelected != undefined
+                    {commandSelected !== "remove_ticker" && commandSelected !== "monthly_charts" && commandSelected !== undefined
                         ? <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="yyyy/MM/dd" />
                         : <> </>
                     }
@@ -166,11 +165,11 @@ export function Experimental() {
                     </Button>
                 </FlexBox>
             </Card>
-            {commandResponse != "" && scriptRunning == false
+            {commandResponse !== "" && scriptRunning === false
                 ? <CommandResponse arg = {commandResponse} />
                 : <> </>
             }
-            {scriptRunning == true
+            {scriptRunning === true
                 ? <Text> Selected script is running... </Text>
                 : <> </>
             }

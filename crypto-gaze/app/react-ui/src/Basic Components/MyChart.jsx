@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { LineChart } from "@ui5/webcomponents-react-charts";
 import axios from "axios";
 import { Button } from "@ui5/webcomponents-react";
-import { Title } from '@ui5/webcomponents-react';
 import { useNavigate } from "react-router-dom";
 import { Card, CardHeader } from '@ui5/webcomponents-react';
 
@@ -16,13 +15,12 @@ export function MyChart(args) {
     const unhide = async () => {
         try {
             args.args.hidden = "false"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
                 headers: {
                     "Authorization": "Basic admin",
                     "Content-Type": "application/json;IEEE754Compatible=true"
                 }
             })
-            console.log(res)
             navigate('/charts')
         } catch (error) {
             args.args.hidden = "true"
@@ -34,13 +32,12 @@ export function MyChart(args) {
 
         try {
             args.args.hidden = "true"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
                 headers: {
                     "Authorization": "Basic admin",
                     "Content-Type": "application/json;IEEE754Compatible=true"
                 }
             })
-            console.log(res)
             navigate('/hiddencharts')
         } catch (error) {
             args.args.hidden = "false"
@@ -52,13 +49,12 @@ export function MyChart(args) {
 
         try {
             args.args.bookmarked = "true"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
                 headers: {
                     "Authorization": "Basic admin",
                     "Content-Type": "application/json;IEEE754Compatible=true"
                 }
             })
-            //console.log(res)
             navigate('/bookmarkedcharts')
         } catch (error) {
             args.args.bookmarked = "false"
@@ -71,13 +67,12 @@ export function MyChart(args) {
     const unbookmark = async () => {
         try {
             args.args.bookmarked = "false"
-            const res = await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
+            await axios.patch('http://localhost:4004/chart/CustomCharts/' + args.args.id, args.args, {
                 headers: {
                     "Authorization": "Basic admin",
                     "Content-Type": "application/json;IEEE754Compatible=true"
                 }
             })
-            console.log(res)
             navigate('/charts')
         } catch (error) {
             args.args.bookmarked = "true"
@@ -87,12 +82,10 @@ export function MyChart(args) {
 
     const fetchData = async () => {
         let res = null;
-        if (args.args.chart_type == "simple") {
+        if (args.args.chart_type === "simple") {
             let queryString = null;
-            //console.log(args.args)
-
-            if (args.args.forecast == "None") {
-                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq '" + "real" + "'";
+            if (args.args.forecast === "None") {
+                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq 'real'";
             }
             else {
                 queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq '" + args.args.forecast + "' )";
@@ -108,7 +101,7 @@ export function MyChart(args) {
             res = await axios.get(queryString)
         }
         else {
-            res = await axios.get('http://localhost:4004/catalog/Crypto' + "?$filter=date ge " + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc")
+            res = await axios.get('http://localhost:4004/catalog/Crypto?$filter=date ge ' + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc")
             args.args.field = "close"
         }
         setDataset(res.data.value);
@@ -125,19 +118,19 @@ export function MyChart(args) {
         <>
             <Card header={<CardHeader titleText={args.args.title} />}>
                 <LineChart measures={[{ accessor: `${args.args.field}`, label: `${args.args.label}` }]} dimensions={[{ accessor: "date", intervl:0 }]} dataset={dataset} />
-                {args.args.hidden == "true"
+                {args.args.hidden === "true"
                     ? <Button onClick={unhide}> Unhide Chart </Button>
                     : <> </>
                 }
-                {args.args.hidden == "false"
+                {args.args.hidden === "false"
                     ? <Button onClick={hide}> Hide Chart </Button>
                     : <> </>
                 }
-                {args.args.bookmarked == "true"
+                {args.args.bookmarked === "true"
                     ? <Button onClick={unbookmark}> Remove Bookmark </Button>
                     : <> </>
                 }
-                {args.args.bookmarked == "false"
+                {args.args.bookmarked === "false"
                     ? <Button onClick={bookmark}> Bookmark </Button>
                     : <> </>
                 }
