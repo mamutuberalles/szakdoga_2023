@@ -147,7 +147,7 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             onChange={(event) => setTicker2(event.target.value)}
-                            label="Ticker2"
+                            label="Second Ticker"
                             defaultValue={args.ticker2}
                         >
                             {tickers.map(item =>
@@ -162,14 +162,14 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             onChange={(event) => setField2(event.target.value)}
-                            label="Field2"
+                            label="Second Field"
                             defaultValue={args.field2}
                         >
                             <MenuItem value="open">Open</MenuItem>
                             <MenuItem value="high">High</MenuItem>
                             <MenuItem value="low">Low</MenuItem>
                             <MenuItem value="close">Close</MenuItem>
-                            <MenuItem value="adj_close">Adjusted Close</MenuItem>
+                            {/* <MenuItem value="adj_close">Adjusted Close</MenuItem> */}
                             <MenuItem value="volume">Volume</MenuItem>
 
                         </Select>

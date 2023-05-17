@@ -86,12 +86,17 @@ export function ChartModifier() {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             onChange={(event) => setChartSelected(event.target.value)}
+                            label="Chart title"
                         >
                             {charts.map(item =>
                                 <MenuItem value={item.id}>{item.title}</MenuItem>
                             )}
                         </Select>
                     </FormControl>
+
+                    <Button onClick={toggle}>
+                        Edit Chart
+                    </Button>
 
                     <Button onClick={updateChart}>
                         Update Chart
@@ -100,9 +105,7 @@ export function ChartModifier() {
                         Delete Chart
                     </Button>
 
-                    <Button onClick={toggle}>
-                        Edit Chart
-                    </Button>
+
                 </FlexBox>
             </Card>
 

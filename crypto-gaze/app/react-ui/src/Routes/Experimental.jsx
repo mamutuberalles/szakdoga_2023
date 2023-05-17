@@ -64,7 +64,7 @@ export function Experimental() {
         console.log("[DEBUG] date now: " + moment(Date.now()).format("YYYY-MM-DD"))
         console.log("[DEBUG] date given: "+moment(date).format("YYYY-MM-DD"))
 
-        if (date_local === moment(Date.now()).format("YYYY-MM-DD")) {
+        if (date_local === moment(Date.now()).format("YYYY-MM-DD") ||date_local ==="Invalid date") {
             date_local = null
         }
 
