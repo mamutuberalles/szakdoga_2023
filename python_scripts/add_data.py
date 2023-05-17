@@ -123,8 +123,26 @@ ticker_field = [ticker] * count
 type_field = ['real'] * count
 df2.insert(7,'ticker',ticker_field, True)
 df2.insert(8,'type',type_field, True)
-#df2.fillna(0, inplace=True)
-print()
+
+# Calculate rounding
+""" print()
+print("[INFO] Calculating dynamic rounding")
+diff = 0
+prev_val  = 0
+data_1 = 0
+data_2 = 0
+for i in df2.index:
+    if diff == 0:
+        diff = df2.iloc[i]['close']
+        prev_val = df2.iloc[i]['close']
+    else:   
+        diff_temp = abs(df2.iloc[i]['close'] - prev_val)
+        if diff > diff_temp:
+             diff = diff_temp
+    prev_val = df2.iloc[i]['close']
+
+
+print("[DEBUG] diff for "+ticker+": "+str(diff)) """
 print("[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
 _,series_05 = series.split_before(0.5)
@@ -224,16 +242,22 @@ except Exception as e:
 print("[INFO] Adding real values")
 
 
+rounding_number = 3
+if df2['close'].max() < 10:
+     rounding_number = 5
+if df2['close'].max() > 1000:
+     rounding_number = 2
+
 for index in df2.index:
 #    print("[DEBUG] Adding record "+df2.iloc[index].to_json())
     try:
         requests.post(db_url, json = {
             "date" : df2.iloc[index]['date'],
-            "open" : round(df2.iloc[index]['open'],2),
-            "high" : round(df2.iloc[index]['high'],2),
-            "low" : round(df2.iloc[index]['low'],2),
-            "close" : round(df2.iloc[index]['close'],2),
-            "adj_close" : round(df2.iloc[index]['adj_close'],2),
+            "open" : round(df2.iloc[index]['open'],rounding_number),
+            "high" : round(df2.iloc[index]['high'],rounding_number),
+            "low" : round(df2.iloc[index]['low'],rounding_number),
+            "close" : round(df2.iloc[index]['close'],rounding_number),
+            "adj_close" : round(df2.iloc[index]['adj_close'],rounding_number),
             "volume" : int(df2.iloc[index]['volume']),
             "ticker" : df2.iloc[index]['ticker'],
             "type" : df2.iloc[index]['type'],
@@ -273,11 +297,11 @@ if isinstance(df_05,pd.DataFrame):
         try:
             requests.post(db_url, json = {
                 "date" : df_05.iloc[index]['date'],
-                "open" : round(df_05.iloc[index]['open'],2),
-                "high" : round(df_05.iloc[index]['high'],2),
-                "low" : round(df_05.iloc[index]['low'],2),
-                "close" : round(df_05.iloc[index]['close'],2),
-                "adj_close" : round(df_05.iloc[index]['adj_close'],2),
+                "open" : round(df_05.iloc[index]['open'],rounding_number),
+                "high" : round(df_05.iloc[index]['high'],rounding_number),
+                "low" : round(df_05.iloc[index]['low'],rounding_number),
+                "close" : round(df_05.iloc[index]['close'],rounding_number),
+                "adj_close" : round(df_05.iloc[index]['adj_close'],rounding_number),
                 "volume" : int(df_05.iloc[index]['volume']),
                 "ticker" : df_05.iloc[index]['ticker'],
                 "type" : df_05.iloc[index]['type'],
@@ -317,11 +341,11 @@ if isinstance(df_075,pd.DataFrame):
         try:
             requests.post(db_url, json = {
                 "date" : df_075.iloc[index]['date'],
-                "open" : round(df_075.iloc[index]['open'],2),
-                "high" : round(df_075.iloc[index]['high'],2),
-                "low" : round(df_075.iloc[index]['low'],2),
-                "close" : round(df_075.iloc[index]['close'],2),
-                "adj_close" : round(df_075.iloc[index]['adj_close'],2),
+                "open" : round(df_075.iloc[index]['open'],rounding_number),
+                "high" : round(df_075.iloc[index]['high'],rounding_number),
+                "low" : round(df_075.iloc[index]['low'],rounding_number),
+                "close" : round(df_075.iloc[index]['close'],rounding_number),
+                "adj_close" : round(df_075.iloc[index]['adj_close'],rounding_number),
                 "volume" : int(df_075.iloc[index]['volume']),
                 "ticker" : df_075.iloc[index]['ticker'],
                 "type" : df_075.iloc[index]['type'],
@@ -359,11 +383,11 @@ if isinstance(df_09,pd.DataFrame):
         try:
             requests.post(db_url, json = {
                 "date" : df_09.iloc[index]['date'],
-                "open" : round(df_09.iloc[index]['open'],2),
-                "high" : round(df_09.iloc[index]['high'],2),
-                "low" : round(df_09.iloc[index]['low'],2),
-                "close" : round(df_09.iloc[index]['close'],2),
-                "adj_close" : round(df_09.iloc[index]['adj_close'],2),
+                "open" : round(df_09.iloc[index]['open'],rounding_number),
+                "high" : round(df_09.iloc[index]['high'],rounding_number),
+                "low" : round(df_09.iloc[index]['low'],rounding_number),
+                "close" : round(df_09.iloc[index]['close'],rounding_number),
+                "adj_close" : round(df_09.iloc[index]['adj_close'],rounding_number),
                 "volume" : int(df_09.iloc[index]['volume']),
                 "ticker" : df_09.iloc[index]['ticker'],
                 "type" : df_09.iloc[index]['type'],
