@@ -52,6 +52,7 @@ export function Experimental() {
     }
 
     const runScript = async () => {
+        let date_local = moment(date).format("YYYY-MM-DD")
         await axios.post('http://localhost:4004/endpoint/DeleteResult', {
         }, {
             headers: {
@@ -59,12 +60,20 @@ export function Experimental() {
                 "Content-Type": "application/json;IEEE754Compatible=true"
             }
         })
+
+        console.log("[DEBUG] date now: " + moment(Date.now()).format("YYYY-MM-DD"))
+        console.log("[DEBUG] date given: "+moment(date).format("YYYY-MM-DD"))
+
+        if (date_local === moment(Date.now()).format("YYYY-MM-DD")) {
+            date_local = null
+        }
+
         setScriptRunning(true)
         switch (commandSelected) {
             case "add_ticker":
                 await axios.post('http://localhost:4004/Catalog/AddTicker', {
                     "ticker": `${argTicker}`,
-                    "date": `${moment(date).format("YYYY-MM-DD")}`
+                    "date": `${date_local}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -85,7 +94,7 @@ export function Experimental() {
             case "refresh_ticker":
                 await axios.post('http://localhost:4004/Catalog/RefreshTicker', {
                     "ticker": `${argTicker}`,
-                    "date": `${moment(date).format("YYYY-MM-DD")}`
+                    "date": `${date_local}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",

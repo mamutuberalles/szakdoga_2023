@@ -143,7 +143,7 @@ for i in df2.index:
 
 
 print("[DEBUG] diff for "+ticker+": "+str(diff)) """
-print("[INFO] Calculating forecast values")
+print("\n[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
 _,series_05 = series.split_before(0.5)
 _,series_075 = series.split_before(0.75)
@@ -153,15 +153,15 @@ series_05 = darts.utils.missing_values.fill_missing_values(series_05)
 series_075 = darts.utils.missing_values.fill_missing_values(series_075)
 series_09 = darts.utils.missing_values.fill_missing_values(series_09)
 from darts.models import CatBoostModel, XGBModel
-model_05 = CatBoostModel([-10,-1],output_chunk_length=5)
+""" model_05 = CatBoostModel([-10,-1],output_chunk_length=5)
 model_075 = CatBoostModel([-10,-1],output_chunk_length=5)
-model_09 = CatBoostModel([-10,-1],output_chunk_length=5)
+model_09 = CatBoostModel([-10,-1],output_chunk_length=5) """
 
 
-""" model_05 = XGBModel(lags=3,output_chunk_length=5)
+model_05 = XGBModel(lags=3,output_chunk_length=5)
 model_075 = XGBModel(lags=3,output_chunk_length=5)
 model_09 = XGBModel(lags=3,output_chunk_length=5)
- """
+
 
 start_dt = datetime.date.today() + datetime.timedelta(days=1)
 end_dt = datetime.date.today() + datetime.timedelta(days=60)  #FIXIT
@@ -249,7 +249,6 @@ if df2['close'].max() > 1000:
      rounding_number = 2
 
 for index in df2.index:
-#    print("[DEBUG] Adding record "+df2.iloc[index].to_json())
     try:
         requests.post(db_url, json = {
             "date" : df2.iloc[index]['date'],
@@ -289,19 +288,20 @@ for index in df2.index:
                 exit(1)
 
 
+
+
 if isinstance(df_05,pd.DataFrame):
     print("[INFO] Adding forecasted values (05)")
 
     for index in df_05.index:
-    #    print("[INFO] Adding record "+df_05.iloc[index].to_json())
         try:
             requests.post(db_url, json = {
                 "date" : df_05.iloc[index]['date'],
-                "open" : round(df_05.iloc[index]['open'],rounding_number),
-                "high" : round(df_05.iloc[index]['high'],rounding_number),
-                "low" : round(df_05.iloc[index]['low'],rounding_number),
-                "close" : round(df_05.iloc[index]['close'],rounding_number),
-                "adj_close" : round(df_05.iloc[index]['adj_close'],rounding_number),
+                "open" : round(np.float64(df_05.iloc[index]['open']),rounding_number),
+                "high" : round(np.float64(df_05.iloc[index]['high']),rounding_number),
+                "low" : round(np.float64(df_05.iloc[index]['low']),rounding_number),
+                "close" : round(np.float64(df_05.iloc[index]['close']),rounding_number),
+                "adj_close" : round(np.float64(df_05.iloc[index]['adj_close']),rounding_number),
                 "volume" : int(df_05.iloc[index]['volume']),
                 "ticker" : df_05.iloc[index]['ticker'],
                 "type" : df_05.iloc[index]['type'],
@@ -337,15 +337,14 @@ if isinstance(df_075,pd.DataFrame):
     print("[INFO] Adding forecasted values (075)")
 
     for index in df_075.index:
-    #    print("[INFO] Adding record "+df_075.iloc[index].to_json())
         try:
             requests.post(db_url, json = {
                 "date" : df_075.iloc[index]['date'],
-                "open" : round(df_075.iloc[index]['open'],rounding_number),
-                "high" : round(df_075.iloc[index]['high'],rounding_number),
-                "low" : round(df_075.iloc[index]['low'],rounding_number),
-                "close" : round(df_075.iloc[index]['close'],rounding_number),
-                "adj_close" : round(df_075.iloc[index]['adj_close'],rounding_number),
+                "open" : round(np.float64(df_075.iloc[index]['open']),rounding_number),
+                "high" : round(np.float64(df_075.iloc[index]['high']),rounding_number),
+                "low" : round(np.float64(df_075.iloc[index]['low']),rounding_number),
+                "close" : round(np.float64(df_075.iloc[index]['close']),rounding_number),
+                "adj_close" : round(np.float64(df_075.iloc[index]['adj_close']),rounding_number),
                 "volume" : int(df_075.iloc[index]['volume']),
                 "ticker" : df_075.iloc[index]['ticker'],
                 "type" : df_075.iloc[index]['type'],
@@ -378,16 +377,16 @@ if isinstance(df_075,pd.DataFrame):
 
 if isinstance(df_09,pd.DataFrame):
     print("[INFO] Adding forecasted values (09)")
+
     for index in df_09.index:
-    #    print("[INFO] Adding record "+df_09.iloc[index].to_json())
         try:
             requests.post(db_url, json = {
                 "date" : df_09.iloc[index]['date'],
-                "open" : round(df_09.iloc[index]['open'],rounding_number),
-                "high" : round(df_09.iloc[index]['high'],rounding_number),
-                "low" : round(df_09.iloc[index]['low'],rounding_number),
-                "close" : round(df_09.iloc[index]['close'],rounding_number),
-                "adj_close" : round(df_09.iloc[index]['adj_close'],rounding_number),
+                "open" : round(np.float64(df_09.iloc[index]['open']),rounding_number),
+                "high" : round(np.float64(df_09.iloc[index]['high']),rounding_number),
+                "low" : round(np.float64(df_09.iloc[index]['low']),rounding_number),
+                "close" : round(np.float64(df_09.iloc[index]['close']),rounding_number),
+                "adj_close" : round(np.float64(df_09.iloc[index]['adj_close']),rounding_number),
                 "volume" : int(df_09.iloc[index]['volume']),
                 "ticker" : df_09.iloc[index]['ticker'],
                 "type" : df_09.iloc[index]['type'],
