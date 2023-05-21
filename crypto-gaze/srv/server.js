@@ -58,7 +58,7 @@ cds.on("listening", async (app) => {
 
 cds.on('bootstrap', (app) => {
   app.use(cors());
-  app.use("/", express.static("./app/react-ui/build"))
+  app.use("/", express.static("../react-ui/build"))
 /*   app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '../app/react-ui/build/index.html'), function(err) {
       if (err) {
