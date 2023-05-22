@@ -67,7 +67,7 @@ except Exception as e:
 if date == "undefined" or date == "null":
     print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19."+str(e))
     issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception :"+str(e)+".\n"
-
+    date = no_date
 
 
 
@@ -124,25 +124,7 @@ type_field = ['real'] * count
 df2.insert(7,'ticker',ticker_field, True)
 df2.insert(8,'type',type_field, True)
 
-# Calculate rounding
-""" print()
-print("[INFO] Calculating dynamic rounding")
-diff = 0
-prev_val  = 0
-data_1 = 0
-data_2 = 0
-for i in df2.index:
-    if diff == 0:
-        diff = df2.iloc[i]['close']
-        prev_val = df2.iloc[i]['close']
-    else:   
-        diff_temp = abs(df2.iloc[i]['close'] - prev_val)
-        if diff > diff_temp:
-             diff = diff_temp
-    prev_val = df2.iloc[i]['close']
 
-
-print("[DEBUG] diff for "+ticker+": "+str(diff)) """
 print("\n[INFO] Calculating forecast values")
 series = darts.TimeSeries.from_dataframe(df2,time_col="date",value_cols="close")
 _,series_05 = series.split_before(0.5)
@@ -153,9 +135,6 @@ series_05 = darts.utils.missing_values.fill_missing_values(series_05)
 series_075 = darts.utils.missing_values.fill_missing_values(series_075)
 series_09 = darts.utils.missing_values.fill_missing_values(series_09)
 from darts.models import CatBoostModel, XGBModel
-""" model_05 = CatBoostModel([-10,-1],output_chunk_length=5)
-model_075 = CatBoostModel([-10,-1],output_chunk_length=5)
-model_09 = CatBoostModel([-10,-1],output_chunk_length=5) """
 
 
 model_05 = XGBModel(lags=3,output_chunk_length=5)
