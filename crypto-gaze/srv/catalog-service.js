@@ -69,12 +69,18 @@ module.exports = (srv) => {
   srv.on("RefreshTicker", async (req) => {
     ticker = req.data.ticker
     date = req.data.date
+    if(date == "null")
+    {
+      date = await SELECT`from data_model.Crypto where ticker = ${ticker}`.orderBy('date asc').limit('1')
+      date = date[0].date
+    }
     OPKEY = req.data.opKey
     console.log("[INFO] Refreshing data for: " + ticker+" from " + date + " with operation key: "+OPKEY)
     if (ticker == "") {
       console.log("[ERROR] Ticker data not given, please enter ticker data.")
     }
     else {
+
       await DELETE.from`data_model.Crypto`.where({ ticker: ticker })
       await DELETE.from`chart_model.PreDefinedCharts`.where({ticker: ticker})
       console.log("[INFO] Ticker data deleted for with operation key "+OPKEY +": "+ ticker)

@@ -50,6 +50,17 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
 
     useEffect(() => {
 
+        let start_date = moment(startDate).format("YYYY-MM-DD")
+        if(start_date == "Invalid date") {
+            start_date = "2018-04-19"
+        }
+
+        let end_date = moment(endDate).format("YYYY-MM-DD")
+        if(end_date == "Invalid date") {
+            end_date = "9999-12-31"
+        }
+
+
         if (tickersFetched < 1) {
             fetchTickers()
         }
@@ -57,8 +68,8 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
             ticker: `${ticker}`,
             field: `${field}`,
             label: `${label}`,
-            start_date: `${moment(startDate).format("YYYY-MM-DD")}`,
-            end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
+            start_date: `${start_date}`,
+            end_date: `${end_date}`,
             title: `${title}`,
             ticker2: `${ticker2}`,
             label2: `${label2}`,
@@ -82,8 +93,8 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
             ticker: `${ticker}`,
             field: `${field}`,
             label: `${label}`,
-            start_date: `${moment(startDate).format("YYYY-MM-DD")}`,
-            end_date: `${moment(endDate).format("YYYY-MM-DD")}`,
+            start_date: `${start_date}`,
+            end_date: `${end_date}`,
             title: `${title}`,
             ticker2: `${ticker2}`,
             label2: `${label2}`,
