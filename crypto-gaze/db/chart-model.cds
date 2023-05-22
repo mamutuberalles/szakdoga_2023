@@ -24,5 +24,4 @@ entity PreDefinedCharts {
     end_date : Date;
     label : String;
     title : String;
-    // TODO : Script for updating this every day for this month, or last 30 days
 }

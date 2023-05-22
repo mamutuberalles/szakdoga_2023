@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import moment from 'moment';
 import { Button, FlexBox, Text, Card, Title } from '@ui5/webcomponents-react';
 import CommandResponse from "../Basic Components/CommandResponse";
-
+import uuid from "react-uuid"
 
 export function Experimental() {
 
@@ -20,6 +20,7 @@ export function Experimental() {
     const [date, setDate] = useState();
     const [endDate, setEndDate] = useState();
     const [scriptRunning, setScriptRunning] = useState(false);
+    const [opKey, setOpKey] = useState();
 
     const fetchTickers = async () => {
         const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
@@ -30,39 +31,11 @@ export function Experimental() {
         fetchTickers()
     }, [commandSelected])
 
-    const waitForResponse = async () => {
-        let result = await axios.get('http://localhost:4004/endpoint/CommandResult')
-        let n = 0;
-        while (result.data.value.length === 0) {
-            await delay(1000)
-            n = n + 1
-            result = await axios.get('http://localhost:4004/endpoint/CommandResult')
-        }
-
-        setCommandResponse(result.data.value[0].data)
-        console.log("[DEBUG] Result set, n: " + n)
-        console.log("[DEBUG] result.data.value[0].data: " + result.data.value[0].data)
-        setScriptRunning(false)
-        await axios.post('http://localhost:4004/endpoint/DeleteResult', {
-        }, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-    }
-
     const runScript = async () => {
         let date_local = moment(date).format("YYYY-MM-DD")
         let date_local2 = moment(endDate).format("YYYY-MM-DD")
-        await axios.post('http://localhost:4004/endpoint/DeleteResult', {
-        }, {
-            headers: {
-                "Authorization": "Basic admin",
-                "Content-Type": "application/json;IEEE754Compatible=true"
-            }
-        })
-
+        let opkey_loc = uuid()
+        setOpKey(opkey_loc)
 
         if (date_local === moment(Date.now()).format("YYYY-MM-DD") || date_local === "Invalid date") {
             date_local = null
@@ -77,7 +50,8 @@ export function Experimental() {
             case "add_ticker":
                 await axios.post('http://localhost:4004/Catalog/AddTicker', {
                     "ticker": `${argTicker}`,
-                    "date": `${date_local}`
+                    "date": `${date_local}`,
+                    "opKey": `${opkey_loc}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -88,6 +62,7 @@ export function Experimental() {
             case "remove_ticker":
                 await axios.post('http://localhost:4004/Catalog/DeleteTicker', {
                     "ticker": `${argTicker}`,
+                    "opKey": `${opkey_loc}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -98,7 +73,8 @@ export function Experimental() {
             case "refresh_ticker":
                 await axios.post('http://localhost:4004/Catalog/RefreshTicker', {
                     "ticker": `${argTicker}`,
-                    "date": `${date_local}`
+                    "date": `${date_local}`,
+                    "opKey": `${opkey_loc}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -108,6 +84,7 @@ export function Experimental() {
                 break;
             case "monthly_charts":
                 await axios.post('http://localhost:4004/Chart/RefreshCharts', {
+                    "opKey": `${opkey_loc}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -119,7 +96,8 @@ export function Experimental() {
                 await axios.post('http://localhost:4004/Endpoint/Analyst', {
                     "ticker": `${argTicker}`,
                     "start_date": `${date_local}`,
-                    "end_date": `${date_local2}`
+                    "end_date": `${date_local2}`,
+                    "opKey": `${opkey_loc}`
                 }, {
                     headers: {
                         "Authorization": "Basic admin",
@@ -131,7 +109,25 @@ export function Experimental() {
                 break;
         }
 
-        waitForResponse();
+        // TODO Add opKey field to identify which command is the result
+        let result = await axios.get('http://localhost:4004/endpoint/CommandResult?$filter=opKey eq \'' + opkey_loc + '\'')
+        let n = 0;
+        while (result.data.value.length === 0 && window.location.pathname == "/experimental") {
+            await delay(1000)
+            n = n + 1
+            result = await axios.get('http://localhost:4004/endpoint/CommandResult?$filter=opKey eq \'' + opkey_loc + '\'')
+        }
+
+        setCommandResponse(result.data.value[0].data)
+        setScriptRunning(false)
+        await axios.post('http://localhost:4004/endpoint/DeleteResult', {
+            "opKey": opkey_loc
+        }, {
+            headers: {
+                "Authorization": "Basic admin",
+                "Content-Type": "application/json;IEEE754Compatible=true"
+            }
+        })
     }
 
     return (
@@ -174,7 +170,7 @@ export function Experimental() {
                         </FormControl>
                         : <> </>
                     }
-                    {commandSelected === "add_ticker" 
+                    {commandSelected === "add_ticker"
                         ? <TextField label="Ticker" variant="outlined" onChange={(event) => setargTicker(event.target.value)} />
                         : <> </>
                     }

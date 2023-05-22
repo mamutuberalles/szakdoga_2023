@@ -5,6 +5,7 @@ const express = require('express')
 const path = require('path');
 
 cds.on("listening", async (app) => {
+  await DELETE.from`endpoint_model.CommandResult`
   let CRYPTOS = await SELECT`data_model.Crypto`.groupBy('ticker')
   for (const crypto of CRYPTOS) {
     console.log("[INFO] Refreshing available crypto data for: " + crypto.ticker)

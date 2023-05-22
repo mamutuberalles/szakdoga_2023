@@ -21,6 +21,8 @@ headers = {"Content-Type" : "application/json;IEEE754Compatible=true", "Authoriz
 issues = ""
 filename = ""
 
+opKey = None
+
 result_url = "http://localhost:4004/endpoint/CommandResult"
 
 try:

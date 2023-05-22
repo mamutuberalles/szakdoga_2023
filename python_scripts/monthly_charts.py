@@ -19,68 +19,97 @@ req_headers = {
     "Authorization": "Basic admin",
 }
 
+opKey = None
 
-# Get available tickers
-tickers = requests.get(crypto_url + "?$apply=groupby((ticker))").json()["value"]
-tickers_plucked = [item["ticker"] for item in tickers]
+issues = ""
+try:
+    try:
+        opKey = (sys.argv[1])
+    except Exception as e:
+        print("[ERROR] No operation key was given, proceeding without one, please note that you may not able to view the result of the script through the web gui. Exception: "+str(e))
+        issues += "[ERROR] No operation key was given, proceeding without one, please note that you may not able to view the result of the script through the web gui. Exception: "+str(e)+".\n"
 
-# Delete predefined charts
-ids = requests.get(charts_url).json()["value"]
-ids_plucked = [item["id"] for item in ids]
-df = pd.DataFrame(ids_plucked)
-count = df.shape[0]
+    if opKey == "undefined" or opKey == "null":
+        print("[ERROR] No operation key was given, proceeding without one, please note that you may not able to view the result of the script through the web gui.")
+        issues += "[ERROR] No operation key was given, proceeding without one, please note that you may not able to view the result of the script through the web gui.\n"
 
-if count > 0:
-    print("[INFO] Deleting charts")
 
-    while count > 0:
-        for index, row in df.iterrows():
-            requests.delete(charts_url + "/" + row.iloc[0])
-            print("[INFO] Deleting chart : " + row.iloc[0])
-        ids = requests.get(charts_url).json()["value"]
-        ids_plucked = [item["id"] for item in ids]
-        df = pd.DataFrame(ids_plucked)
-        count = df.shape[0]
 
-    print("[INFO] Charts deleted")
+    # Get available tickers
+    tickers = requests.get(crypto_url + "?$apply=groupby((ticker))").json()["value"]
+    tickers_plucked = [item["ticker"] for item in tickers]
 
-else:
-    print("[INFO] No charts to be deleted")
+    # Delete predefined charts
+    ids = requests.get(charts_url).json()["value"]
+    ids_plucked = [item["id"] for item in ids]
+    df = pd.DataFrame(ids_plucked)
+    count = df.shape[0]
 
-if len(tickers_plucked) > 0:
-    print("[INFO] Creating monthly charts")
+    if count > 0:
+        print("[INFO] Deleting charts")
 
-    # Fix month because zero padding :(
+        while count > 0:
+            for index, row in df.iterrows():
+                requests.delete(charts_url + "/" + row.iloc[0])
+                print("[INFO] Deleting chart : " + row.iloc[0])
+            ids = requests.get(charts_url).json()["value"]
+            ids_plucked = [item["id"] for item in ids]
+            df = pd.DataFrame(ids_plucked)
+            count = df.shape[0]
 
-    month = str(datetime.datetime.today().month)
+        print("[INFO] Charts deleted")
 
-    if len(month) == 1:
-        month = "0" + month
+    else:
+        print("[INFO] No charts to be deleted")
 
-    for ticker in tickers_plucked:
-        response = requests.post(
-            charts_url,
-            json={
-                "ticker": ticker,
-                "start_date": "2023-" + month + "-01",
-                "end_date": "2023-" + month + "-31",
-                "label": ticker + " - USD",
-                "title": "Value of " + ticker + " this month",
-            },
-            headers=req_headers,
-        )
-        print("[INFO] Creating chart " + ticker)
+    if len(tickers_plucked) > 0:
+        print("[INFO] Creating monthly charts")
 
-    print("[INFO] Monthly charts created")
+        # Fix month because zero padding :(
 
-else:
-    print("[INFO] No charts to be created")
+        month = str(datetime.datetime.today().month)
 
-requests.post(
-    result_url,
-    json={
-        "command": "chart_refresh",
-        "data": "[INFO] Charts refreshed.",
-    },
-    headers=req_headers,
-)
+        if len(month) == 1:
+            month = "0" + month
+
+        for ticker in tickers_plucked:
+            response = requests.post(
+                charts_url,
+                json={
+                    "ticker": ticker,
+                    "start_date": "2023-" + month + "-01",
+                    "end_date": "2023-" + month + "-31",
+                    "label": ticker + " - USD",
+                    "title": "Value of " + ticker + " this month",
+                },
+                headers=req_headers,
+            )
+            print("[INFO] Creating chart " + ticker)
+
+        print("[INFO] Monthly charts created")
+
+    else:
+        print("[INFO] No charts to be created")
+
+    requests.post(
+        result_url,
+        json={
+            "command": "chart_refresh",
+            "data": issues +"\n[INFO] Charts refreshed.",
+            "opKey" : opKey
+        },
+        headers=req_headers,
+    )
+
+
+except Exception as e:
+        print("[ERROR]  Fatal error encountered during the running of the script: "+str(e))
+        requests.post(
+                result_url,
+                json={
+                    "command": "add_data",
+                    "data": "[ERROR] Fatal error encountered during the running of the script: "+str(e),
+                    "opKey" : opKey
+                },
+                headers=req_headers,
+            )
