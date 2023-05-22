@@ -97,11 +97,11 @@ export function MyChart(args) {
             if (args.args.end_date) {
                 queryString += " and date le " + args.args.end_date;
             }
-            queryString += "&$orderby=date asc"
+            queryString += "&$orderby=date asc&$top=5000"
             res = await axios.get(queryString)
         }
         else {
-            res = await axios.get('http://localhost:4004/catalog/Crypto?$filter=date ge ' + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc")
+            res = await axios.get('http://localhost:4004/catalog/Crypto?$filter=date ge ' + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc&$top=5000")
             args.args.field = "close"
         }
         setDataset(res.data.value);
