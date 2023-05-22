@@ -111,10 +111,8 @@ export function Experimental() {
 
         // TODO Add opKey field to identify which command is the result
         let result = await axios.get('http://localhost:4004/endpoint/CommandResult?$filter=opKey eq \'' + opkey_loc + '\'')
-        let n = 0;
         while (result.data.value.length === 0 && window.location.pathname == "/experimental") {
-            await delay(1000)
-            n = n + 1
+            await delay(500)
             result = await axios.get('http://localhost:4004/endpoint/CommandResult?$filter=opKey eq \'' + opkey_loc + '\'')
         }
 
