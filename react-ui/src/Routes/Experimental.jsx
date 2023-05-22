@@ -18,6 +18,7 @@ export function Experimental() {
     const [argTicker, setargTicker] = useState()
     const [commandResponse, setCommandResponse] = useState("");
     const [date, setDate] = useState();
+    const [endDate, setEndDate] = useState();
     const [scriptRunning, setScriptRunning] = useState(false);
 
     const fetchTickers = async () => {
@@ -53,6 +54,7 @@ export function Experimental() {
 
     const runScript = async () => {
         let date_local = moment(date).format("YYYY-MM-DD")
+        let date_local2 = moment(endDate).format("YYYY-MM-DD")
         await axios.post('http://localhost:4004/endpoint/DeleteResult', {
         }, {
             headers: {
@@ -61,11 +63,13 @@ export function Experimental() {
             }
         })
 
-        console.log("[DEBUG] date now: " + moment(Date.now()).format("YYYY-MM-DD"))
-        console.log("[DEBUG] date given: "+moment(date).format("YYYY-MM-DD"))
 
-        if (date_local === moment(Date.now()).format("YYYY-MM-DD") ||date_local ==="Invalid date") {
+        if (date_local === moment(Date.now()).format("YYYY-MM-DD") || date_local === "Invalid date") {
             date_local = null
+        }
+
+        if (date_local2 === moment(Date.now()).format("YYYY-MM-DD") || date_local2 === "Invalid date") {
+            date_local2 = null
         }
 
         setScriptRunning(true)
@@ -111,6 +115,18 @@ export function Experimental() {
                     }
                 })
                 break;
+            case "analyze_ticker":
+                await axios.post('http://localhost:4004/Endpoint/Analyst', {
+                    "ticker": `${argTicker}`,
+                    "start_date": `${date_local}`,
+                    "end_date": `${date_local2}`
+                }, {
+                    headers: {
+                        "Authorization": "Basic admin",
+                        "Content-Type": "application/json;IEEE754Compatible=true"
+                    }
+                })
+                break;
             default:
                 break;
         }
@@ -135,13 +151,14 @@ export function Experimental() {
                             <MenuItem value="refresh_ticker" >Refresh ticker data</MenuItem>
                             <MenuItem value="add_ticker" >Add new ticker data</MenuItem>
                             <MenuItem value="remove_ticker" >Remove ticker data</MenuItem>
+                            <MenuItem value="analyze_ticker" >Analyze ticker data</MenuItem>
 
                         </Select>
                     </FormControl>
 
-                    {commandSelected === "refresh_ticker" || commandSelected === "remove_ticker"
+                    {commandSelected === "refresh_ticker" || commandSelected === "remove_ticker" || commandSelected === "analyze_ticker"
                         ?
-                        <FormControl fullWidth sx={{ m: 1, minWidth: 200 }}  variant="outlined">
+                        <FormControl fullWidth sx={{ m: 1, minWidth: 200 }} variant="outlined">
                             <InputLabel>Ticker</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -157,7 +174,7 @@ export function Experimental() {
                         </FormControl>
                         : <> </>
                     }
-                    {commandSelected === "add_ticker"
+                    {commandSelected === "add_ticker" 
                         ? <TextField label="Ticker" variant="outlined" onChange={(event) => setargTicker(event.target.value)} />
                         : <> </>
                     }
@@ -169,13 +186,21 @@ export function Experimental() {
                         ? <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="yyyy/MM/dd" />
                         : <> </>
                     }
+                    {commandSelected === "analyze_ticker"
+                        ? <Text >End date</Text>
+                        : <> </>
+                    }
+                    {commandSelected === "analyze_ticker"
+                        ? <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
+                        : <> </>
+                    }
                     <Button onClick={runScript} disabled={scriptRunning}>
                         Run Script
                     </Button>
                 </FlexBox>
             </Card>
             {commandResponse !== "" && scriptRunning === false
-                ? <CommandResponse arg = {commandResponse} />
+                ? <CommandResponse arg={commandResponse} />
                 : <> </>
             }
             {scriptRunning === true

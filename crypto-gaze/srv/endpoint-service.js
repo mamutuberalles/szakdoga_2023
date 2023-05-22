@@ -5,17 +5,48 @@ module.exports = (srv) => {
     await DELETE.from`endpoint_model.CommandResult`
   });
 
+  srv.on("Analyst", async (req) => {
+    console.log("[INFO] Running analyst script")
+    let TICKER = req.data.ticker
+    let START_DATE = req.data.start_date
+    let END_DATE = req.data.end_date
+    if (ticker == "") {
+      console.log("[ERROR] Ticker data not given, please enter ticker data.")
+    }
+    else {
+      const { spawn } = require("child_process");
+      console.log("[INFO] Running script analysis.py with argument " + TICKER + " " + START_DATE + " " + END_DATE)
+      const pythonProcess = spawn('python', ["../python_scripts/analysis.py", TICKER, START_DATE, END_DATE]);
+
+
+      pythonProcess.stdout.on('data', function (data) {
+        console.log("[INFO] Recieved data from analysis.py: " + data.toString())
+      });
+
+      pythonProcess.on('close', async (code) => {
+        console.log("[INFO] Python process analysis.py finished with code " + code)
+        if (code == 0) {
+          return ("The operation was successful.")
+        }
+        else {
+          return ("The operation failed with code: " + code)
+        }
+      })
+
+    }
+  });
+
   srv.on("Experimental", async (req) => {
     // Refreshing full dataset at midnight
     let CRYPTOS = await SELECT`data_model.Crypto`.groupBy('ticker')
     //console.log("[INFO] Refreshing available crypto data")
-    for(const crypto of CRYPTOS) {
+    for (const crypto of CRYPTOS) {
       console.log("[INFO] Refreshing available crypto data for: " + crypto.ticker)
       ticker = crypto.ticker
       date = await SELECT`from data_model.Crypto where ticker = ${ticker}`.orderBy('date asc').limit('1')
       date = date[0].date
       console.log("[INFO] Refreshing data for: " + ticker + " from " + date)
-       if (ticker == "") {
+      if (ticker == "") {
         console.log("[ERROR] Ticker data not given, please enter ticker data.")
       }
       else {
@@ -38,7 +69,7 @@ module.exports = (srv) => {
             return ("The operation failed with code: " + code)
           }
         })
-      } 
+      }
     }
   });
 
