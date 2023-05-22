@@ -10,7 +10,10 @@
     "cors": "^2.8.5",
     "express": "^4",
     "node-schedule": "^2.1.1",
-    "react-pro-sidebar": "^1.0.0"
+    "react-pro-sidebar": "^1.0.0",
+    "hdb": "^0.19.0",
+    "@sap/xssec": "^3",
+    "passport": "^0"
   },
   "devDependencies": {
     "sqlite3": "^5.1.6"
@@ -49,9 +52,20 @@
   "cds": {
     "requires": {
       "db": {
-        "kind": "sqlite",
+        "kind": "sql",
         "credentials": {
           "database": "sqlite.db"
+        }
+      },
+      "[production]": {
+        "db": {
+          "kind": "hana-cloud"
+        },
+        "auth": {
+          "kind": "xsuaa"
+        },
+        "approuter": {
+          "kind": "cloudfoundry"
         }
       }
     }
