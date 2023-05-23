@@ -19,8 +19,10 @@ export function MyApp() {
                 <BrowserRouter>
                     <Layout>
                         <Routes>
-                            <Route path="/" element={<Navigate replace to="/home" />} />
-                            <Route path="/home" element={<Home />} />
+{/*                             <Route path="/" element={<Navigate replace to="/home" />} />
+                            <Route path="/home" element={<Home />} /> */}
+                            <Route path="/home" element={<Navigate replace to="/" />} />
+                            <Route path="/" element={<Home />} />
                             <Route path="/charts" element={<Charts />} />
                             <Route path="/addsimplechart" element={<AddSimpleChart />} />
                             <Route path="/addcomplexchart" element={<AddComplexChart />} />

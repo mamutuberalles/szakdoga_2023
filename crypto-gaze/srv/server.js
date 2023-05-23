@@ -1,8 +1,9 @@
 const cds = require('@sap/cds');
 const cors = require('cors');
 const schedule = require('node-schedule')
-const express = require('express')
+const express = require('express');
 const path = require('path');
+const app = require('express')();
 
 cds.on("listening", async (app) => {
   await DELETE.from`endpoint_model.CommandResult`
@@ -45,13 +46,36 @@ cds.on("listening", async (app) => {
   }
 })
 
-cds.on()
-
 cds.on('bootstrap', (app) => {
   app.use(cors());
   app.use("/", express.static("../react-ui/build"))
+  app.get("/experimental", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/charts", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/bookmarkedcharts", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/hiddencharts", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/addsimplechart", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/addcomplexchart", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/chartmodifier", (req,res) =>{
+    res.redirect('/')
+  })
+  app.get("/experimental", (req,res) =>{
+    res.redirect('/')
+  })
 })
-//module.exports = cds.server;
+
+
 
 schedule.scheduleJob('0 0 * * *', async () => {
   let CRYPTOS = await SELECT`data_model.Crypto`.groupBy('ticker')
