@@ -165,7 +165,7 @@ try:
 
 
     start_dt = datetime.date.today() + datetime.timedelta(days=1)
-    end_dt = datetime.date.today() + datetime.timedelta(days=60)  #FIXIT
+    end_dt = datetime.date.today() + datetime.timedelta(days=60)  
     delta = datetime.timedelta(days=1)
     dates = []
     while start_dt <= end_dt:

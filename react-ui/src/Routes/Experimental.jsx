@@ -41,7 +41,7 @@ export function Experimental() {
             date_local = null
         }
 
-        if (date_local2 === moment(Date.now()).format("YYYY-MM-DD") || date_local2 === "Invalid date") {
+        if (date_local2 === "Invalid date") {
             date_local2 = null
         }
 

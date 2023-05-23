@@ -3,6 +3,7 @@ import { Text, Card, CardHeader } from '@ui5/webcomponents-react';
 import { MyChartUpdate } from "./MyChartUpdate";
 import axios from "axios";
 import moment from "moment";
+import { MyChartCommandResponse } from "./MyChartCommandResponse";
 
 export default function CommandResponse(args) {
 
@@ -16,8 +17,6 @@ export default function CommandResponse(args) {
     const analyzeResponse = async () => {
         if (args.arg.includes(";")) {
             let text = ""
-            console.log("[DEBUG] args.arg:")
-            console.log(args.arg)
             setResultType("complex")
             let arr = args.arg.split(";")
             text = arr[0]
@@ -25,6 +24,7 @@ export default function CommandResponse(args) {
             let ticker = dvalues[0].split(":")[1]
             let start_date = dvalues[1].split(":")[1]
             let end_date = dvalues[2].split(":")[1]
+            let extra_values = arr[3]
 
             if (end_date == "null")
             {
@@ -40,6 +40,7 @@ export default function CommandResponse(args) {
                 //title: `${title}`,
                 forecast: "None",
                 chart_type: "simple",
+                extra_values: extra_values
                 //bookmarked: `${bookmarked}`,
                 //hidden: `${hidden}`
     
@@ -77,7 +78,7 @@ export default function CommandResponse(args) {
                     : <></>
                 }
                 {resultType === "complex"
-                    ? <MyChartUpdate args={displayValues} />
+                    ? <MyChartCommandResponse args={displayValues} />
                     : <></>
                 }
                 {resultType === "complex"

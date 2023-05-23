@@ -28,6 +28,8 @@ end_date = None
 
 def_date = '2018-04-19'
 
+forecast = None
+
 opKey = None
 
 try:
@@ -160,17 +162,26 @@ try:
 
         forecast = model.predict(60)
 
+        
+
         if (forecast[0]-forecast[59]) < 0:
-            issues += "\nCurrent trend: upward"
+            issues += "\nCurrent trend: upward\n;"
         else: 
-            issues += "\nCurrent trend: downward"
+            issues += "\nCurrent trend: downward\n;"
 
     except Exception as e:
         print("\n[ERROR] Could not determine trend, possibly because the dataset is too small, please provide a larger dataset. Exception: "+str(e))
-        issues += "\n[ERROR] Could not determine trend, possibly because the dataset is too small, please provide a larger dataset. Exception: "+str(e)+"\n"
+        issues += "\n[ERROR] Could not determine trend, possibly because the dataset is too small, please provide a larger dataset. Exception: "+str(e)+"\n;"
 
+    
+    forecast = forecast.pd_dataframe()
 
-
+    idx = pd.date_range(df['date'].tail(1).to_string(index=False), periods=61)
+    idx = idx.delete(0)
+    for x in range(60):
+        issues += str(idx[x].date() )+":"+str(forecast.iloc[x]['close']) +","
+    
+    print(issues)
     requests.post(
             result_url,
             json={
