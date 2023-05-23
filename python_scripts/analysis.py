@@ -26,7 +26,7 @@ ticker = None
 start_date = None
 end_date = None
 
-def_date = '2018-04-19'
+def_date = '1970-01-01'
 
 forecast = None
 
@@ -75,7 +75,6 @@ try:
 
     try:
         start_date = (sys.argv[2])
-    #    start_date = int(time.mktime(datetime.datetime.strptime(start_date, "%Y-%m-%d").timetuple()))+3600
     except Exception as e:
         print("[ERROR] No start date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception: "+str(e))
         issues += "[ERROR] No start date given or wrong date or date format given, proceeding with default date as 2018-04-19 Exception: "+str(e)+".\n"
@@ -90,7 +89,6 @@ try:
 
     try:
         end_date = (sys.argv[3])
-    #    end_date = int(time.mktime(datetime.datetime.strptime(end_date, "%Y-%m-%d").timetuple()))+3600
     except Exception as e:
         print("[ERROR] No end date given or wrong date or date format given, proceeding without end date. Exception: "+str(e))
         issues += "[ERROR] No end date given or wrong date or date format given, proceeding without end date. Exception: "+str(e)+".\n"
@@ -100,17 +98,13 @@ try:
     if end_date == "undefined" or end_date == "null":
         print("[ERROR] No end date given or wrong date or date format given, proceeding without end date.")
         issues += "[ERROR] No end date given or wrong date or date format given, proceeding without end date.\n"
+        end_date = None
 
 
+    response_url = (crypto_url+"?$filter=ticker eq '" +ticker+"' and type eq 'real'" + " and date ge "+str(start_date))
 
-
-    response_url = (crypto_url+"?$filter=ticker eq '" +ticker+"' and type eq 'real'")
-
-    if (start_date != "null" and start_date != "undefined" and start_date != None):
-        response_url += " and date ge "+str(start_date)
-
-    if (end_date != "null" and end_date != "undefined" and end_date != None):
-        response_url += " and date le "+str(end_date)
+    if (end_date != None):
+        response_url += " and date le "+str(end_date) 
 
     issues += ";ticker:"+ticker+",start_date:"+str(start_date)+",end_date:"+str(end_date)+";"
 

@@ -1,14 +1,11 @@
 import sys
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import datetime
 import requests
-import csv
 import wget
 import darts
 import darts.utils
-import darts.datasets as dds
 import datetime
 import os
 import time
@@ -22,10 +19,12 @@ issues = ""
 
 result_url = "http://localhost:4004/endpoint/CommandResult"
 
+now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
+
 db_url = 'http://localhost:4004/Crypto/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
 url2 = "-USD?period1="
-no_date = "1524096000"
+no_date = str(now - 157680000)
 url3 = "&period2="
 url4 = "&interval=1d&events=history&includeAdjustedClose=true"
 
@@ -86,11 +85,6 @@ try:
         date = no_date
 
 
-
-
-
-
-
     response = requests.get(db_url+"?$filter=ticker eq '" +ticker+"' and type eq 'real'")
 
 
@@ -111,14 +105,9 @@ try:
         exit(1)
 
     print("[INFO] Data not found, fetching")
-    now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().month,datetime.datetime.now().day,2,0,0).timestamp().__round__()
+    
 
-    url = ""
-
-    if date == "None":
-        url = url1 + ticker + url2 +no_date+url3 +str(now) + url4
-    else:
-        url = url1 + ticker + url2 +str(date)+url3 +str(now) + url4
+    url = url1 + ticker + url2 +str(date)+url3 +str(now) + url4
 
 
     try:
@@ -156,7 +145,7 @@ try:
     series_05 = darts.utils.missing_values.fill_missing_values(series_05)
     series_075 = darts.utils.missing_values.fill_missing_values(series_075)
     series_09 = darts.utils.missing_values.fill_missing_values(series_09)
-    from darts.models import CatBoostModel, XGBModel
+    from darts.models import XGBModel
 
 
     model_05 = XGBModel(lags=3,output_chunk_length=5)

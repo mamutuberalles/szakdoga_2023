@@ -45,11 +45,13 @@ cds.on("listening", async (app) => {
   }
 })
 
+cds.on()
+
 cds.on('bootstrap', (app) => {
   app.use(cors());
   app.use("/", express.static("../react-ui/build"))
 })
-module.exports = cds.server;
+//module.exports = cds.server;
 
 schedule.scheduleJob('0 0 * * *', async () => {
   let CRYPTOS = await SELECT`data_model.Crypto`.groupBy('ticker')

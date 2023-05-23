@@ -1,15 +1,8 @@
 import sys
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import datetime
 import requests
-import csv
-import wget
-import darts
-import darts.datasets as dds
 import datetime
-import os
 
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
 crypto_url = "http://localhost:4004/Crypto/Crypto"
@@ -33,13 +26,9 @@ try:
         print("[ERROR] No operation key was given, proceeding without one, please note that you may not able to view the result of the script through the web gui.")
         issues += "[ERROR] No operation key was given, proceeding without one, please note that you may not able to view the result of the script through the web gui.\n"
 
-
-
-    # Get available tickers
     tickers = requests.get(crypto_url + "?$apply=groupby((ticker))").json()["value"]
     tickers_plucked = [item["ticker"] for item in tickers]
 
-    # Delete predefined charts
     ids = requests.get(charts_url).json()["value"]
     ids_plucked = [item["id"] for item in ids]
     df = pd.DataFrame(ids_plucked)
@@ -64,11 +53,7 @@ try:
 
     if len(tickers_plucked) > 0:
         print("[INFO] Creating monthly charts")
-
-        # Fix month because zero padding :(
-
         month = str(datetime.datetime.today().month)
-
         if len(month) == 1:
             month = "0" + month
 
