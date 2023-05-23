@@ -12,7 +12,7 @@ import datetime
 import os
 
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
-crypto_url = "http://localhost:4004/catalog/Crypto"
+crypto_url = "http://localhost:4004/Crypto/Crypto"
 result_url = "http://localhost:4004/endpoint/CommandResult"
 req_headers = {
     "Content-Type": "application/json;IEEE754Compatible=true",

@@ -93,7 +93,7 @@ export default function MyChartSettingsUpdate({ args, updaterFunction }) {
     }, [ticker, startDate, endDate, label, title, field, forecast, bookmarked, hidden]);
 
     const fetchTickers = async () => {
-        const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
+        const res = await axios.get('http://localhost:4004/crypto/Crypto?$apply=groupby((ticker))')
         setTickers(res.data.value)
         setTickersFetched(fetchTickers + 1)
     }

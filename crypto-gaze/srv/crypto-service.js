@@ -37,7 +37,6 @@ module.exports = (srv) => {
       pythonProcess.on('close', async (code) => {
         console.log("[INFO] Python process add_data.py with operation key "+OPKEY +" finished with code " + code)
         if(code == 0) {
-          // Need to add monthly chart also
           const y = new Date().getFullYear()
           const m = new Date().getMonth() + 1
           start_date = 0;
@@ -54,11 +53,6 @@ module.exports = (srv) => {
           let chart = [{ticker:ticker, start_date: start_date,end_date:end_date, label: ticker+" - USD", title: "Values of "+ticker+" this month"}]
           await DELETE.from`chart_model.PreDefinedCharts`.where({ticker: ticker})
           await INSERT (chart) .into`chart_model.PreDefinedCharts`
-          
-          return("The operation with operation key "+OPKEY +" was successful.")
-        }
-        else {
-          return("The operation with operation key "+OPKEY +" failed with code: "+ code)
         }
       })
     }
@@ -73,6 +67,7 @@ module.exports = (srv) => {
     {
       date = await SELECT`from data_model.Crypto where ticker = ${ticker}`.orderBy('date asc').limit('1')
       date = date[0].date
+      console.log("[ERROR] Valid date not given, proceeding with actual first date in database.")
     }
     OPKEY = req.data.opKey
     console.log("[INFO] Refreshing data for: " + ticker+" from " + date + " with operation key: "+OPKEY)
@@ -95,8 +90,6 @@ module.exports = (srv) => {
       pythonProcess.on('close', async (code) => {
         console.log("[INFO] Python process add_data.py with operation key "+OPKEY +" finished with code " + code)
         if(code == 0) {
-
-          // Need to add monthly chart also
           const y = new Date().getFullYear()
           const m = new Date().getMonth() + 1
           start_date = 0;
@@ -109,14 +102,9 @@ module.exports = (srv) => {
             start_date = y +"-0"+m+"-"+"01"
             end_date = y +"-0"+m+"-"+"31"
           }
-
           let chart = [{ticker:ticker, start_date: start_date,end_date:end_date, label: ticker+" - USD", title: "Values of "+ticker+" this month"}]
           await DELETE.from`chart_model.PreDefinedCharts`.where({ticker: ticker})
           await INSERT (chart) .into`chart_model.PreDefinedCharts`
-          return("The operation was successful.")
-        }
-        else {
-          return("The operation failed with code: "+ code)
         }
       })
     }

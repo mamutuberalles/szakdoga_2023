@@ -30,12 +30,6 @@ cds.on("listening", async (app) => {
 
       pythonProcess.on('close', async (code) => {
         console.log("[INFO] Python process add_data.py finished with code " + code)
-        if (code == 0) {
-          return ("The operation was successful.")
-        }
-        else {
-          return ("The operation failed with code: " + code)
-        }
       })
 
 
@@ -45,12 +39,6 @@ cds.on("listening", async (app) => {
 
       pythonProcess2.on('close', async (code) => {
         console.log("[INFO] Python process add_chart.py finished with code " + code)
-        if (code == 0) {
-          return ("The operation was successful.")
-        }
-        else {
-          return ("The operation failed with code: " + code)
-        }
       })
 
     }
@@ -60,13 +48,6 @@ cds.on("listening", async (app) => {
 cds.on('bootstrap', (app) => {
   app.use(cors());
   app.use("/", express.static("../react-ui/build"))
-/*   app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../app/react-ui/build/index.html'), function(err) {
-      if (err) {
-        res.status(500).send(err)
-      }
-    })
-  }) */
 })
 module.exports = cds.server;
 
@@ -95,12 +76,6 @@ schedule.scheduleJob('0 0 * * *', async () => {
 
       pythonProcess.on('close', async (code) => {
         console.log("[INFO] Python process add_data.py finished with code " + code)
-        if (code == 0) {
-          return ("The operation was successful.")
-        }
-        else {
-          return ("The operation failed with code: " + code)
-        }
       })
 
 
@@ -110,12 +85,6 @@ schedule.scheduleJob('0 0 * * *', async () => {
 
       pythonProcess2.on('close', async (code) => {
         console.log("[INFO] Python process add_chart.py finished with code " + code)
-        if (code == 0) {
-          return ("The operation was successful.")
-        }
-        else {
-          return ("The operation failed with code: " + code)
-        }
       })
 
     }

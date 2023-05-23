@@ -13,7 +13,7 @@ import os
 import time
 
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
-crypto_url = "http://localhost:4004/catalog/Crypto"
+crypto_url = "http://localhost:4004/Crypto/Crypto"
 result_url = "http://localhost:4004/endpoint/CommandResult"
 headers = {
     "Content-Type": "application/json;IEEE754Compatible=true",
@@ -158,9 +158,9 @@ try:
 
         model.fit(series)
 
-        forecast = model.predict(2)
+        forecast = model.predict(60)
 
-        if (forecast[0]-forecast[1]) < 0:
+        if (forecast[0]-forecast[59]) < 0:
             issues += "\nCurrent trend: upward"
         else: 
             issues += "\nCurrent trend: downward"

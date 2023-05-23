@@ -1,6 +1,6 @@
 namespace data_model;
+
 entity Crypto  {
-//    key id : UUID;
     date : Date;
     open : Double null;
     high : Double null;

@@ -1,6 +1,6 @@
 using data_model as model from '../db/data-model';
 
-service CatalogService {
+service CryptoService {
     entity Crypto @(cds.query.limit:{  max: 3000 }) as projection on model.Crypto;
 
     action DeleteTicker(ticker: String, opKey : String);

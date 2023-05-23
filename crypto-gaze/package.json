@@ -1,8 +1,8 @@
 {
   "name": "crypto-gaze",
   "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
+  "description": "A simple CAP for your crypto gazing needs.",
+  "repository": "https://github.com/mamutuberalles/szakdoga_2023/",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {

@@ -23,7 +23,7 @@ export function Experimental() {
     const [opKey, setOpKey] = useState();
 
     const fetchTickers = async () => {
-        const res = await axios.get('http://localhost:4004/catalog/Crypto?$apply=groupby((ticker))')
+        const res = await axios.get('http://localhost:4004/crypto/Crypto?$apply=groupby((ticker))')
         setTickers(res.data.value)
     }
 
@@ -48,7 +48,7 @@ export function Experimental() {
         setScriptRunning(true)
         switch (commandSelected) {
             case "add_ticker":
-                await axios.post('http://localhost:4004/Catalog/AddTicker', {
+                await axios.post('http://localhost:4004/crypto/AddTicker', {
                     "ticker": `${argTicker}`,
                     "date": `${date_local}`,
                     "opKey": `${opkey_loc}`
@@ -60,7 +60,7 @@ export function Experimental() {
                 })
                 break;
             case "remove_ticker":
-                await axios.post('http://localhost:4004/Catalog/DeleteTicker', {
+                await axios.post('http://localhost:4004/crypto/DeleteTicker', {
                     "ticker": `${argTicker}`,
                     "opKey": `${opkey_loc}`
                 }, {
@@ -71,7 +71,7 @@ export function Experimental() {
                 })
                 break;
             case "refresh_ticker":
-                await axios.post('http://localhost:4004/Catalog/RefreshTicker', {
+                await axios.post('http://localhost:4004/crypto/RefreshTicker', {
                     "ticker": `${argTicker}`,
                     "date": `${date_local}`,
                     "opKey": `${opkey_loc}`

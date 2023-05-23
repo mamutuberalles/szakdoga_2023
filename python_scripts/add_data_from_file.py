@@ -92,7 +92,7 @@ if ticker == "undefined" or ticker == "null":
     exit(1)
 
 
-db_url = 'http://localhost:4004/catalog/Crypto'
+db_url = 'http://localhost:4004/Crypto/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
 url2 = "-USD?period1="
 no_date = "1524096000"

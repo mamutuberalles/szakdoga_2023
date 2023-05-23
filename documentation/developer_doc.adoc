@@ -1,7 +1,0 @@
-= Fejlesztői dokumentáció
-
-== Probléma részletes specifikációja
-
-== Felhasznált módszerek leírása
-
-== Logikai, fiziaki szerkezete

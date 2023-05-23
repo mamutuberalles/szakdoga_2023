@@ -13,13 +13,6 @@ module.exports = (srv) => {
 
       pythonProcess.on('close', (code) => {
         console.log("[INFO] Python process monthly_charts.py with operation key "+OPKEY +" finished with code " + code)
-        if(code == 0) {
-          return("The operation was successful.")
-        }
-        else {
-          return("The operation failed with code: "+ code)
-        }
-      })
+      });
   });
-
 }

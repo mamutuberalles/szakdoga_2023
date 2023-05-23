@@ -22,7 +22,7 @@ issues = ""
 
 result_url = "http://localhost:4004/endpoint/CommandResult"
 
-db_url = 'http://localhost:4004/catalog/Crypto'
+db_url = 'http://localhost:4004/Crypto/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
 url2 = "-USD?period1="
 no_date = "1524096000"

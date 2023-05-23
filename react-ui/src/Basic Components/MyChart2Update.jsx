@@ -46,7 +46,7 @@ export function MyChart2Update(args) {
     const fetchData = async () => {
         setDataFetched(dataFetched + 1);
 
-        let queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq 'real'"
+        let queryString = "http://localhost:4004/crypto/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq 'real'"
         if (args.args.start_date) {
             queryString += " and date ge " + args.args.start_date;
         }
@@ -60,7 +60,7 @@ export function MyChart2Update(args) {
         let axis2 = !(args.args.ticker2 === "" || args.args.ticker2 === "undefined")
         let queryString2 = null;
         if (axis2) {
-            queryString2 = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker2 + "' and type eq 'real'"
+            queryString2 = "http://localhost:4004/crypto/Crypto?$filter=ticker eq '" + args.args.ticker2 + "' and type eq 'real'"
             if (args.args.start_date) {
                 queryString2 += " and date ge " + args.args.start_date;
             }

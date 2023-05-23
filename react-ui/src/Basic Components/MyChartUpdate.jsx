@@ -13,10 +13,10 @@ export function MyChartUpdate(args) {
         if (args.args.chart_type === "simple") {
             let queryString = null;
             if (args.args.forecast === "None") {
-                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq 'real'";
+                queryString = "http://localhost:4004/crypto/Crypto?$filter=ticker eq '" + args.args.ticker + "' and type eq 'real'";
             }
             else {
-                queryString = "http://localhost:4004/catalog/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq '" + args.args.forecast + "' )";
+                queryString = "http://localhost:4004/crypto/Crypto?$filter=ticker eq '" + args.args.ticker + "' and ( type eq 'real' or type eq '" + args.args.forecast + "' )";
             }
 
             if (args.args.start_date) {
@@ -29,7 +29,7 @@ export function MyChartUpdate(args) {
             res = await axios.get(queryString)
         }
         else {
-            res = await axios.get('http://localhost:4004/catalog/Crypto?$filter=date ge ' + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc&$top=5000")
+            res = await axios.get('http://localhost:4004/crypto/Crypto?$filter=date ge ' + args.args.start_date + " and date le " + args.args.end_date + " and ticker eq '" + args.args.ticker + "' and type eq 'real'&$orderby=date asc&$top=5000")
             args.args.field = "close"
         }
         setDataset(res.data.value);
