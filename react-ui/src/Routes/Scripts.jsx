@@ -7,7 +7,7 @@ import { Button, FlexBox, Text, Card, Title } from '@ui5/webcomponents-react';
 import CommandResponse from "../Basic Components/CommandResponse";
 import uuid from "react-uuid"
 
-export function Experimental() {
+export function Scripts() {
 
     const delay = ms => new Promise(
         resolve => setTimeout(resolve, ms)
@@ -108,14 +108,11 @@ export function Experimental() {
             default:
                 break;
         }
-
-        // TODO Add opKey field to identify which command is the result
         let result = await axios.get('http://localhost:4004/endpoint/CommandResult?$filter=opKey eq \'' + opkey_loc + '\'')
-        while (result.data.value.length === 0 && window.location.pathname == "/experimental") {
+        while (result.data.value.length === 0 && window.location.pathname == "/scripts") {
             await delay(500)
             result = await axios.get('http://localhost:4004/endpoint/CommandResult?$filter=opKey eq \'' + opkey_loc + '\'')
         }
-
         setCommandResponse(result.data.value[0].data)
         setScriptRunning(false)
         await axios.post('http://localhost:4004/endpoint/DeleteResult', {

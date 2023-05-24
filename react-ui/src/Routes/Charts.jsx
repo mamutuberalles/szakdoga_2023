@@ -87,13 +87,11 @@ export function Charts() {
                     }
                     else {
                         if (a[orderField] < b[orderField]) {
-                            console.log("[DEBUG] : " + a[orderField] + " < " + b[orderField])
                             return -1;
                         }
 
 
                         if (a[orderField] > b[orderField]) {
-                            console.log("[DEBUG] : " + a[orderField] + " > " + b[orderField])
                             return 1;
                         }
 

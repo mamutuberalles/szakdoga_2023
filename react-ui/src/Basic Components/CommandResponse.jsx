@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Text, Card, CardHeader } from '@ui5/webcomponents-react';
-import { MyChartUpdate } from "./MyChartUpdate";
-import axios from "axios";
-import moment from "moment";
 import { MyChartCommandResponse } from "./MyChartCommandResponse";
 
 export default function CommandResponse(args) {
@@ -34,7 +31,7 @@ export default function CommandResponse(args) {
             setDisplayValues({
                 ticker: `${ticker}`,
                 field: "close",
-                //label: `${label}`,
+                label: `${ticker}`,
                 start_date: `${start_date}`,
                 end_date: `${end_date}`,
                 //title: `${title}`,

@@ -167,15 +167,13 @@ try:
         print("\n[ERROR] Could not determine trend, possibly because the dataset is too small, please provide a larger dataset. Exception: "+str(e))
         issues += "\n[ERROR] Could not determine trend, possibly because the dataset is too small, please provide a larger dataset. Exception: "+str(e)+"\n;"
 
+    if isinstance(forecast, darts.timeseries.TimeSeries):
+        forecast = forecast.pd_dataframe()
+        idx = pd.date_range(df['date'].tail(1).to_string(index=False), periods=61)
+        idx = idx.delete(0)
+        for x in range(60):
+            issues += str(idx[x].date() )+":"+str(forecast.iloc[x]['close']) +","
     
-    forecast = forecast.pd_dataframe()
-
-    idx = pd.date_range(df['date'].tail(1).to_string(index=False), periods=61)
-    idx = idx.delete(0)
-    for x in range(60):
-        issues += str(idx[x].date() )+":"+str(forecast.iloc[x]['close']) +","
-    
-    print(issues)
     requests.post(
             result_url,
             json={
