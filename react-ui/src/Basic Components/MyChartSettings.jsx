@@ -150,15 +150,12 @@ export default function MyChartSettings({ args, updaterFunction }) {
 
                     <TextField label="Label" variant="outlined" onChange={(event) => setLabel(event.target.value)} defaultValue={args.label} sx={{ m: 1, minWidth: 200 }} />
                 </FlexBox >
-                <FlexBox >
-                    <Text >Start date</Text>
-                    <DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
-                    <Text >End date</Text>
-                    <DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
-                </FlexBox>
-                <FlexBox wrap="Wrap" alignItems="Center" justifyContent="SpaceAround">
+                <FlexBox  alignItems="Center" justifyContent="SpaceAround" >
+                    <div><Text style={{fontSize: 18}}>Start date</Text><DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" /></div>
+                    <div><Text style={{fontSize: 18}}>End date</Text><DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" /></div> 
+                    <FlexBox wrap="Wrap" alignItems="Center" justifyContent="SpaceAround">
                     <FormControl>
-                        <FormLabel id="radio-buttons-group-label">Forecast</FormLabel>
+                        <FormLabel id="radio-buttons-group-label">Forecast with X% of the data</FormLabel>
                         <RadioGroup
                             aria-labelledby="radio-buttons-group-label"
                             defaultValue={args.forecast === undefined ? "None" : args.forecast}
@@ -166,10 +163,10 @@ export default function MyChartSettings({ args, updaterFunction }) {
                             onChange={(event) => setForecast(event.target.value)}
                             row
                         >
-                            <FormControlLabel value="None" control={<Radio />} label="None" />
-                            <FormControlLabel value="forecast_05" control={<Radio />} label="Forecast with 50% of the data" />
-                            <FormControlLabel value="forecast_075" control={<Radio />} label="Forecast with 25% of the data" />
-                            <FormControlLabel value="forecast_09" control={<Radio />} label="Forecast with 10% of the data" />
+                            <FormControlLabel value="None" control={<Radio />} label="No forecast" />
+                            <FormControlLabel value="forecast_05" control={<Radio />} label="50" />
+                            <FormControlLabel value="forecast_075" control={<Radio />} label="75" />
+                            <FormControlLabel value="forecast_09" control={<Radio />} label="90" />
                         </RadioGroup>
                     </FormControl>
                     <Button onClick={toggle}>
@@ -179,6 +176,8 @@ export default function MyChartSettings({ args, updaterFunction }) {
                     <Button onClick={addChart}>
                         Add Chart
                     </Button>
+                </FlexBox>
+                
                 </FlexBox>
             </Card>
 

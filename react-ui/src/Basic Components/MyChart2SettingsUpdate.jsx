@@ -156,6 +156,7 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
                             id="demo-simple-select"
                             onChange={(event) => setTicker2(event.target.value)}
                             label="Ticker2"
+                            variant="outlined"
                             defaultValue={args.ticker2}
                         >
                             {tickers.map(item =>
@@ -171,6 +172,7 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
                             id="demo-simple-select"
                             onChange={(event) => setField2(event.target.value)}
                             label="Field2"
+                            variant="outlined"
                             defaultValue={args.field2}
                         >
                             <MenuItem value="open">Open</MenuItem>
@@ -185,13 +187,9 @@ export function MyChart2SettingsUpdate({ args, updaterFunction }) {
                     <TextField label="Second Label" variant="outlined" onChange={(event) => setLabel2(event.target.value)} defaultValue={args.label2} />
                 </FlexBox>
                 <FlexBox alignItems="Center" justifyContent="SpaceAround">
-                    <Text >Start date</Text>
-                    <DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
-                    <Text >End date</Text>
-                    <DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
-                </FlexBox>
-                <FlexBox alignItems="Center" justifyContent="SpaceAround">
-                    <TextField label="Chart Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
+                <TextField label="Chart Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
+                    <div><Text style={{ fontSize: 18 }}>Start date</Text><DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" /></div>
+                    <div><Text style={{ fontSize: 18 }}>End date</Text><DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" /></div>
                     <FormGroup>
                         <FormControlLabel control={<Checkbox defaultChecked={args.hidden === "true"} />} label="Hidden" onClick={(event) => setHidden(event.target.checked)} />
                         <FormControlLabel control={<Checkbox defaultChecked={args.bookmarked === "true"} />} label="Bookmarked" onClick={(event) => setBookmarked(event.target.checked)} />

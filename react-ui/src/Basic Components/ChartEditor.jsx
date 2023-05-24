@@ -1,5 +1,5 @@
 import React from "react";
-import MyChart2SettingsUpdate from "./MyChartSettings2Update";
+import MyChart2SettingsUpdate from "./MyChart2SettingsUpdate";
 import MyChartSettingsUpdate from "./MyChartSettingsUpdate";
 export function ChartEditor({params, updaterFunction} ) {
     return (

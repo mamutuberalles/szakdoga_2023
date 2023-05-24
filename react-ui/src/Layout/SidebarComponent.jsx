@@ -17,7 +17,7 @@ export function SidebarComponent() {
     const { collapseSidebar } = useProSidebar();
     return (
         <>
-            <Sidebar style={{ height: "100vh" }}>
+            <Sidebar style={{ height: "100%" }}>
                 <Menu>
                     <MenuItem
                         icon={<MenuOutlinedIcon />}
@@ -37,9 +37,9 @@ export function SidebarComponent() {
                     </SubMenu>
                     
                     <SubMenu icon={<AddchartIcon />} label="Chart operations"  style={{ textAlign: "center" }}>
-                        <MenuItem icon={<ShowChartIcon />} style={{ textAlign: "center" }} component={<Link to="/addsimplechart" />} id="addsimplechart" >Create UI5 chart</MenuItem>
-                        <MenuItem icon={<SsidChartIcon />} style={{ textAlign: "center" }} component={<Link to="/addcomplexchart" />} id="addcomplexchart" >Create Chart-js chart</MenuItem>
-                        <MenuItem icon={<EditIcon />} style={{ textAlign: "center" }} component={<Link to="/chartmodifier" />} id="chartmodifier" >Update or Delete chart</MenuItem>
+                        <MenuItem icon={<ShowChartIcon />} style={{ textAlign: "center" }} component={<Link to="/addsimplechart" />} id="addsimplechart" >Create UI5</MenuItem>
+                        <MenuItem icon={<SsidChartIcon />} style={{ textAlign: "center" }} component={<Link to="/addcomplexchart" />} id="addcomplexchart" >Create Chart-js</MenuItem>
+                        <MenuItem icon={<EditIcon />} style={{ textAlign: "center" }} component={<Link to="/chartmodifier" />} id="chartmodifier" >Update or Delete</MenuItem>
                     </SubMenu>
                     <MenuItem icon={<CodeIcon />} style={{ textAlign: "center" }} component={<Link to="/scripts" />} id="scripts" >Run script</MenuItem>
                 </Menu>

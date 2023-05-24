@@ -70,7 +70,7 @@ cds.on('bootstrap', (app) => {
   app.get("/chartmodifier", (req,res) =>{
     res.redirect('/')
   })
-  app.get("/experimental", (req,res) =>{
+  app.get("/scripts", (req,res) =>{
     res.redirect('/')
   })
 })

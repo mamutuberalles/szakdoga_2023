@@ -149,7 +149,7 @@ export function Scripts() {
 
                     {commandSelected === "refresh_ticker" || commandSelected === "remove_ticker" || commandSelected === "analyze_ticker"
                         ?
-                        <FormControl fullWidth sx={{ m: 1, minWidth: 200 }} variant="outlined">
+                        <FormControl   sx={{ m: 1, minWidth: 200 }}  variant="outlined">
                             <InputLabel>Ticker</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -166,26 +166,18 @@ export function Scripts() {
                         : <> </>
                     }
                     {commandSelected === "add_ticker"
-                        ? <TextField label="Ticker" variant="outlined" onChange={(event) => setargTicker(event.target.value)} />
+                        ? <TextField label="Ticker" variant="outlined" onChange={(event) => setargTicker(event.target.value)} sx={{ m: 1, minWidth: 200 }} />
                         : <> </>
                     }
                     {commandSelected !== "remove_ticker" && commandSelected !== "monthly_charts" && commandSelected !== undefined
-                        ? <Text >Start date</Text>
-                        : <> </>
-                    }
-                    {commandSelected !== "remove_ticker" && commandSelected !== "monthly_charts" && commandSelected !== undefined
-                        ? <DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="yyyy/MM/dd" />
+                        ? <div><Text style={{fontSize : 18}} >Start date</Text><DatePicker selected={date} onChange={(date) => setDate(date)} dateFormat="yyyy/MM/dd" /></div>
                         : <> </>
                     }
                     {commandSelected === "analyze_ticker"
-                        ? <Text >End date</Text>
+                        ?  <div> <Text style={{ fontSize : 18 }} >End date</Text> <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" /> </div> 
                         : <> </>
                     }
-                    {commandSelected === "analyze_ticker"
-                        ? <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
-                        : <> </>
-                    }
-                    <Button onClick={runScript} disabled={scriptRunning}>
+                    <Button onClick={runScript} disabled={scriptRunning} sx={{ m: 1, minWidth: 200 }} >
                         Run Script
                     </Button>
                 </FlexBox>

@@ -58,12 +58,12 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
         }
 
         let start_date = moment(startDate).format("YYYY-MM-DD")
-        if(start_date == "Invalid date") {
+        if (start_date == "Invalid date") {
             start_date = "2018-04-19"
         }
 
         let end_date = moment(endDate).format("YYYY-MM-DD")
-        if(end_date == "Invalid date") {
+        if (end_date == "Invalid date") {
             end_date = "9999-12-31"
         }
         setDisplayValues({
@@ -187,19 +187,19 @@ export function MyChart2Settings({ args, updaterFunction }, update) {
                     <TextField label="Second Label" variant="outlined" onChange={(event) => setLabel2(event.target.value)} defaultValue={args.label2} />
                 </FlexBox>
                 <FlexBox alignItems="Center" justifyContent="SpaceAround">
-                    <Text >Start date</Text>
-                    <DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
-                    <Text >End date</Text>
-                    <DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" />
-                </FlexBox>
-                <FlexBox alignItems="Center" justifyContent="SpaceAround">
                     <TextField label="Chart Title" variant="outlined" onChange={(event) => setTitle(event.target.value)} defaultValue={args.title} />
+                    <div><Text style={{ fontSize: 18 }}>Start date</Text><DatePicker selected={startDate === undefined && args.start_date !== undefined ? new Date(args.start_date) : startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" /></div>
+                    <div><Text style={{ fontSize: 18 }}>End date</Text><DatePicker selected={endDate === undefined && args.end_date !== undefined ? new Date(args.end_date) : endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy/MM/dd" /></div>
+
                     <Button onClick={toggle}>
                         Preview Chart
                     </Button>
                     <Button onClick={addChart}>
                         Add Chart
                     </Button>
+                </FlexBox>
+                <FlexBox alignItems="Center" justifyContent="SpaceAround">
+
                 </FlexBox>
             </Card>
 
