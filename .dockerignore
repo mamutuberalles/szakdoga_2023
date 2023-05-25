@@ -1,2 +1,5 @@
 /crypto-gaze/node_modules
 /react-ui/node_modules
+/react-ui/build
+/crypto-gaze/package-lock.json
+/react-ui/package-lock.json
