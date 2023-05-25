@@ -165,8 +165,8 @@ export default function MyChartSettings({ args, updaterFunction }) {
                         >
                             <FormControlLabel value="None" control={<Radio />} label="No forecast" />
                             <FormControlLabel value="forecast_05" control={<Radio />} label="50" />
-                            <FormControlLabel value="forecast_075" control={<Radio />} label="75" />
-                            <FormControlLabel value="forecast_09" control={<Radio />} label="90" />
+                            <FormControlLabel value="forecast_075" control={<Radio />} label="25" />
+                            <FormControlLabel value="forecast_09" control={<Radio />} label="10" />
                         </RadioGroup>
                     </FormControl>
                     <Button onClick={toggle}>

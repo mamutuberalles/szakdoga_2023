@@ -17,7 +17,7 @@ export function SidebarComponent() {
     const { collapseSidebar } = useProSidebar();
     return (
         <>
-            <Sidebar style={{ height: "100%" }}>
+            <Sidebar style={{ height: "100vh" }}>
                 <Menu>
                     <MenuItem
                         icon={<MenuOutlinedIcon />}
