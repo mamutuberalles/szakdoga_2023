@@ -2,7 +2,6 @@ import sys
 import pandas as pd
 import datetime
 import requests
-import datetime
 
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
 crypto_url = "http://localhost:4004/Crypto/Crypto"

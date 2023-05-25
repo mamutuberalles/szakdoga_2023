@@ -1,16 +1,7 @@
 import sys
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import datetime
 import requests
-import csv
-import wget
 import darts
-import darts.datasets as dds
-import datetime
-import os
-import time
 
 charts_url = "http://localhost:4004/chart/PreDefinedCharts"
 crypto_url = "http://localhost:4004/Crypto/Crypto"
