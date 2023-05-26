@@ -39,7 +39,7 @@ export default function MyChartSettings({ args, updaterFunction }) {
 
         let start_date = moment(startDate).format("YYYY-MM-DD")
         if(start_date == "Invalid date") {
-            start_date = "2018-04-19"
+            start_date = "1970-01-01"
         }
 
         let end_date = moment(endDate).format("YYYY-MM-DD")
@@ -66,7 +66,7 @@ export default function MyChartSettings({ args, updaterFunction }) {
         });
 
         if (args.start_date === null) {
-            args.start_date = new Date('2018-04-19')
+            args.start_date = new Date('1970-01-01')
         }
 
         if (args.end_date === null) {

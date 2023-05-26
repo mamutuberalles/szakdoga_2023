@@ -7,16 +7,23 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^6",
+    "axios": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4",
     "node-schedule": "^2.1.1",
-    "react-pro-sidebar": "^1.0.0"
+    "react-pro-sidebar": "^1.0.0",
+    "supertest": "^6.3.3"
   },
   "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "chai-subset": "^1.6.0",
+    "expect": "^29.5.0",
     "sqlite3": "^5.1.6"
   },
   "scripts": {
-    "start": "cds run"
+    "start": "cds run",
+    "test": "mocha"
   },
   "engines": {
     "node": "^16.15"

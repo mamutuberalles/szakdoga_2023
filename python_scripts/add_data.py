@@ -24,7 +24,7 @@ now = datetime.datetime(datetime.datetime.now().year,datetime.datetime.now().mon
 db_url = 'http://localhost:4004/Crypto/Crypto'
 url1 = "https://query1.finance.yahoo.com/v7/finance/download/"
 url2 = "-USD?period1="
-no_date = str(now - 157680000)
+no_date = str(now - 157762800)
 url3 = "&period2="
 url4 = "&interval=1d&events=history&includeAdjustedClose=true"
 
@@ -74,14 +74,14 @@ try:
         date = (sys.argv[2])
         date = int(time.mktime(datetime.datetime.strptime(date, "%Y-%m-%d").timetuple()))+3600
     except Exception as e:
-        print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception: "+str(e))
-        issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19 Exception: "+str(e)+".\n"
+        print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 5 years ago. Exception: "+str(e))
+        issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 5 years ago Exception: "+str(e)+".\n"
         date = no_date
 
 
     if date == "undefined" or date == "null":
-        print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19."+str(e))
-        issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception :"+str(e)+".\n"
+        print("[ERROR] No date given or wrong date or date format given, proceeding with default date as 5 years ago."+str(e))
+        issues += "[ERROR] No date given or wrong date or date format given, proceeding with default date as 5 years ago. Exception :"+str(e)+".\n"
         date = no_date
 
 

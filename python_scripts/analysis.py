@@ -67,14 +67,14 @@ try:
     try:
         start_date = (sys.argv[2])
     except Exception as e:
-        print("[ERROR] No start date given or wrong date or date format given, proceeding with default date as 2018-04-19. Exception: "+str(e))
-        issues += "[ERROR] No start date given or wrong date or date format given, proceeding with default date as 2018-04-19 Exception: "+str(e)+".\n"
+        print("[ERROR] No start date given or wrong date or date format given, proceeding with default date as 5 years ago. Exception: "+str(e))
+        issues += "[ERROR] No start date given or wrong date or date format given, proceeding with default date as 5 years ago Exception: "+str(e)+".\n"
         start_date = def_date
 
 
     if start_date == "undefined" or start_date == "null":
-        print("[ERROR] No start date given or wrong date or date format given, proceeding with default date as 2018-04-19.")
-        issues += "[ERROR] No start date given or wrong date or date format given, proceeding with default date as 2018-04-19.\n"
+        print("[ERROR] No start date given or wrong date or date format given, proceeding with default date as 5 years ago.")
+        issues += "[ERROR] No start date given or wrong date or date format given, proceeding with default date as 5 years ago.\n"
         start_date = def_date
 
 

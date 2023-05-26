@@ -40,6 +40,7 @@ cds.on("listening", async (app) => {
 
       pythonProcess2.on('close', async (code) => {
         console.log("[INFO] Python process add_chart.py finished with code " + code)
+        await DELETE.from`endpoint_model.CommandResult where opKey = null`
       })
 
     }
@@ -74,6 +75,7 @@ cds.on('bootstrap', (app) => {
     res.redirect('/')
   })
 })
+
 
 
 

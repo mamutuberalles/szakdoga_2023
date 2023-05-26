@@ -41,7 +41,7 @@ export function SidebarComponent() {
                         <MenuItem icon={<SsidChartIcon />} style={{ textAlign: "center" }} component={<Link to="/addcomplexchart" />} id="addcomplexchart" >Create Chart-js</MenuItem>
                         <MenuItem icon={<EditIcon />} style={{ textAlign: "center" }} component={<Link to="/chartmodifier" />} id="chartmodifier" >Update or Delete</MenuItem>
                     </SubMenu>
-                    <MenuItem icon={<CodeIcon />} style={{ textAlign: "center" }} component={<Link to="/scripts" />} id="scripts" >Run script</MenuItem>
+                    <MenuItem icon={<CodeIcon />} style={{ textAlign: "center" }} component={<Link to="/scripts" />} id="scripts" >Run Script</MenuItem>
                 </Menu>
             </Sidebar>
         </>
