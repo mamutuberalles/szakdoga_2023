@@ -79,9 +79,12 @@ describe("Testing PreDefinedCharts model", () => {
   })
   it('DELETE', async () => {
     const req = await DELETE(`/chart/PreDefinedCharts` + `/` + id)
+    expect(req.status).to.equal(204)
   })
 
 });
+
+
 describe("Testing CustomCharts model", () => {
   let id = null
   it('POST', async () => {
@@ -139,6 +142,7 @@ describe("Testing CustomCharts model", () => {
   })
   it('DELETE', async () => {
     const req = await DELETE(`/chart/CustomCharts` + `/` + id)
+    expect(req.status).to.equal(204)
   })
 
 }); 
