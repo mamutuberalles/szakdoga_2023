@@ -1,2 +1,2 @@
 cd crypto-gaze
-cds run
+npm start
