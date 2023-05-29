@@ -11,10 +11,15 @@ import { Scripts } from "./Routes/Scripts";
 import BookmarkedCharts from "./Routes/BookmarkedCharts";
 import HiddenCharts from "./Routes/HiddenCharts";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import { Helmet } from 'react-helmet';
 export function MyApp() {
 
     return (
         <>
+            <Helmet>
+                <title>Crypto Gaze</title>
+            </Helmet>
+
             <ProSidebarProvider>
                 <BrowserRouter>
                     <Layout>
